@@ -1,121 +1,137 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-
+import AIBubble from "@/components/AIBubble"; // AI button
+import React, { useState } from "react"; // React + state
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"; // RN
 
 export default function EnterCourseScreen() {
-  const [prof, setProf] = useState("");
-  const [course, setCourse] = useState("");
-  const [room, setRoom] = useState("");
-
+  const [prof, setProf] = useState(""); // professor input
+  const [course, setCourse] = useState(""); // course input
+  const [room, setRoom] = useState(""); // room input
 
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.backText}>Back</Text>
-        </Pressable>
         <Text style={styles.title}>Enter Course</Text>
+        <Text style={styles.sub}>
+          Put in your class info (later we’ll save it and show it on the map).
+        </Text>
       </View>
-
 
       <View style={styles.card}>
         <Text style={styles.label}>Professor name</Text>
         <TextInput
           value={prof}
           onChangeText={setProf}
-          placeholder="e.g., Dr. Smith"
-          placeholderTextColor={COLORS.muted}
+          placeholder="Example: Dr. Smith"
+          placeholderTextColor="#6B7280"
           style={styles.input}
         />
 
-
-        <Text style={[styles.label, { marginTop: 10 }]}>Course name / #</Text>
+        <Text style={styles.label}>Course name / #</Text>
         <TextInput
           value={course}
           onChangeText={setCourse}
-          placeholder="e.g., CSET 4250"
-          placeholderTextColor={COLORS.muted}
+          placeholder="Example: CSET 3300"
+          placeholderTextColor="#6B7280"
           style={styles.input}
         />
 
-
-        <Text style={[styles.label, { marginTop: 10 }]}>Location / room #</Text>
+        <Text style={styles.label}>Room / location</Text>
         <TextInput
           value={room}
           onChangeText={setRoom}
-          placeholder="e.g., North Eng 1010"
-          placeholderTextColor={COLORS.muted}
+          placeholder="Example: North Eng 1010"
+          placeholderTextColor="#6B7280"
           style={styles.input}
         />
 
-
-        <Pressable style={styles.saveBtn} onPress={() => {}}>
-          <Text style={styles.saveBtnText}>Save (placeholder)</Text>
+        {/* button doesn't save yet, just looks nice */}
+        <Pressable style={styles.btn} onPress={() => {}}>
+          <Text style={styles.btnText}>Save (not working yet)</Text>
         </Pressable>
 
-
         <Text style={styles.note}>
-          Next: we’ll store these in local storage + show a list/table like your
+          Next: we’ll add a table below this with saved courses like your UI
           sketch.
         </Text>
       </View>
+
+      <AIBubble />
     </View>
   );
 }
 
-
-const COLORS = {
-  bg: "#F7F7F8",
-  surface: "#FFFFFF",
-  border: "#E5E7EB",
-  text: "#111827",
-  muted: "#6B7280",
-  navy: "#0B1F3B",
-  gold: "#C9A227",
-};
-
-
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: COLORS.bg, padding: 14 },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 14 },
-  backBtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: "#EEF2F7",
-    borderRadius: 10,
-  },
-  backText: { color: COLORS.text, fontWeight: "800" },
-  title: { fontSize: 18, fontWeight: "900", color: COLORS.navy },
-
-
-  card: {
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 16,
+  screen: {
+    flex: 1,
+    backgroundColor: "#F7F7FB",
     padding: 14,
   },
-  label: { color: COLORS.text, fontWeight: "800", fontSize: 13 },
+
+  header: {
+    backgroundColor: "#EAFBF2", // soft green-ish for variety
+    borderWidth: 1,
+    borderColor: "#CFF5DF",
+    borderRadius: 18,
+    padding: 14,
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "900",
+    color: "#0B1F3B",
+  },
+
+  sub: {
+    marginTop: 6,
+    color: "#374151",
+    fontWeight: "600",
+  },
+
+  card: {
+    marginTop: 12,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
+    padding: 14,
+    flex: 1,
+  },
+
+  label: {
+    marginTop: 10,
+    fontWeight: "800",
+    color: "#111827",
+  },
+
   input: {
     marginTop: 6,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: "#E5E7EB",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    color: COLORS.text,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F9FAFB",
+    color: "#111827",
   },
-  saveBtn: {
+
+  btn: {
     marginTop: 14,
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: "center",
-    backgroundColor: COLORS.navy,
+    backgroundColor: "#0B1F3B",
     borderWidth: 2,
-    borderColor: COLORS.gold, // small gold accent
+    borderColor: "#C9A227",
+    paddingVertical: 12,
+    borderRadius: 14,
+    alignItems: "center",
   },
-  saveBtnText: { color: "#FFFFFF", fontWeight: "900" },
-  note: { marginTop: 10, color: COLORS.muted, lineHeight: 20 },
+
+  btnText: {
+    color: "white",
+    fontWeight: "900",
+  },
+
+  note: {
+    marginTop: 10,
+    color: "#6B7280",
+    lineHeight: 20,
+  },
 });

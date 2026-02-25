@@ -1,60 +1,95 @@
-import { router } from "expo-router";
-import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
+import AIBubble from "@/components/AIBubble"; // AI button
+import React from "react"; // React
+import { StyleSheet, Text, View } from "react-native"; // RN
 
 export default function SettingsScreen() {
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.backText}>Back</Text>
-        </Pressable>
         <Text style={styles.title}>Settings</Text>
-      </View>
-
-
-      <View style={styles.card}>
-        <Text style={styles.h1}>Settings (placeholder)</Text>
-        <Text style={styles.p}>
-          Later: theme toggle, saved courses, reset data, etc.
+        <Text style={styles.sub}>
+          Later we can add theme options + clear saved courses, etc.
         </Text>
       </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Placeholder</Text>
+        <Text style={styles.cardText}>
+          Nothing to change yet, but this page is ready for later.
+        </Text>
+
+        <View style={styles.box}>
+          <Text style={styles.boxText}>Settings options will go here</Text>
+        </View>
+      </View>
+
+      <AIBubble />
     </View>
   );
 }
 
-
-const COLORS = {
-  bg: "#F7F7F8",
-  surface: "#FFFFFF",
-  border: "#E5E7EB",
-  text: "#111827",
-  muted: "#6B7280",
-  navy: "#0B1F3B",
-};
-
-
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: COLORS.bg, padding: 14 },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 14 },
-  backBtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: "#EEF2F7",
-    borderRadius: 10,
-  },
-  backText: { color: COLORS.text, fontWeight: "800" },
-  title: { fontSize: 18, fontWeight: "900", color: COLORS.navy },
-
-
-  card: {
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 16,
+  screen: {
+    flex: 1,
+    backgroundColor: "#F7F7FB",
     padding: 14,
   },
-  h1: { fontSize: 16, fontWeight: "900", color: COLORS.text },
-  p: { marginTop: 8, color: COLORS.muted, lineHeight: 20 },
+
+  header: {
+    backgroundColor: "#F1ECFF", // soft purple for variety
+    borderWidth: 1,
+    borderColor: "#DCD2FF",
+    borderRadius: 18,
+    padding: 14,
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "900",
+    color: "#0B1F3B",
+  },
+
+  sub: {
+    marginTop: 6,
+    color: "#374151",
+    fontWeight: "600",
+  },
+
+  card: {
+    marginTop: 12,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
+    padding: 14,
+    flex: 1,
+  },
+
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: "900",
+    color: "#111827",
+  },
+
+  cardText: {
+    marginTop: 6,
+    color: "#6B7280",
+    lineHeight: 20,
+  },
+
+  box: {
+    marginTop: 14,
+    flex: 1,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: "#E5E7EB",
+    backgroundColor: "#FFF7E6",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  boxText: {
+    color: "#0B1F3B",
+    fontWeight: "800",
+  },
 });
