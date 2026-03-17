@@ -1,165 +1,152 @@
-import { useRouter } from "expo-router"; // lets us go back
-import React, { useState } from "react"; // useState for typing state
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native"; // basic RN stuff
-
-type Message = {
-  id: string; // unique id for list
-  text: string; // what message says
-  from: "user" | "ai"; // who sent it
-};
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function AIChatScreen() {
-  const router = useRouter(); // for navigation
-  const [input, setInput] = useState(""); // stores what user types
-
-  // fake starter messages (just to make it look real)
-  const [messages] = useState<Message[]>([
-    { id: "1", text: "Hi! I'm your UT helper (placeholder).", from: "ai" },
-    { id: "2", text: "Ask me where your class is and I'll help later.", from: "ai" },
-  ]);
+  const [message, setMessage] = useState("");
 
   return (
-    <View style={styles.screen}>
-      {/* top header bar */}
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.backText}>Back</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <Text style={styles.backButtonText}>← Back</Text>
         </Pressable>
 
-        <Text style={styles.headerTitle}>AI Assistant</Text>
-        <View style={{ width: 60 }} /> {/* spacer so title stays centered */}
+        <View style={styles.headerCard}>
+          <Text style={styles.title}>Campus AI</Text>
+          <Text style={styles.subtitle}>
+            This is the future AI helper screen for your project.
+          </Text>
+        </View>
+
+        <View style={styles.chatBox}>
+          <Text style={styles.chatPlaceholder}>
+            Ask about classes, rooms, or campus help here later.
+          </Text>
+        </View>
+
+        <View style={styles.inputRow}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type a message..."
+            placeholderTextColor="#7f90aa"
+            value={message}
+            onChangeText={setMessage}
+          />
+
+          <Pressable style={styles.sendButton}>
+            <Text style={styles.sendButtonText}>Send</Text>
+          </Pressable>
+        </View>
       </View>
-
-      {/* message list */}
-      <FlatList
-        data={messages} // our messages array
-        keyExtractor={(item) => item.id} // key for each row
-        contentContainerStyle={styles.listPadding} // spacing
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.bubble, // base bubble style
-              item.from === "ai" ? styles.aiBubble : styles.userBubble, // different bubble types
-            ]}
-          >
-            <Text style={styles.bubbleText}>{item.text}</Text>
-          </View>
-        )}
-      />
-
-      {/* input area */}
-      <View style={styles.inputRow}>
-        <TextInput
-          value={input} // controlled input
-          onChangeText={setInput} // update input state
-          placeholder="Type here..." // placeholder
-          placeholderTextColor="#6B7280" // gray placeholder
-          style={styles.input} // styling
-        />
-
-        {/* send button does NOTHING for now on purpose */}
-        <Pressable style={styles.sendBtn} onPress={() => {}}>
-          <Text style={styles.sendText}>Send</Text>
-        </Pressable>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1, // full screen height
-    backgroundColor: "#F7F7FB", // soft background color
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#edf4ff",
   },
 
-  header: {
-    height: 60, // header height
-    backgroundColor: "#0B1F3B", // UT navy
-    paddingHorizontal: 12, // left/right padding
-    flexDirection: "row", // row layout
-    alignItems: "center", // vertical center
-    justifyContent: "space-between", // spread out
+  container: {
+    flex: 1,
+    padding: 18,
+    backgroundColor: "#edf4ff",
   },
 
-  backBtn: {
-    backgroundColor: "#EAF2FF", // soft blue
-    paddingVertical: 8, // padding
-    paddingHorizontal: 12,
-    borderRadius: 10, // rounded
+  backButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 999,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    marginBottom: 14,
   },
 
-  backText: {
-    color: "#0B1F3B", // navy text
-    fontWeight: "800", // bold
+  backButtonText: {
+    color: "#183a6b",
+    fontWeight: "700",
+    fontSize: 15,
   },
 
-  headerTitle: {
-    color: "white", // white text
-    fontSize: 16, // readable
-    fontWeight: "900", // bold
-    letterSpacing: 0.5, // slight spacing
+  headerCard: {
+    backgroundColor: "#dcecff",
+    borderWidth: 2,
+    borderColor: "#c0d7f7",
+    borderRadius: 24,
+    padding: 18,
+    marginBottom: 16,
   },
 
-  listPadding: {
-    padding: 14, // spacing around list
-    gap: 10, // space between bubbles
+  title: {
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#183a6b",
+    marginBottom: 6,
   },
 
-  bubble: {
-    maxWidth: "85%", // bubble not full width
-    padding: 12, // inside padding
-    borderRadius: 14, // rounded bubble
-    borderWidth: 1, // border
+  subtitle: {
+    fontSize: 15,
+    color: "#35527b",
+    lineHeight: 22,
   },
 
-  aiBubble: {
-    alignSelf: "flex-start", // left side
-    backgroundColor: "#FFFFFF", // white
-    borderColor: "#E5E7EB", // light border
+  chatBox: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 28,
+    padding: 18,
+    marginBottom: 16,
   },
 
-  userBubble: {
-    alignSelf: "flex-end", // right side
-    backgroundColor: "#EAF2FF", // soft blue
-    borderColor: "#CFE2FF", // blue border
-  },
-
-  bubbleText: {
-    color: "#111827", // dark text
-    lineHeight: 18, // spacing
-    fontSize: 14, // normal size
+  chatPlaceholder: {
+    fontSize: 16,
+    color: "#5c7394",
+    lineHeight: 24,
   },
 
   inputRow: {
-    flexDirection: "row", // row layout
-    alignItems: "center", // center vertically
-    gap: 10, // space between input and button
-    padding: 12, // padding
-    borderTopWidth: 1, // line above input
-    borderTopColor: "#E5E7EB", // light line
-    backgroundColor: "#FFFFFF", // white
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
   },
 
   input: {
-    flex: 1, // take remaining space
-    borderWidth: 1, // border
-    borderColor: "#E5E7EB", // light border
-    borderRadius: 12, // rounded
-    paddingHorizontal: 12, // left/right padding
-    paddingVertical: 10, // top/bottom padding
-    color: "#111827", // typed text color
-    backgroundColor: "#F9FAFB", // slightly gray
+    flex: 1,
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#183a6b",
   },
 
-  sendBtn: {
-    backgroundColor: "#C9A227", // UT gold
-    paddingVertical: 10, // padding
-    paddingHorizontal: 14,
-    borderRadius: 12, // rounded
+  sendButton: {
+    backgroundColor: "#dcecff",
+    borderWidth: 2,
+    borderColor: "#234a84",
+    borderRadius: 999,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
   },
 
-  sendText: {
-    color: "#0B1F3B", // navy text
-    fontWeight: "900", // bold
+  sendButtonText: {
+    color: "#183a6b",
+    fontWeight: "800",
+    fontSize: 15,
   },
 });

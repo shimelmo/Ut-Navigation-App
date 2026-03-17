@@ -1,114 +1,148 @@
-import AIBubble from "@/components/AIBubble"; // AI floating button
-import React from "react"; // React
-import { StyleSheet, Text, View } from "react-native"; // RN components
+import AIBubble from "@/components/AIBubble";
+import TopTabs from "@/components/TopTabs";
+import React from "react";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.screen}>
-      {/* fun header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>UT Navigation App</Text>
-        <Text style={styles.headerSub}>
-          This is the home map page (placeholder for now).
-        </Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.background}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <TopTabs />
+
+          <View style={styles.titleCard}>
+            <Text style={styles.title}>UT Navigation App</Text>
+            <Text style={styles.subtitle}>
+              Find your classes, rooms, and office hours in a more welcoming way.
+            </Text>
+          </View>
+
+          <View style={styles.mainCard}>
+            <Text style={styles.cardTitle}>Map Display</Text>
+            <Text style={styles.cardText}>
+              Your building map and starred classrooms will appear here.
+            </Text>
+
+            <View style={styles.mapBox}>
+              <Image
+                source={require("@/assets/images/floor-map.png")}
+                style={styles.mapImage}
+                resizeMode="contain"
+              />
+            </View>
+
+            <View style={styles.noteBubble}>
+              <Text style={styles.noteText}>
+                ⭐ Saved classes and your location can show here later
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+
+        <AIBubble />
       </View>
-
-      {/* main card */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Map Display</Text>
-        <Text style={styles.cardText}>
-          Right now this is just a blank map area. Later we’ll put the actual
-          North Engineering layout here and mark rooms.
-        </Text>
-
-        {/* big placeholder box */}
-        <View style={styles.mapBox}>
-          <Text style={styles.mapText}>DISPLAY</Text>
-        </View>
-
-        {/* mini note */}
-        <Text style={styles.note}>
-          ⭐ Later: show your location + starred classes
-        </Text>
-      </View>
-
-      {/* AI bubble on this page */}
-      <AIBubble />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1, // full height
-    backgroundColor: "#F7F7FB", // soft light background
-    padding: 14, // spacing
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#edf4ff",
   },
 
-  header: {
-    backgroundColor: "#EAF2FF", // soft blue
-    borderWidth: 1, // border
-    borderColor: "#CFE2FF",
-    borderRadius: 18, // rounded
-    padding: 14,
+  background: {
+    flex: 1,
+    backgroundColor: "#edf4ff",
   },
 
-  headerTitle: {
-    fontSize: 20, // bigger title
-    fontWeight: "900", // bold
-    color: "#0B1F3B", // navy
+  scrollContent: {
+    padding: 18,
+    paddingBottom: 120,
   },
 
-  headerSub: {
-    marginTop: 6, // spacing
-    color: "#374151", // gray
-    fontWeight: "600",
+  titleCard: {
+    backgroundColor: "#dcecff",
+    borderWidth: 2,
+    borderColor: "#c0d7f7",
+    borderRadius: 24,
+    padding: 18,
+    marginBottom: 16,
   },
 
-  card: {
-    marginTop: 12, // spacing from header
-    backgroundColor: "#FFFFFF", // white card
-    borderWidth: 1, // border
-    borderColor: "#E5E7EB",
-    borderRadius: 18, // rounded
-    padding: 14,
-    flex: 1, // fill space
+  title: {
+    fontSize: 30,
+    fontWeight: "800",
+    color: "#183a6b",
+    marginBottom: 6,
+  },
+
+  subtitle: {
+    fontSize: 15,
+    color: "#35527b",
+    lineHeight: 22,
+  },
+
+  mainCard: {
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 28,
+    padding: 18,
   },
 
   cardTitle: {
-    fontSize: 18,
-    fontWeight: "900",
-    color: "#111827",
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#183a6b",
+    marginBottom: 8,
   },
 
   cardText: {
-    marginTop: 6,
-    color: "#6B7280",
-    lineHeight: 20,
+    fontSize: 15,
+    color: "#516b91",
+    lineHeight: 22,
+    marginBottom: 18,
   },
 
   mapBox: {
-    marginTop: 14,
-    flex: 1,
-    borderRadius: 18,
+    height: 500,
+    borderRadius: 24,
+    backgroundColor: "#fff8e8",
     borderWidth: 2,
-    borderColor: "#E5E7EB",
-    backgroundColor: "#FFF7E6", // soft warm color (fun)
-    alignItems: "center",
+    borderColor: "#f0dfb2",
     justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+    overflow: "hidden",
+    padding: 10,
   },
 
-  mapText: {
-    fontSize: 28,
-    fontWeight: "900",
-    color: "#0B1F3B",
-    opacity: 0.3,
-    letterSpacing: 1,
+  mapImage: {
+    width: "100%",
+    height: "100%",
   },
 
-  note: {
-    marginTop: 10,
-    color: "#0B1F3B",
+  noteBubble: {
+    alignSelf: "flex-start",
+    backgroundColor: "#fff6cc",
+    borderWidth: 2,
+    borderColor: "#f0df95",
+    borderRadius: 999,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+  },
+
+  noteText: {
+    color: "#6f5b19",
     fontWeight: "700",
+    fontSize: 14,
   },
 });

@@ -1,18 +1,15 @@
 import { useRouter } from "expo-router";
-import { Image, Pressable, StyleSheet } from "react-native";
+import { Image, Platform, Pressable, StyleSheet } from "react-native";
 
 export default function AIBubble() {
-  const router = useRouter(); // lets us move to the AI screen
+  const router = useRouter();
 
   return (
-    <Pressable
-      onPress={() => router.push("/ai-chat")}   // go to AI page when clicked
-      style={styles.container}             // position on screen
-    >
+    <Pressable onPress={() => router.push("/ai-chat")} style={styles.container}>
       <Image
-        source={require("@/assets/images/ai-bubble.png")} // your hand-drawn image
-        style={styles.image}                              // size of the image
-        resizeMode="contain"                              // keep proportions
+        source={require("@/assets/images/ai-bubble.png")}
+        style={styles.image}
+        resizeMode="contain"
       />
     </Pressable>
   );
@@ -20,12 +17,21 @@ export default function AIBubble() {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",   // floats on top of the page
-    bottom: 20,             // distance from bottom
-    right: 20,              // distance from right
+    ...(Platform.OS === "web"
+      ? {
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+        }
+      : {
+          position: "absolute",
+          bottom: 20,
+          right: 20,
+        }),
+    zIndex: 999,
   },
   image: {
-    width: 70,              // image width
-    height: 70,             // image height
+    width: 70,
+    height: 70,
   },
 });
