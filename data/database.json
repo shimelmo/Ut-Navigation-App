@@ -1,0 +1,4732 @@
+[
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "1010",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1205"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "1200",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "1200",
+    "subject": "BIOE",
+    "section": "091",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Yildirim-Ayan",
+    "professorFirstName": "Eda",
+    "professorLastName": "Yildirim-Ayan",
+    "professorFullName": "Eda Yildirim-Ayan",
+    "courseNumber": "1420",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1525"
+  },
+  {
+    "professor": "Yildirim-Ayan",
+    "professorFirstName": "Eda",
+    "professorLastName": "Yildirim-Ayan",
+    "professorFullName": "Eda Yildirim-Ayan",
+    "courseNumber": "1420",
+    "subject": "BIOE",
+    "section": "091",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1525"
+  },
+  {
+    "professor": "Tang",
+    "professorFirstName": "Yuan",
+    "professorLastName": "Tang",
+    "professorFullName": "Yuan Tang",
+    "courseNumber": "2200",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Nadarajah",
+    "professorFirstName": "Arunan",
+    "professorLastName": "Nadarajah",
+    "professorFullName": "Arunan Nadarajah",
+    "courseNumber": "2300",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "0830",
+    "endTime": "0925"
+  },
+  {
+    "professor": "Yildirim-Ayan",
+    "professorFirstName": "Eda",
+    "professorLastName": "Yildirim-Ayan",
+    "professorFullName": "Eda Yildirim-Ayan",
+    "courseNumber": "3110",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Cameron",
+    "professorFirstName": "Brent",
+    "professorLastName": "Cameron",
+    "professorFullName": "Brent Cameron",
+    "courseNumber": "3300",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2132",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Fournier",
+    "professorFirstName": "Ronald",
+    "professorLastName": "Fournier",
+    "professorFullName": "Ronald Fournier",
+    "courseNumber": "3400",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2123",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "3500",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1525"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "3500",
+    "subject": "BIOE",
+    "section": "002",
+    "room": "NE 1130",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "3500",
+    "subject": "BIOE",
+    "section": "003",
+    "room": "NE 1130",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1650"
+  },
+  {
+    "professor": "Lu",
+    "professorFirstName": "Jian-Yu",
+    "professorLastName": "Lu",
+    "professorFullName": "Jian-Yu Lu",
+    "courseNumber": "4140",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1155"
+  },
+  {
+    "professor": "Lu",
+    "professorFirstName": "Jian-Yu",
+    "professorLastName": "Lu",
+    "professorFullName": "Jian-Yu Lu",
+    "courseNumber": "4140",
+    "subject": "BIOE",
+    "section": "002",
+    "room": "NE 1142",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1210",
+    "endTime": "1500"
+  },
+  {
+    "professor": "Lu",
+    "professorFirstName": "Jian-Yu",
+    "professorLastName": "Lu",
+    "professorFullName": "Jian-Yu Lu",
+    "courseNumber": "4140",
+    "subject": "BIOE",
+    "section": "003",
+    "room": "NE 1142",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1210",
+    "endTime": "1500"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "4410",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "4410",
+    "subject": "BIOE",
+    "section": "091",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "4750",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1155"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "4750",
+    "subject": "BIOE",
+    "section": "002",
+    "room": "NE 0630",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1210",
+    "endTime": "1500"
+  },
+  {
+    "professor": "Lu",
+    "professorFirstName": "Jian-Yu",
+    "professorLastName": "Lu",
+    "professorFullName": "Jian-Yu Lu",
+    "courseNumber": "4980",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1630",
+    "endTime": "1930"
+  },
+  {
+    "professor": "Lu",
+    "professorFirstName": "Jian-Yu",
+    "professorLastName": "Lu",
+    "professorFullName": "Jian-Yu Lu",
+    "courseNumber": "4980",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1655"
+  },
+  {
+    "professor": "Viamajala",
+    "professorFirstName": "Sridhar",
+    "professorLastName": "Viamajala",
+    "professorFullName": "Sridhar Viamajala",
+    "courseNumber": "4980",
+    "subject": "BIOE",
+    "section": "002",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Tang",
+    "professorFirstName": "Yuan",
+    "professorLastName": "Tang",
+    "professorFullName": "Yuan Tang",
+    "courseNumber": "4980",
+    "subject": "BIOE",
+    "section": "004",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Kang",
+    "professorFirstName": "Dae Wook",
+    "professorLastName": "Kang",
+    "professorFullName": "Dae Wook Kang",
+    "courseNumber": "4980",
+    "subject": "BIOE",
+    "section": "036",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "5750",
+    "subject": "BIOE",
+    "section": "032",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1155"
+  },
+  {
+    "professor": "Marbaugh",
+    "professorFirstName": "Kelly",
+    "professorLastName": "Marbaugh",
+    "professorFullName": "Kelly Marbaugh",
+    "courseNumber": "5750",
+    "subject": "BIOE",
+    "section": "033",
+    "room": "NE 0630",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1210",
+    "endTime": "1500"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "5930",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1255"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "7930",
+    "subject": "BIOE",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1255"
+  },
+  {
+    "professor": "Ponnaiyan",
+    "professorFirstName": "Thehazhnan",
+    "professorLastName": "Ponnaiyan",
+    "professorFullName": "Thehazhnan Ponnaiyan",
+    "courseNumber": "1010",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Coleman",
+    "professorFirstName": "Maria",
+    "professorLastName": "Coleman",
+    "professorFullName": "Maria Coleman",
+    "courseNumber": "2010",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Lawrence",
+    "professorFirstName": "Joseph",
+    "professorLastName": "Lawrence",
+    "professorFullName": "Joseph Lawrence",
+    "courseNumber": "2110",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Lee",
+    "professorFirstName": "Charles",
+    "professorLastName": "Lee",
+    "professorFullName": "Charles Lee",
+    "courseNumber": "2330",
+    "subject": "CHEE",
+    "section": "002",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Lee",
+    "professorFirstName": "Charles",
+    "professorLastName": "Lee",
+    "professorFullName": "Charles Lee",
+    "courseNumber": "2330",
+    "subject": "CHEE",
+    "section": "091",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Dong Shik",
+    "professorLastName": "Kim",
+    "professorFullName": "Dong Shik Kim",
+    "courseNumber": "3030",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Dong Shik",
+    "professorLastName": "Kim",
+    "professorFullName": "Dong Shik Kim",
+    "courseNumber": "3030",
+    "subject": "CHEE",
+    "section": "091",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Lapitsky",
+    "professorFirstName": "Yakov",
+    "professorLastName": "Lapitsky",
+    "professorFullName": "Yakov Lapitsky",
+    "courseNumber": "3110",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Abdulhussain",
+    "professorFirstName": "Hassan",
+    "professorLastName": "Abdulhussain",
+    "professorFullName": "Hassan Abdulhussain",
+    "courseNumber": "4110",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Viamajala",
+    "professorFirstName": "Sridhar",
+    "professorLastName": "Viamajala",
+    "professorFullName": "Sridhar Viamajala",
+    "courseNumber": "4120",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Ponnaiyan",
+    "professorFirstName": "Thehazhnan",
+    "professorLastName": "Ponnaiyan",
+    "professorFullName": "Thehazhnan Ponnaiyan",
+    "courseNumber": "4520",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Lipscomb",
+    "professorFirstName": "Glenn",
+    "professorLastName": "Lipscomb",
+    "professorFullName": "Glenn Lipscomb",
+    "courseNumber": "4980",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Abdulhussain",
+    "professorFirstName": "Hassan",
+    "professorLastName": "Abdulhussain",
+    "professorFullName": "Hassan Abdulhussain",
+    "courseNumber": "6110",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Viamajala",
+    "professorFirstName": "Sridhar",
+    "professorLastName": "Viamajala",
+    "professorFullName": "Sridhar Viamajala",
+    "courseNumber": "6120",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Coleman",
+    "professorFirstName": "Maria",
+    "professorLastName": "Coleman",
+    "professorFullName": "Maria Coleman",
+    "courseNumber": "6510",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Dong Shik",
+    "professorLastName": "Kim",
+    "professorFullName": "Dong Shik Kim",
+    "courseNumber": "6550",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Lawrence",
+    "professorFirstName": "Joseph",
+    "professorLastName": "Lawrence",
+    "professorFullName": "Joseph Lawrence",
+    "courseNumber": "6860",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1715"
+  },
+  {
+    "professor": "Lipscomb",
+    "professorFirstName": "Glenn",
+    "professorLastName": "Lipscomb",
+    "professorFullName": "Glenn Lipscomb",
+    "courseNumber": "6980",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Coleman",
+    "professorFirstName": "Maria",
+    "professorLastName": "Coleman",
+    "professorFullName": "Maria Coleman",
+    "courseNumber": "8510",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Dong Shik",
+    "professorLastName": "Kim",
+    "professorFullName": "Dong Shik Kim",
+    "courseNumber": "8550",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Lawrence",
+    "professorFirstName": "Joseph",
+    "professorLastName": "Lawrence",
+    "professorFullName": "Joseph Lawrence",
+    "courseNumber": "8860",
+    "subject": "CHEE",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1715"
+  },
+  {
+    "professor": "Pniewski",
+    "professorFirstName": "Michael",
+    "professorLastName": "Pniewski",
+    "professorFullName": "Michael Pniewski",
+    "courseNumber": "1100",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0950"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "1110",
+    "subject": "CIVE",
+    "section": "002",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1745",
+    "endTime": "1945"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "1150",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "1150",
+    "subject": "CIVE",
+    "section": "003",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "1150",
+    "subject": "CIVE",
+    "section": "004",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Hu",
+    "professorFirstName": "Liangbo",
+    "professorLastName": "Hu",
+    "professorFullName": "Liangbo Hu",
+    "courseNumber": "1160",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Hu",
+    "professorFirstName": "Liangbo",
+    "professorLastName": "Hu",
+    "professorFullName": "Liangbo Hu",
+    "courseNumber": "1160",
+    "subject": "CIVE",
+    "section": "003",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "1170",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "2000",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Hu",
+    "professorFirstName": "Liangbo",
+    "professorLastName": "Hu",
+    "professorFullName": "Liangbo Hu",
+    "courseNumber": "2110",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Chou",
+    "professorFirstName": "Eddie",
+    "professorLastName": "Chou",
+    "professorFullName": "Eddie Chou",
+    "courseNumber": "3120",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Guner",
+    "professorFirstName": "Serhan",
+    "professorLastName": "Guner",
+    "professorFullName": "Serhan Guner",
+    "courseNumber": "3310",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Guner",
+    "professorFirstName": "Serhan",
+    "professorLastName": "Guner",
+    "professorFullName": "Serhan Guner",
+    "courseNumber": "3310",
+    "subject": "CIVE",
+    "section": "002",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Nims",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Nims",
+    "professorFullName": "Douglas Nims",
+    "courseNumber": "3420",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Spivak",
+    "professorFirstName": "Alex",
+    "professorLastName": "Spivak",
+    "professorFullName": "Alex Spivak",
+    "courseNumber": "3630",
+    "subject": "CIVE",
+    "section": "001",
+    "room": "NE 2123",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Pniewski",
+    "professorFirstName": "Michael",
+    "professorLastName": "Pniewski",
+    "professorFullName": "Michael Pniewski",
+    "courseNumber": "3770",
+    "subject": "CIVE",
+    "section": "901",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Kang",
+    "professorFirstName": "Dae Wook",
+    "professorLastName": "Kang",
+    "professorFullName": "Dae Wook Kang",
+    "courseNumber": "4980",
+    "subject": "CIVE",
+    "section": "015",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Guner",
+    "professorFirstName": "Serhan",
+    "professorLastName": "Guner",
+    "professorFullName": "Serhan Guner",
+    "courseNumber": "5320",
+    "subject": "CIVE",
+    "section": "901",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1745",
+    "endTime": "1845"
+  },
+  {
+    "professor": "Kang",
+    "professorFirstName": "Dae Wook",
+    "professorLastName": "Kang",
+    "professorFullName": "Dae Wook Kang",
+    "courseNumber": "6980",
+    "subject": "CIVE",
+    "section": "015",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "1100",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "1100",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 2390",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1650"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "1100",
+    "subject": "EECS",
+    "section": "004",
+    "room": "NE 1036",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1330"
+  },
+  {
+    "professor": "Javaid",
+    "professorFirstName": "Ahmad",
+    "professorLastName": "Javaid",
+    "professorFullName": "Ahmad Javaid",
+    "courseNumber": "1500",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Javaid",
+    "professorFirstName": "Ahmad",
+    "professorLastName": "Javaid",
+    "professorFullName": "Ahmad Javaid",
+    "courseNumber": "1500",
+    "subject": "EECS",
+    "section": "010",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1655"
+  },
+  {
+    "professor": "Javaid",
+    "professorFirstName": "Ahmad",
+    "professorLastName": "Javaid",
+    "professorFullName": "Ahmad Javaid",
+    "courseNumber": "1500",
+    "subject": "EECS",
+    "section": "011",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1525"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "013",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1820"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "014",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1710",
+    "endTime": "1930"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "015",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1350"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "017",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1620"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "1510",
+    "subject": "EECS",
+    "section": "092",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Niamat",
+    "professorFirstName": "Mohammed",
+    "professorLastName": "Niamat",
+    "professorFullName": "Mohammed Niamat",
+    "courseNumber": "2110",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Niamat",
+    "professorFirstName": "Mohammed",
+    "professorLastName": "Niamat",
+    "professorFullName": "Mohammed Niamat",
+    "courseNumber": "2110",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2300",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2300",
+    "subject": "EECS",
+    "section": "010",
+    "room": "NE 2076",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2300",
+    "subject": "EECS",
+    "section": "011",
+    "room": "NE 2076",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2300",
+    "subject": "EECS",
+    "section": "012",
+    "room": "NE 2076",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1320"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2300",
+    "subject": "EECS",
+    "section": "013",
+    "room": "NE 2076",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1700",
+    "endTime": "1920"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "2340",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "2500",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "2500",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1950"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "2500",
+    "subject": "EECS",
+    "section": "003",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "1020"
+  },
+  {
+    "professor": "Tasnim",
+    "professorFirstName": "Samia",
+    "professorLastName": "Tasnim",
+    "professorFullName": "Samia Tasnim",
+    "courseNumber": "2510",
+    "subject": "EECS",
+    "section": "010",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Tasnim",
+    "professorFirstName": "Samia",
+    "professorLastName": "Tasnim",
+    "professorFullName": "Samia Tasnim",
+    "courseNumber": "2510",
+    "subject": "EECS",
+    "section": "011",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Tasnim",
+    "professorFirstName": "Samia",
+    "professorLastName": "Tasnim",
+    "professorFullName": "Samia Tasnim",
+    "courseNumber": "2510",
+    "subject": "EECS",
+    "section": "012",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "2520",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Kaur",
+    "professorFirstName": "Devinder",
+    "professorLastName": "Kaur",
+    "professorFullName": "Devinder Kaur",
+    "courseNumber": "3210",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Kaur",
+    "professorFirstName": "Devinder",
+    "professorLastName": "Kaur",
+    "professorFullName": "Devinder Kaur",
+    "courseNumber": "3210",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3220",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "3300",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "010",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "011",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1650"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "012",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1820"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "013",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0900",
+    "endTime": "1120"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3400",
+    "subject": "EECS",
+    "section": "092",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1650"
+  },
+  {
+    "professor": "Khanna",
+    "professorFirstName": "Raghav",
+    "professorLastName": "Khanna",
+    "professorFullName": "Raghav Khanna",
+    "courseNumber": "3440",
+    "subject": "EECS",
+    "section": "010",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Khanna",
+    "professorFirstName": "Raghav",
+    "professorLastName": "Khanna",
+    "professorFullName": "Raghav Khanna",
+    "courseNumber": "3440",
+    "subject": "EECS",
+    "section": "011",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "0800",
+    "endTime": "1020"
+  },
+  {
+    "professor": "Khanna",
+    "professorFirstName": "Raghav",
+    "professorLastName": "Khanna",
+    "professorFullName": "Raghav Khanna",
+    "courseNumber": "3440",
+    "subject": "EECS",
+    "section": "012",
+    "room": "NE 1018",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "1020"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "3480",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 1475",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1320"
+  },
+  {
+    "professor": "Ahmed",
+    "professorFirstName": "Kishwar",
+    "professorLastName": "Ahmed",
+    "professorFullName": "Kishwar Ahmed",
+    "courseNumber": "3540",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "3550",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "3550",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Tasnim",
+    "professorFirstName": "Samia",
+    "professorLastName": "Tasnim",
+    "professorFullName": "Samia Tasnim",
+    "courseNumber": "3560",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Georgiev",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Georgiev",
+    "professorFullName": "Daniel Georgiev",
+    "courseNumber": "3710",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Semnani",
+    "professorFirstName": "Abbas",
+    "professorLastName": "Semnani",
+    "professorFullName": "Abbas Semnani",
+    "courseNumber": "3720",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Cheng",
+    "professorFirstName": "Liang",
+    "professorLastName": "Cheng",
+    "professorFullName": "Liang Cheng",
+    "courseNumber": "4010",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1655"
+  },
+  {
+    "professor": "Cheng",
+    "professorFirstName": "Liang",
+    "professorLastName": "Cheng",
+    "professorFullName": "Liang Cheng",
+    "courseNumber": "4010",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1655"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "4020",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "4020",
+    "subject": "EECS",
+    "section": "091",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "El-Assaad",
+    "professorFirstName": "Atlal",
+    "professorLastName": "El-Assaad",
+    "professorFullName": "Atlal El-Assaad",
+    "courseNumber": "4100",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Kaur",
+    "professorFirstName": "Devinder",
+    "professorLastName": "Kaur",
+    "professorFullName": "Devinder Kaur",
+    "courseNumber": "4120",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "4200",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4220",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "4330",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "4390",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Thomas",
+    "professorFirstName": "Lawrence",
+    "professorLastName": "Thomas",
+    "professorFullName": "Lawrence Thomas",
+    "courseNumber": "4640",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "4750",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Sun",
+    "professorFirstName": "Weiqing",
+    "professorLastName": "Sun",
+    "professorFullName": "Weiqing Sun",
+    "courseNumber": "4790",
+    "subject": "EECS",
+    "section": "901",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0900",
+    "endTime": "1000"
+  },
+  {
+    "professor": "Kaur",
+    "professorFirstName": "Devinder",
+    "professorLastName": "Kaur",
+    "professorFullName": "Devinder Kaur",
+    "courseNumber": "5120",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "5200",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "5220",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "5330",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "5390",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Thomas",
+    "professorFirstName": "Lawrence",
+    "professorLastName": "Thomas",
+    "professorFullName": "Lawrence Thomas",
+    "courseNumber": "5640",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "5750",
+    "subject": "EECS",
+    "section": "002",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Sun",
+    "professorFirstName": "Weiqing",
+    "professorLastName": "Sun",
+    "professorFullName": "Weiqing Sun",
+    "courseNumber": "5790",
+    "subject": "EECS",
+    "section": "903",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0900",
+    "endTime": "1000"
+  },
+  {
+    "professor": "Molyet",
+    "professorFirstName": "Richard",
+    "professorLastName": "Molyet",
+    "professorFullName": "Richard Molyet",
+    "courseNumber": "5930",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "6340",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "6980",
+    "subject": "EECS",
+    "section": "004",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Kim",
+    "professorFirstName": "Junghwan",
+    "professorLastName": "Kim",
+    "professorFullName": "Junghwan Kim",
+    "courseNumber": "8340",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "8980",
+    "subject": "EECS",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "8980",
+    "subject": "EECS",
+    "section": "004",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "8980",
+    "subject": "EECS",
+    "section": "005",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Alhayani",
+    "professorFirstName": "Abid",
+    "professorLastName": "Alhayani",
+    "professorFullName": "Abid Alhayani",
+    "courseNumber": "1250",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "2020"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "2030",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "1955"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "2030",
+    "subject": "CET",
+    "section": "002",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "2005",
+    "endTime": "2115"
+  },
+  {
+    "professor": "Alhayani",
+    "professorFirstName": "Abid",
+    "professorLastName": "Alhayani",
+    "professorFullName": "Abid Alhayani",
+    "courseNumber": "2060",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0930",
+    "endTime": "1030"
+  },
+  {
+    "professor": "Alhayani",
+    "professorFirstName": "Abid",
+    "professorLastName": "Alhayani",
+    "professorFullName": "Abid Alhayani",
+    "courseNumber": "2060",
+    "subject": "CET",
+    "section": "002",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1040",
+    "endTime": "1135"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "2220",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1825"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "2220",
+    "subject": "CET",
+    "section": "002",
+    "room": "NE 1230",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1830",
+    "endTime": "2020"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "3120",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 1133",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Alhayani",
+    "professorFirstName": "Abid",
+    "professorLastName": "Alhayani",
+    "professorFullName": "Abid Alhayani",
+    "courseNumber": "3160",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Subedi",
+    "professorFirstName": "Sujan",
+    "professorLastName": "Subedi",
+    "professorFullName": "Sujan Subedi",
+    "courseNumber": "3220",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 1133",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Mata",
+    "professorFirstName": "Luis",
+    "professorLastName": "Mata",
+    "professorFullName": "Luis Mata",
+    "courseNumber": "4350",
+    "subject": "CET",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "1100",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1245"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "1100",
+    "subject": "CSET",
+    "section": "002",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Miller",
+    "professorFirstName": "Donald",
+    "professorLastName": "Miller",
+    "professorFullName": "Donald Miller",
+    "courseNumber": "1200",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "2200",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1245"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "2200",
+    "subject": "CSET",
+    "section": "002",
+    "room": "NE 2360",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1245"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "2200",
+    "subject": "CSET",
+    "section": "003",
+    "room": "NE 2360",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1245"
+  },
+  {
+    "professor": "Kharel",
+    "professorFirstName": "Ashish",
+    "professorLastName": "Kharel",
+    "professorFullName": "Ashish Kharel",
+    "courseNumber": "2520",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "3150",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "4250",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "4750",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1745",
+    "endTime": "1840"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "4750",
+    "subject": "CSET",
+    "section": "002",
+    "room": "NE 2360",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "1955"
+  },
+  {
+    "professor": "Brahaney",
+    "professorFirstName": "Scott",
+    "professorLastName": "Brahaney",
+    "professorFullName": "Scott Brahaney",
+    "courseNumber": "4750",
+    "subject": "CSET",
+    "section": "003",
+    "room": "NE 2360",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1900",
+    "endTime": "1955"
+  },
+  {
+    "professor": "Sun",
+    "professorFirstName": "Weiqing",
+    "professorLastName": "Sun",
+    "professorFullName": "Weiqing Sun",
+    "courseNumber": "4850",
+    "subject": "CSET",
+    "section": "001",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1450"
+  },
+  {
+    "professor": "Slagle",
+    "professorFirstName": "Jason",
+    "professorLastName": "Slagle",
+    "professorFullName": "Jason Slagle",
+    "courseNumber": "3200",
+    "subject": "CYBR",
+    "section": "001",
+    "room": "NE 1360",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Babcock",
+    "professorFirstName": "Christopher",
+    "professorLastName": "Babcock",
+    "professorFullName": "Christopher Babcock",
+    "courseNumber": "3350",
+    "subject": "CYBR",
+    "section": "001",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "1020",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "1020",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "0925",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "2020",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "2020",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1120",
+    "endTime": "1250"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "2210",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "2210",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "0925",
+    "endTime": "1105"
+  },
+  {
+    "professor": "Smoktonowicz",
+    "professorFirstName": "Anthony",
+    "professorLastName": "Smoktonowicz",
+    "professorFullName": "Anthony Smoktonowicz",
+    "courseNumber": "2210",
+    "subject": "EET",
+    "section": "004",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "0925",
+    "endTime": "1105"
+  },
+  {
+    "professor": "Peeno",
+    "professorFirstName": "Joshua",
+    "professorLastName": "Peeno",
+    "professorFullName": "Joshua Peeno",
+    "courseNumber": "2410",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2390",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Peeno",
+    "professorFirstName": "Joshua",
+    "professorLastName": "Peeno",
+    "professorFullName": "Joshua Peeno",
+    "courseNumber": "2410",
+    "subject": "EET",
+    "section": "003",
+    "room": "NE 2390",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1615",
+    "endTime": "1715"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "3250",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "3350",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1305",
+    "endTime": "1425"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "3350",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2390",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1625",
+    "endTime": "1745"
+  },
+  {
+    "professor": "Creps",
+    "professorFirstName": "Merl",
+    "professorLastName": "Creps",
+    "professorFullName": "Merl Creps",
+    "courseNumber": "4250",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2103",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Creps",
+    "professorFirstName": "Merl",
+    "professorLastName": "Creps",
+    "professorFullName": "Merl Creps",
+    "courseNumber": "4250",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2350",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1630",
+    "endTime": "1725"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4450",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4450",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2350",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1725"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4450",
+    "subject": "EET",
+    "section": "003",
+    "room": "NE 2350",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1245",
+    "endTime": "1425"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4550",
+    "subject": "EET",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4550",
+    "subject": "EET",
+    "section": "002",
+    "room": "NE 2350",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Carmen",
+    "professorLastName": "Cioc",
+    "professorFullName": "Carmen Cioc",
+    "courseNumber": "1000",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 2104",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Langenderfer",
+    "professorFirstName": "Robert",
+    "professorLastName": "Langenderfer",
+    "professorFullName": "Robert Langenderfer",
+    "courseNumber": "2000",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Lewandowski",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Lewandowski",
+    "professorFullName": "Douglas Lewandowski",
+    "courseNumber": "2500",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1900",
+    "endTime": "2020"
+  },
+  {
+    "professor": "Hagigat",
+    "professorFirstName": "Cyrus",
+    "professorLastName": "Hagigat",
+    "professorFullName": "Cyrus Hagigat",
+    "courseNumber": "3010",
+    "subject": "ENGT",
+    "section": "002",
+    "room": "NE 2123",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Wedding",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Wedding",
+    "professorFullName": "Daniel Wedding",
+    "courseNumber": "3050",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 2109",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Wedding",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Wedding",
+    "professorFullName": "Daniel Wedding",
+    "courseNumber": "3050",
+    "subject": "ENGT",
+    "section": "002",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1750"
+  },
+  {
+    "professor": "Wedding",
+    "professorFirstName": "Daniel",
+    "professorLastName": "Wedding",
+    "professorFullName": "Daniel Wedding",
+    "courseNumber": "3050",
+    "subject": "ENGT",
+    "section": "003",
+    "room": "NE 2380",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1750"
+  },
+  {
+    "professor": "Alhayani",
+    "professorFirstName": "Abid",
+    "professorLastName": "Alhayani",
+    "professorFullName": "Abid Alhayani",
+    "courseNumber": "3600",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Sarsour",
+    "professorFirstName": "Bilal",
+    "professorLastName": "Sarsour",
+    "professorFullName": "Bilal Sarsour",
+    "courseNumber": "4050",
+    "subject": "ENGT",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Sarsour",
+    "professorFirstName": "Bilal",
+    "professorLastName": "Sarsour",
+    "professorFullName": "Bilal Sarsour",
+    "courseNumber": "4050",
+    "subject": "ENGT",
+    "section": "002",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Relue",
+    "professorFirstName": "Patricia",
+    "professorLastName": "Relue",
+    "professorFullName": "Patricia Relue",
+    "courseNumber": "5000",
+    "subject": "GNEN",
+    "section": "035",
+    "room": "NE 2132",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1250"
+  },
+  {
+    "professor": "Bian",
+    "professorFirstName": "Hongxin",
+    "professorLastName": "Bian",
+    "professorFullName": "Hongxin Bian",
+    "courseNumber": "1250",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0900",
+    "endTime": "1050"
+  },
+  {
+    "professor": "Bian",
+    "professorFirstName": "Hongxin",
+    "professorLastName": "Bian",
+    "professorFullName": "Hongxin Bian",
+    "courseNumber": "1250",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1320",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1620"
+  },
+  {
+    "professor": "Zhao",
+    "professorFirstName": "Qiuying",
+    "professorLastName": "Zhao",
+    "professorFullName": "Qiuying Zhao",
+    "courseNumber": "2050",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Zhao",
+    "professorFirstName": "Qiuying",
+    "professorLastName": "Zhao",
+    "professorFullName": "Qiuying Zhao",
+    "courseNumber": "2050",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1430",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1420",
+    "endTime": "1610"
+  },
+  {
+    "professor": "Zhao",
+    "professorFirstName": "Qiuying",
+    "professorLastName": "Zhao",
+    "professorFullName": "Qiuying Zhao",
+    "courseNumber": "2050",
+    "subject": "MET",
+    "section": "003",
+    "room": "NE 1430",
+    "building": "NE",
+    "days": [
+      "Wednesday"
+    ],
+    "beginTime": "1420",
+    "endTime": "1610"
+  },
+  {
+    "professor": "Berhan",
+    "professorFirstName": "Lesley",
+    "professorLastName": "Berhan",
+    "professorFullName": "Lesley Berhan",
+    "courseNumber": "2120",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1410",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1235",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Hagigat",
+    "professorFirstName": "Cyrus",
+    "professorLastName": "Hagigat",
+    "professorFullName": "Cyrus Hagigat",
+    "courseNumber": "2310",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Springman",
+    "professorFirstName": "Richard",
+    "professorLastName": "Springman",
+    "professorFullName": "Richard Springman",
+    "courseNumber": "2320",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2132",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Springman",
+    "professorFirstName": "Richard",
+    "professorLastName": "Springman",
+    "professorFullName": "Richard Springman",
+    "courseNumber": "2320",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1410",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1230",
+    "endTime": "1325"
+  },
+  {
+    "professor": "Springman",
+    "professorFirstName": "Richard",
+    "professorLastName": "Springman",
+    "professorFullName": "Richard Springman",
+    "courseNumber": "2320",
+    "subject": "MET",
+    "section": "003",
+    "room": "NE 1410",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1230",
+    "endTime": "1325"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Carmen",
+    "professorLastName": "Cioc",
+    "professorFullName": "Carmen Cioc",
+    "courseNumber": "3100",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1750"
+  },
+  {
+    "professor": "Wen",
+    "professorFirstName": "Qiang",
+    "professorLastName": "Wen",
+    "professorFullName": "Qiang Wen",
+    "courseNumber": "3200",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Hagigat",
+    "professorFirstName": "Cyrus",
+    "professorLastName": "Hagigat",
+    "professorFullName": "Cyrus Hagigat",
+    "courseNumber": "3400",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "2020"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Carmen",
+    "professorLastName": "Cioc",
+    "professorFullName": "Carmen Cioc",
+    "courseNumber": "4100",
+    "subject": "MET",
+    "section": "002",
+    "room": "NE 1300",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1900",
+    "endTime": "2050"
+  },
+  {
+    "professor": "Wen",
+    "professorFirstName": "Qiang",
+    "professorLastName": "Wen",
+    "professorFullName": "Qiang Wen",
+    "courseNumber": "4200",
+    "subject": "MET",
+    "section": "001",
+    "room": "NE 2106",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "2020"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "003",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "004",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1525"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "005",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1655"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "006",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Cioc",
+    "professorFirstName": "Sorin",
+    "professorLastName": "Cioc",
+    "professorFullName": "Sorin Cioc",
+    "courseNumber": "1030",
+    "subject": "MIME",
+    "section": "007",
+    "room": "NE 1026",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "1120",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0830",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "1120",
+    "subject": "MIME",
+    "section": "003",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0930",
+    "endTime": "1020"
+  },
+  {
+    "professor": "Ayan",
+    "professorFirstName": "Halim",
+    "professorLastName": "Ayan",
+    "professorFullName": "Halim Ayan",
+    "courseNumber": "1120",
+    "subject": "MIME",
+    "section": "004",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1030",
+    "endTime": "1120"
+  },
+  {
+    "professor": "Jayatissa",
+    "professorFirstName": "Ahalapitiya",
+    "professorLastName": "Jayatissa",
+    "professorFullName": "Ahalapitiya Jayatissa",
+    "courseNumber": "2300",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Jayatissa",
+    "professorFirstName": "Ahalapitiya",
+    "professorLastName": "Jayatissa",
+    "professorFullName": "Ahalapitiya Jayatissa",
+    "courseNumber": "2300",
+    "subject": "MIME",
+    "section": "092",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Qattawi",
+    "professorFirstName": "Ala",
+    "professorLastName": "Qattawi",
+    "professorFullName": "Ala Qattawi",
+    "courseNumber": "2650",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1225"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0800",
+    "endTime": "0920"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 1065",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1150"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "003",
+    "room": "NE 1065",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1350"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "004",
+    "room": "NE 1065",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "005",
+    "room": "NE 1065",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1750"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "2700",
+    "subject": "MIME",
+    "section": "006",
+    "room": "NE 1065",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1450"
+  },
+  {
+    "professor": "Haghshenas",
+    "professorFirstName": "Meysam",
+    "professorLastName": "Haghshenas",
+    "professorFullName": "Meysam Haghshenas",
+    "courseNumber": "3300",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Haghshenas",
+    "professorFirstName": "Meysam",
+    "professorLastName": "Haghshenas",
+    "professorFullName": "Meysam Haghshenas",
+    "courseNumber": "3300",
+    "subject": "MIME",
+    "section": "091",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Bian",
+    "professorFirstName": "Hongxin",
+    "professorLastName": "Bian",
+    "professorFullName": "Hongxin Bian",
+    "courseNumber": "3310",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 1160",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "0830",
+    "endTime": "0925"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "003",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1155"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "004",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1255"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "005",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1355"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "006",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1455"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "007",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Tuesday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1555"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "012",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1000",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3330",
+    "subject": "MIME",
+    "section": "014",
+    "room": "NE 1060",
+    "building": "NE",
+    "days": [
+      "Friday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1155"
+  },
+  {
+    "professor": "Ene",
+    "professorFirstName": "Nicoleta",
+    "professorLastName": "Ene",
+    "professorFullName": "Nicoleta Ene",
+    "courseNumber": "3380",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2108",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1550"
+  },
+  {
+    "professor": "Jayatissa",
+    "professorFirstName": "Ahalapitiya",
+    "professorLastName": "Jayatissa",
+    "professorFullName": "Ahalapitiya Jayatissa",
+    "courseNumber": "3400",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Jayatissa",
+    "professorFirstName": "Ahalapitiya",
+    "professorLastName": "Jayatissa",
+    "professorFullName": "Ahalapitiya Jayatissa",
+    "courseNumber": "3400",
+    "subject": "MIME",
+    "section": "091",
+    "room": "NE 2122",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "002",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1100",
+    "endTime": "1129"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "003",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1130",
+    "endTime": "1159"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "004",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1200",
+    "endTime": "1229"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "005",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1230",
+    "endTime": "1259"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "006",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1300",
+    "endTime": "1329"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "007",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1330",
+    "endTime": "1359"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "008",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1400",
+    "endTime": "1429"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "009",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1459"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "010",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1500",
+    "endTime": "1529"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "011",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1530",
+    "endTime": "1559"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "012",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1629"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "013",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1630",
+    "endTime": "1659"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "014",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1700",
+    "endTime": "1729"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "015",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1759"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "016",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1800",
+    "endTime": "1829"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "017",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1830",
+    "endTime": "1859"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "018",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1900",
+    "endTime": "1929"
+  },
+  {
+    "professor": "Gupta",
+    "professorFirstName": "Anju",
+    "professorLastName": "Gupta",
+    "professorFullName": "Anju Gupta",
+    "courseNumber": "3450",
+    "subject": "MIME",
+    "section": "019",
+    "room": "NE 1068",
+    "building": "NE",
+    "days": [
+      "Thursday"
+    ],
+    "beginTime": "1930",
+    "endTime": "1959"
+  },
+  {
+    "professor": "Celebi",
+    "professorFirstName": "Ahu",
+    "professorLastName": "Celebi",
+    "professorFullName": "Ahu Celebi",
+    "courseNumber": "4060",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "4180",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2123",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1600",
+    "endTime": "1720"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "4440",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "4460",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Sheng",
+    "professorFirstName": "Chunhua",
+    "professorLastName": "Sheng",
+    "professorFullName": "Chunhua Sheng",
+    "courseNumber": "4540",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2120",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Hixon",
+    "professorFirstName": "Duane",
+    "professorLastName": "Hixon",
+    "professorFullName": "Duane Hixon",
+    "courseNumber": "4550",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Sheng",
+    "professorFirstName": "Chunhua",
+    "professorLastName": "Sheng",
+    "professorFullName": "Chunhua Sheng",
+    "courseNumber": "4560",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Celebi",
+    "professorFirstName": "Ahu",
+    "professorLastName": "Celebi",
+    "professorFullName": "Ahu Celebi",
+    "courseNumber": "5060",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Evans",
+    "professorFirstName": "William",
+    "professorLastName": "Evans",
+    "professorFullName": "William Evans",
+    "courseNumber": "5440",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2100",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1730",
+    "endTime": "1850"
+  },
+  {
+    "professor": "Oliver",
+    "professorFirstName": "Douglas",
+    "professorLastName": "Oliver",
+    "professorFullName": "Douglas Oliver",
+    "courseNumber": "5460",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 1039",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Hixon",
+    "professorFirstName": "Duane",
+    "professorLastName": "Hixon",
+    "professorFullName": "Duane Hixon",
+    "courseNumber": "5550",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "1110",
+    "endTime": "1230"
+  },
+  {
+    "professor": "Sheng",
+    "professorFirstName": "Chunhua",
+    "professorLastName": "Sheng",
+    "professorFullName": "Chunhua Sheng",
+    "courseNumber": "5560",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2105",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "1255",
+    "endTime": "1415"
+  },
+  {
+    "professor": "Choueiri",
+    "professorFirstName": "George",
+    "professorLastName": "Choueiri",
+    "professorFullName": "George Choueiri",
+    "courseNumber": "6450",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2132",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1715"
+  },
+  {
+    "professor": "Amili",
+    "professorFirstName": "Omid",
+    "professorLastName": "Amili",
+    "professorFullName": "Omid Amili",
+    "courseNumber": "6570",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Celebi",
+    "professorFirstName": "Ahu",
+    "professorLastName": "Celebi",
+    "professorFullName": "Ahu Celebi",
+    "courseNumber": "6810",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Choueiri",
+    "professorFirstName": "George",
+    "professorLastName": "Choueiri",
+    "professorFullName": "George Choueiri",
+    "courseNumber": "8450",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2132",
+    "building": "NE",
+    "days": [
+      "Monday"
+    ],
+    "beginTime": "1430",
+    "endTime": "1715"
+  },
+  {
+    "professor": "Amili",
+    "professorFirstName": "Omid",
+    "professorLastName": "Amili",
+    "professorFullName": "Omid Amili",
+    "courseNumber": "8570",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2131",
+    "building": "NE",
+    "days": [
+      "Tuesday",
+      "Thursday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  },
+  {
+    "professor": "Celebi",
+    "professorFirstName": "Ahu",
+    "professorLastName": "Celebi",
+    "professorFullName": "Ahu Celebi",
+    "courseNumber": "8810",
+    "subject": "MIME",
+    "section": "001",
+    "room": "NE 2121",
+    "building": "NE",
+    "days": [
+      "Monday",
+      "Wednesday"
+    ],
+    "beginTime": "0935",
+    "endTime": "1055"
+  }
+]
+

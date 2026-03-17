@@ -1,7 +1,10 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
-import React, { useState } from "react";
+import database from "@/data/database.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -11,28 +14,169 @@ import {
   View,
 } from "react-native";
 
+type DatabaseCourse = {
+  professor: string;
+  professorFirstName: string;
+  professorLastName: string;
+  professorFullName: string;
+  courseNumber: string;
+  subject: string;
+  section: string;
+  room: string;
+  building: string;
+  days: string[];
+  beginTime: string;
+  endTime: string;
+};
+
+type SavedCourse = {
+  id: string;
+  subject: string;
+  courseNumber: string;
+  professor: string;
+  professorFullName: string;
+  room: string;
+  building: string;
+  days: string[];
+  beginTime: string;
+  endTime: string;
+  section: string;
+};
+
+const STORAGE_KEY = "saved_courses";
+
 export default function EnterCourseScreen() {
   const [professor, setProfessor] = useState("");
   const [course, setCourse] = useState("");
+  const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
 
-  const [savedCourses, setSavedCourses] = useState([
-    { id: 1, course: "CSET 3200", professor: "Dr. Smith", room: "NE 1300" },
-    { id: 2, course: "CSET 3600", professor: "Prof. Adams", room: "NE 1200" },
-  ]);
+  useEffect(() => {
+    loadSavedCourses();
+  }, []);
+
+  useEffect(() => {
+    saveSavedCourses(savedCourses);
+  }, [savedCourses]);
+
+  const loadSavedCourses = async () => {
+    try {
+      const storedCourses = await AsyncStorage.getItem(STORAGE_KEY);
+      if (storedCourses) {
+        setSavedCourses(JSON.parse(storedCourses));
+      }
+    } catch (error) {
+      console.log("Could not load saved courses:", error);
+    }
+  };
+
+  const saveSavedCourses = async (coursesToSave: SavedCourse[]) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(coursesToSave));
+    } catch (error) {
+      console.log("Could not save courses:", error);
+    }
+  };
+
+  const cleanText = (text: string) => {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/\./g, "")
+      .replace(/,/g, "")
+      .replace(/\s+/g, " ");
+  };
+
+  const professorMatches = (dbCourse: DatabaseCourse, professorInput: string) => {
+    const input = cleanText(professorInput);
+
+    const lastName = cleanText(dbCourse.professorLastName || "");
+    const fullName = cleanText(dbCourse.professorFullName || "");
+    const shortProfessor = cleanText(dbCourse.professor || "");
+
+    return input === lastName || input === fullName || input === shortProfessor;
+  };
+
+  const courseMatches = (dbCourse: DatabaseCourse, courseInput: string) => {
+    const input = cleanText(courseInput);
+
+    const numberOnly = cleanText(dbCourse.courseNumber || "");
+    const subjectOnly = cleanText(dbCourse.subject || "");
+    const subjectAndNumber = cleanText(`${dbCourse.subject} ${dbCourse.courseNumber}`);
+    const subjectAndNumberNoSpace = cleanText(`${dbCourse.subject}${dbCourse.courseNumber}`);
+
+    return (
+      input === numberOnly ||
+      input === subjectOnly ||
+      input === subjectAndNumber ||
+      input === subjectAndNumberNoSpace
+    );
+  };
+
+  const formatDays = (days: string[]) => {
+    if (!days || days.length === 0) return "No days listed";
+    return days.join(", ");
+  };
+
+  const formatTime = (time: string) => {
+    if (!time || time.length < 3) return time;
+
+    const clean = time.padStart(4, "0");
+    const hour = parseInt(clean.slice(0, 2), 10);
+    const minute = clean.slice(2);
+
+    const amOrPm = hour >= 12 ? "PM" : "AM";
+    const convertedHour = hour % 12 === 0 ? 12 : hour % 12;
+
+    return `${convertedHour}:${minute} ${amOrPm}`;
+  };
 
   const addCourse = () => {
-    if (professor.trim() === "" || course.trim() === "") return;
+    if (professor.trim() === "" || course.trim() === "") {
+      Alert.alert("Missing Info", "Please enter both professor and course.");
+      return;
+    }
 
-    const newCourse = {
-      id: Date.now(),
-      course: course,
-      professor: professor,
-      room: "Room TBD",
+    const foundCourse = (database as DatabaseCourse[]).find((item) => {
+      return professorMatches(item, professor) && courseMatches(item, course);
+    });
+
+    if (!foundCourse) {
+      Alert.alert(
+        "Course Not Found",
+        "We could not find that class. Try the professor's last name or full name, and enter the course like CSET 3200 or just 3200."
+      );
+      return;
+    }
+
+    const newCourse: SavedCourse = {
+      id: `${foundCourse.subject}-${foundCourse.courseNumber}-${foundCourse.section}-${foundCourse.professorLastName}`,
+      subject: foundCourse.subject,
+      courseNumber: foundCourse.courseNumber,
+      professor: foundCourse.professor,
+      professorFullName: foundCourse.professorFullName,
+      room: foundCourse.room,
+      building: foundCourse.building,
+      days: foundCourse.days,
+      beginTime: foundCourse.beginTime,
+      endTime: foundCourse.endTime,
+      section: foundCourse.section,
     };
+
+    const alreadySaved = savedCourses.some((item) => item.id === newCourse.id);
+
+    if (alreadySaved) {
+      Alert.alert("Already Saved", "That course is already in your saved courses.");
+      return;
+    }
 
     setSavedCourses([...savedCourses, newCourse]);
     setProfessor("");
     setCourse("");
+  };
+
+  const deleteCourse = (id: string) => {
+    const updatedCourses = savedCourses.filter((item) => item.id !== id);
+    setSavedCourses(updatedCourses);
   };
 
   return (
@@ -52,7 +196,7 @@ export default function EnterCourseScreen() {
             <Text style={styles.label}>Professor Name</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter professor name"
+              placeholder="Enter professor last name or full name"
               placeholderTextColor="#7f90aa"
               value={professor}
               onChangeText={setProfessor}
@@ -61,7 +205,7 @@ export default function EnterCourseScreen() {
             <Text style={styles.label}>Course Name / Number</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter course name or number"
+              placeholder="Enter CSET 3200 or 3200"
               placeholderTextColor="#7f90aa"
               value={course}
               onChangeText={setCourse}
@@ -73,13 +217,40 @@ export default function EnterCourseScreen() {
 
             <Text style={styles.sectionTitle}>Saved Courses</Text>
 
-            {savedCourses.map((item) => (
-              <View key={item.id} style={styles.courseCard}>
-                <Text style={styles.courseTitle}>{item.course}</Text>
-                <Text style={styles.courseText}>Professor: {item.professor}</Text>
-                <Text style={styles.courseText}>Room: {item.room}</Text>
+            {savedCourses.length === 0 ? (
+              <View style={styles.courseCard}>
+                <Text style={styles.courseText}>No saved courses yet.</Text>
               </View>
-            ))}
+            ) : (
+              savedCourses.map((item) => (
+                <View key={item.id} style={styles.courseCard}>
+                  <Text style={styles.courseTitle}>
+                    {item.subject} {item.courseNumber}
+                  </Text>
+
+                  <Text style={styles.courseText}>
+                    Professor: {item.professorFullName}
+                  </Text>
+
+                  <Text style={styles.courseText}>Room: {item.room}</Text>
+
+                  <Text style={styles.courseText}>
+                    Days: {formatDays(item.days)}
+                  </Text>
+
+                  <Text style={styles.courseText}>
+                    Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
+                  </Text>
+
+                  <Pressable
+                    style={styles.deleteButton}
+                    onPress={() => deleteCourse(item.id)}
+                  >
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </Pressable>
+                </View>
+              ))
+            )}
           </View>
         </ScrollView>
 
@@ -199,5 +370,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#735f22",
     marginBottom: 2,
+  },
+
+  deleteButton: {
+    marginTop: 10,
+    alignSelf: "flex-start",
+    backgroundColor: "#ffe2e2",
+    borderWidth: 1.5,
+    borderColor: "#d98b8b",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+
+  deleteButtonText: {
+    color: "#8b3a3a",
+    fontWeight: "700",
+    fontSize: 13,
   },
 });
