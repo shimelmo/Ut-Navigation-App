@@ -18,9 +18,9 @@ export default function HomeScreen() {
           <TopTabs />
 
           <View style={styles.titleCard}>
-            <Text style={styles.title}>UT Navigation App</Text>
+            <Text style={styles.title}>UT Campus Compass</Text>
             <Text style={styles.subtitle}>
-              Find your classes, rooms, and office hours in a more welcoming way.
+              Find your classes, rooms, and office hours—made simple.
             </Text>
           </View>
 

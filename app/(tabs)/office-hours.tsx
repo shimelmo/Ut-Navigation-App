@@ -1,27 +1,169 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
-import React, { useState } from "react";
+import officeHoursData from "@/data/officeHours.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 
+type OfficeHoursMap = {
+  [day: string]: string;
+};
+
+type ProfessorOfficeHours = {
+  name: string;
+  building: string;
+  room: string;
+  officeHours: OfficeHoursMap;
+  additionalInfo: string;
+};
+
+const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
+
+function cleanProfessorName(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\./g, "")
+    .replace(/,/g, "")
+    .replace(/\bdr\b/g, "")
+    .replace(/\bprof\b/g, "")
+    .replace(/\bprofessor\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getLastName(name: string) {
+  const cleaned = cleanProfessorName(name);
+  const parts = cleaned.split(" ").filter(Boolean);
+  return parts.length > 0 ? parts[parts.length - 1] : "";
+}
+
+function namesMatch(nameA: string, nameB: string) {
+  const a = cleanProfessorName(nameA);
+  const b = cleanProfessorName(nameB);
+
+  if (a === b) return true;
+  if (a.includes(b)) return true;
+  if (b.includes(a)) return true;
+
+  const aLast = getLastName(a);
+  const bLast = getLastName(b);
+
+  return aLast !== "" && aLast === bLast;
+}
+
 export default function OfficeHoursScreen() {
-  const [selectedDay, setSelectedDay] = useState("Monday");
+  const professorList = officeHoursData as ProfessorOfficeHours[];
 
-  const officeHoursData: Record<string, string> = {
-    Monday: "10:00 AM - 12:00 PM",
-    Tuesday: "1:00 PM - 3:00 PM",
-    Wednesday: "11:00 AM - 1:00 PM",
-    Thursday: "2:00 PM - 4:00 PM",
-    Friday: "9:00 AM - 11:00 AM",
-  };
+  const [searchText, setSearchText] = useState("");
+  const [selectedProfessorName, setSelectedProfessorName] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
+  const [hasLoadedProfessor, setHasLoadedProfessor] = useState(false);
 
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  useEffect(() => {
+    const loadLastProfessor = async () => {
+      try {
+        const savedProfessor = await AsyncStorage.getItem(
+          LAST_SELECTED_PROFESSOR_KEY
+        );
+
+        if (savedProfessor) {
+          const foundProfessor = professorList.find((professor) =>
+            namesMatch(professor.name, savedProfessor)
+          );
+
+          if (foundProfessor) {
+            setSelectedProfessorName(foundProfessor.name);
+            const foundDays = Object.keys(foundProfessor.officeHours);
+            setSelectedDay(foundDays[0] || "");
+          }
+        }
+      } catch (error) {
+        console.log("Could not load last professor:", error);
+      } finally {
+        setHasLoadedProfessor(true);
+      }
+    };
+
+    loadLastProfessor();
+  }, []);
+
+  const filteredProfessors = useMemo(() => {
+    const typed = cleanProfessorName(searchText);
+
+    if (typed === "") return [];
+
+    return professorList
+      .filter((professor) => {
+        const fullName = cleanProfessorName(professor.name);
+        const lastName = getLastName(professor.name);
+
+        return (
+          fullName.includes(typed) ||
+          lastName.includes(typed) ||
+          typed.includes(lastName)
+        );
+      })
+      .sort((a, b) => {
+        const aFull = cleanProfessorName(a.name);
+        const bFull = cleanProfessorName(b.name);
+        const aLast = getLastName(a.name);
+        const bLast = getLastName(b.name);
+
+        const aStarts =
+          aFull.startsWith(typed) || aLast.startsWith(typed) ? 0 : 1;
+        const bStarts =
+          bFull.startsWith(typed) || bLast.startsWith(typed) ? 0 : 1;
+
+        if (aStarts !== bStarts) return aStarts - bStarts;
+
+        return a.name.localeCompare(b.name);
+      });
+  }, [searchText, professorList]);
+
+  const selectedProfessor = selectedProfessorName
+    ? professorList.find((professor) =>
+        namesMatch(professor.name, selectedProfessorName)
+      )
+    : undefined;
+
+  const availableDays = selectedProfessor
+    ? Object.keys(selectedProfessor.officeHours)
+    : [];
+
+  const activeDay =
+    selectedDay && selectedProfessor?.officeHours[selectedDay]
+      ? selectedDay
+      : availableDays[0] || "";
+
+  const activeHours =
+    selectedProfessor && activeDay
+      ? selectedProfessor.officeHours[activeDay]
+      : "";
+
+  function chooseProfessor(name: string) {
+    setSelectedProfessorName(name);
+
+    const foundProfessor = professorList.find((professor) =>
+      namesMatch(professor.name, name)
+    );
+
+    if (foundProfessor) {
+      const foundDays = Object.keys(foundProfessor.officeHours);
+      setSelectedDay(foundDays[0] || "");
+    } else {
+      setSelectedDay("");
+    }
+
+    setSearchText("");
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -32,50 +174,108 @@ export default function OfficeHoursScreen() {
           <View style={styles.headerCard}>
             <Text style={styles.headerTitle}>Office Hours</Text>
             <Text style={styles.headerText}>
-              Tap a day to view professor availability.
+              Search for a professor to quickly view office hours and office
+              location.
             </Text>
           </View>
 
           <View style={styles.mainCard}>
-            <View style={styles.profCard}>
-              <View style={styles.avatarCircle}>
-                <Text style={styles.avatarText}>👩‍🏫</Text>
+            <Text style={styles.sectionTitle}>Find a Professor</Text>
+
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Type professor name..."
+              placeholderTextColor="#7b90ad"
+              value={searchText}
+              onChangeText={setSearchText}
+            />
+
+            {searchText.trim() !== "" && (
+              <View style={styles.searchResultsCard}>
+                {filteredProfessors.length > 0 ? (
+                  filteredProfessors.slice(0, 8).map((professor) => (
+                    <Pressable
+                      key={professor.name}
+                      style={styles.searchResultButton}
+                      onPress={() => chooseProfessor(professor.name)}
+                    >
+                      <Text style={styles.searchResultText}>
+                        {professor.name}
+                      </Text>
+                    </Pressable>
+                  ))
+                ) : (
+                  <Text style={styles.noResultsText}>No professors found.</Text>
+                )}
               </View>
+            )}
 
-              <View style={styles.profInfo}>
-                <Text style={styles.profName}>Professor Name</Text>
-                <Text style={styles.profDetail}>Building: North Engineering</Text>
-                <Text style={styles.profDetail}>Location: Room 1200</Text>
-              </View>
-            </View>
+            {hasLoadedProfessor && selectedProfessor && (
+              <>
+                <View style={styles.profCard}>
+                  <View style={styles.avatarCircle}>
+                    <Text style={styles.avatarText}>👩‍🏫</Text>
+                  </View>
 
-            <Text style={styles.sectionTitle}>Select a Day</Text>
-
-            <View style={styles.dayWrap}>
-              {days.map((day) => {
-                const isActive = selectedDay === day;
-
-                return (
-                  <Pressable
-                    key={day}
-                    style={[styles.dayButton, isActive && styles.activeDayButton]}
-                    onPress={() => setSelectedDay(day)}
-                  >
-                    <Text style={[styles.dayText, isActive && styles.activeDayText]}>
-                      {day}
+                  <View style={styles.profInfo}>
+                    <Text style={styles.profName}>{selectedProfessor.name}</Text>
+                    <Text style={styles.profDetail}>
+                      Building: {selectedProfessor.building}
                     </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+                    <Text style={styles.profDetail}>
+                      Room: {selectedProfessor.room}
+                    </Text>
+                  </View>
+                </View>
 
-            <View style={styles.hoursCard}>
-              <Text style={styles.hoursTitle}>{selectedDay}</Text>
-              <Text style={styles.hoursTime}>{officeHoursData[selectedDay]}</Text>
-              <Text style={styles.hoursExtra}>
-                More professor details can go here later.
-              </Text>
-            </View>
+                {availableDays.length > 0 && (
+                  <>
+                    <Text style={styles.sectionTitle}>Available Days</Text>
+
+                    <View style={styles.dayWrap}>
+                      {availableDays.map((day) => {
+                        const isActive = activeDay === day;
+
+                        return (
+                          <Pressable
+                            key={day}
+                            style={[
+                              styles.dayButton,
+                              isActive && styles.activeDayButton,
+                            ]}
+                            onPress={() => setSelectedDay(day)}
+                          >
+                            <Text
+                              style={[
+                                styles.dayText,
+                                isActive && styles.activeDayText,
+                              ]}
+                            >
+                              {day}
+                            </Text>
+                          </Pressable>
+                        );
+                      })}
+                    </View>
+
+                    <View style={styles.hoursCard}>
+                      <Text style={styles.hoursTitle}>{activeDay}</Text>
+                      <Text style={styles.hoursTime}>{activeHours}</Text>
+
+                      {selectedProfessor.additionalInfo ? (
+                        <Text style={styles.hoursExtra}>
+                          Additional Info: {selectedProfessor.additionalInfo}
+                        </Text>
+                      ) : (
+                        <Text style={styles.hoursExtra}>
+                          Additional Info: None listed
+                        </Text>
+                      )}
+                    </View>
+                  </>
+                )}
+              </>
+            )}
           </View>
         </ScrollView>
 
@@ -131,6 +331,53 @@ const styles = StyleSheet.create({
     padding: 18,
   },
 
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#183a6b",
+    marginBottom: 12,
+  },
+
+  searchInput: {
+    backgroundColor: "#f7faff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#183a6b",
+    marginBottom: 12,
+  },
+
+  searchResultsCard: {
+    backgroundColor: "#f7faff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 18,
+    marginBottom: 16,
+    overflow: "hidden",
+  },
+
+  searchResultButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e3ecfa",
+  },
+
+  searchResultText: {
+    fontSize: 15,
+    color: "#234a84",
+    fontWeight: "600",
+  },
+
+  noResultsText: {
+    padding: 14,
+    fontSize: 15,
+    color: "#6d83a3",
+  },
+
   profCard: {
     flexDirection: "row",
     alignItems: "center",
@@ -173,13 +420,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#567196",
     marginBottom: 2,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#183a6b",
-    marginBottom: 12,
   },
 
   dayWrap: {

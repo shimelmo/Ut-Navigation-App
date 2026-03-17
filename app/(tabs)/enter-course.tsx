@@ -2,7 +2,7 @@ import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import database from "@/data/database.json";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Pressable,
@@ -44,6 +44,25 @@ type SavedCourse = {
 };
 
 const STORAGE_KEY = "saved_courses";
+const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
+
+function cleanProfessorName(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\./g, "")
+    .replace(/,/g, "")
+    .replace(/\bdr\b/g, "")
+    .replace(/\bprof\b/g, "")
+    .replace(/\bprofessor\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getLastName(name: string) {
+  const cleaned = cleanProfessorName(name);
+  const parts = cleaned.split(" ").filter(Boolean);
+  return parts.length > 0 ? parts[parts.length - 1] : "";
+}
 
 export default function EnterCourseScreen() {
   const [professor, setProfessor] = useState("");
@@ -88,13 +107,19 @@ export default function EnterCourseScreen() {
   };
 
   const professorMatches = (dbCourse: DatabaseCourse, professorInput: string) => {
-    const input = cleanText(professorInput);
+    const input = cleanProfessorName(professorInput);
 
-    const lastName = cleanText(dbCourse.professorLastName || "");
-    const fullName = cleanText(dbCourse.professorFullName || "");
-    const shortProfessor = cleanText(dbCourse.professor || "");
+    const lastName = cleanProfessorName(dbCourse.professorLastName || "");
+    const fullName = cleanProfessorName(dbCourse.professorFullName || "");
+    const shortProfessor = cleanProfessorName(dbCourse.professor || "");
 
-    return input === lastName || input === fullName || input === shortProfessor;
+    return (
+      input === lastName ||
+      input === fullName ||
+      input === shortProfessor ||
+      fullName.includes(input) ||
+      lastName.includes(input)
+    );
   };
 
   const courseMatches = (dbCourse: DatabaseCourse, courseInput: string) => {
@@ -131,7 +156,53 @@ export default function EnterCourseScreen() {
     return `${convertedHour}:${minute} ${amOrPm}`;
   };
 
-  const saveChosenCourse = (foundCourse: DatabaseCourse) => {
+  const uniqueProfessorSuggestions = useMemo(() => {
+    const typed = cleanProfessorName(professor);
+
+    if (typed === "") return [];
+
+    const foundNames = new Map<string, string>();
+
+    (database as DatabaseCourse[]).forEach((item) => {
+      const fullName = item.professorFullName?.trim();
+      const lastName = item.professorLastName?.trim();
+      const shortName = item.professor?.trim();
+
+      if (!fullName) return;
+
+      const fullNameClean = cleanProfessorName(fullName);
+      const lastNameClean = cleanProfessorName(lastName || "");
+      const shortNameClean = cleanProfessorName(shortName || "");
+
+      const matches =
+        fullNameClean.includes(typed) ||
+        lastNameClean.includes(typed) ||
+        shortNameClean.includes(typed) ||
+        typed === getLastName(fullName);
+
+      if (matches && !foundNames.has(fullName)) {
+        foundNames.set(fullName, fullName);
+      }
+    });
+
+    return Array.from(foundNames.values()).sort((a, b) => {
+      const aFull = cleanProfessorName(a);
+      const bFull = cleanProfessorName(b);
+      const aLast = getLastName(a);
+      const bLast = getLastName(b);
+
+      const aStarts =
+        aFull.startsWith(typed) || aLast.startsWith(typed) ? 0 : 1;
+      const bStarts =
+        bFull.startsWith(typed) || bLast.startsWith(typed) ? 0 : 1;
+
+      if (aStarts !== bStarts) return aStarts - bStarts;
+
+      return a.localeCompare(b);
+    });
+  }, [professor]);
+
+  const saveChosenCourse = async (foundCourse: DatabaseCourse) => {
     const newCourse: SavedCourse = {
       id: `${foundCourse.subject}-${foundCourse.courseNumber}-${foundCourse.section}-${foundCourse.professorLastName}`,
       subject: foundCourse.subject,
@@ -153,7 +224,20 @@ export default function EnterCourseScreen() {
       return;
     }
 
-    setSavedCourses([...savedCourses, newCourse]);
+    const updatedCourses = [...savedCourses, newCourse];
+    setSavedCourses(updatedCourses);
+
+    try {
+      await AsyncStorage.setItem(
+        LAST_SELECTED_PROFESSOR_KEY,
+        foundCourse.professorFullName ||
+          foundCourse.professorLastName ||
+          foundCourse.professor
+      );
+    } catch (error) {
+      console.log("Could not save last selected professor:", error);
+    }
+
     setMatchingSections([]);
     setProfessor("");
     setCourse("");
@@ -186,9 +270,22 @@ export default function EnterCourseScreen() {
     setMatchingSections(foundCourses);
   };
 
-  const deleteCourse = (id: string) => {
+  const deleteCourse = async (id: string) => {
     const updatedCourses = savedCourses.filter((item) => item.id !== id);
     setSavedCourses(updatedCourses);
+
+    if (updatedCourses.length === 0) {
+      try {
+        await AsyncStorage.removeItem(LAST_SELECTED_PROFESSOR_KEY);
+      } catch (error) {
+        console.log("Could not remove last selected professor:", error);
+      }
+    }
+  };
+
+  const chooseProfessorFromDropdown = (name: string) => {
+    setProfessor(name);
+    setMatchingSections([]);
   };
 
   return (
@@ -214,7 +311,25 @@ export default function EnterCourseScreen() {
               onChangeText={setProfessor}
             />
 
-            <Text style={styles.label}>Course Name / Number</Text>
+            {professor.trim() !== "" &&
+              uniqueProfessorSuggestions.length > 0 &&
+              !uniqueProfessorSuggestions.some(
+                (name) => cleanProfessorName(name) === cleanProfessorName(professor)
+              ) && (
+                <View style={styles.searchResultsCard}>
+                  {uniqueProfessorSuggestions.slice(0, 8).map((name) => (
+                    <Pressable
+                      key={name}
+                      style={styles.searchResultButton}
+                      onPress={() => chooseProfessorFromDropdown(name)}
+                    >
+                      <Text style={styles.searchResultText}>{name}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+
+            <Text style={styles.label}>Course Number</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter CSET 3200 or 3200"
@@ -243,6 +358,10 @@ export default function EnterCourseScreen() {
 
                     <Text style={styles.matchText}>
                       Professor: {item.professorFullName}
+                    </Text>
+
+                    <Text style={styles.matchText}>
+                      Building: {item.building}
                     </Text>
 
                     <Text style={styles.matchText}>Room: {item.room}</Text>
@@ -274,12 +393,14 @@ export default function EnterCourseScreen() {
                     {item.subject} {item.courseNumber}
                   </Text>
 
-                  <Text style={styles.courseText}>
-                    Section: {item.section}
-                  </Text>
+                  <Text style={styles.courseText}>Section: {item.section}</Text>
 
                   <Text style={styles.courseText}>
                     Professor: {item.professorFullName}
+                  </Text>
+
+                  <Text style={styles.courseText}>
+                    Building: {item.building}
                   </Text>
 
                   <Text style={styles.courseText}>Room: {item.room}</Text>
@@ -372,8 +493,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    marginBottom: 14,
+    marginBottom: 12,
     color: "#183a6b",
+  },
+
+  searchResultsCard: {
+    backgroundColor: "#f7faff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 18,
+    marginBottom: 14,
+    overflow: "hidden",
+  },
+
+  searchResultButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e3ecfa",
+  },
+
+  searchResultText: {
+    fontSize: 15,
+    color: "#234a84",
+    fontWeight: "600",
   },
 
   addButton: {
