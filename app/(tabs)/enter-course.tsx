@@ -49,6 +49,7 @@ export default function EnterCourseScreen() {
   const [professor, setProfessor] = useState("");
   const [course, setCourse] = useState("");
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
+  const [matchingSections, setMatchingSections] = useState<DatabaseCourse[]>([]);
 
   useEffect(() => {
     loadSavedCourses();
@@ -130,24 +131,7 @@ export default function EnterCourseScreen() {
     return `${convertedHour}:${minute} ${amOrPm}`;
   };
 
-  const addCourse = () => {
-    if (professor.trim() === "" || course.trim() === "") {
-      Alert.alert("Missing Info", "Please enter both professor and course.");
-      return;
-    }
-
-    const foundCourse = (database as DatabaseCourse[]).find((item) => {
-      return professorMatches(item, professor) && courseMatches(item, course);
-    });
-
-    if (!foundCourse) {
-      Alert.alert(
-        "Course Not Found",
-        "We could not find that class. Try the professor's last name or full name, and enter the course like CSET 3200 or just 3200."
-      );
-      return;
-    }
-
+  const saveChosenCourse = (foundCourse: DatabaseCourse) => {
     const newCourse: SavedCourse = {
       id: `${foundCourse.subject}-${foundCourse.courseNumber}-${foundCourse.section}-${foundCourse.professorLastName}`,
       subject: foundCourse.subject,
@@ -165,13 +149,41 @@ export default function EnterCourseScreen() {
     const alreadySaved = savedCourses.some((item) => item.id === newCourse.id);
 
     if (alreadySaved) {
-      Alert.alert("Already Saved", "That course is already in your saved courses.");
+      Alert.alert("Already Saved", "That section is already in your saved courses.");
       return;
     }
 
     setSavedCourses([...savedCourses, newCourse]);
+    setMatchingSections([]);
     setProfessor("");
     setCourse("");
+  };
+
+  const addCourse = () => {
+    if (professor.trim() === "" || course.trim() === "") {
+      Alert.alert("Missing Info", "Please enter both professor and course.");
+      return;
+    }
+
+    const foundCourses = (database as DatabaseCourse[]).filter((item) => {
+      return professorMatches(item, professor) && courseMatches(item, course);
+    });
+
+    if (foundCourses.length === 0) {
+      Alert.alert(
+        "Course Not Found",
+        "We could not find that class. Try the professor's last name or full name, and enter the course like CSET 3200 or just 3200."
+      );
+      setMatchingSections([]);
+      return;
+    }
+
+    if (foundCourses.length === 1) {
+      saveChosenCourse(foundCourses[0]);
+      return;
+    }
+
+    setMatchingSections(foundCourses);
   };
 
   const deleteCourse = (id: string) => {
@@ -215,6 +227,40 @@ export default function EnterCourseScreen() {
               <Text style={styles.addButtonText}>Add Course</Text>
             </Pressable>
 
+            {matchingSections.length > 1 && (
+              <>
+                <Text style={styles.sectionTitle}>Choose a Section</Text>
+
+                {matchingSections.map((item) => (
+                  <Pressable
+                    key={`${item.subject}-${item.courseNumber}-${item.section}-${item.beginTime}`}
+                    style={styles.matchCard}
+                    onPress={() => saveChosenCourse(item)}
+                  >
+                    <Text style={styles.matchTitle}>
+                      {item.subject} {item.courseNumber} - Section {item.section}
+                    </Text>
+
+                    <Text style={styles.matchText}>
+                      Professor: {item.professorFullName}
+                    </Text>
+
+                    <Text style={styles.matchText}>Room: {item.room}</Text>
+
+                    <Text style={styles.matchText}>
+                      Days: {formatDays(item.days)}
+                    </Text>
+
+                    <Text style={styles.matchText}>
+                      Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
+                    </Text>
+
+                    <Text style={styles.tapText}>Tap to save this section</Text>
+                  </Pressable>
+                ))}
+              </>
+            )}
+
             <Text style={styles.sectionTitle}>Saved Courses</Text>
 
             {savedCourses.length === 0 ? (
@@ -226,6 +272,10 @@ export default function EnterCourseScreen() {
                 <View key={item.id} style={styles.courseCard}>
                   <Text style={styles.courseTitle}>
                     {item.subject} {item.courseNumber}
+                  </Text>
+
+                  <Text style={styles.courseText}>
+                    Section: {item.section}
                   </Text>
 
                   <Text style={styles.courseText}>
@@ -348,6 +398,36 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#183a6b",
     marginBottom: 12,
+    marginTop: 8,
+  },
+
+  matchCard: {
+    backgroundColor: "#eef5ff",
+    borderWidth: 2,
+    borderColor: "#bfd6ff",
+    borderRadius: 20,
+    padding: 14,
+    marginBottom: 12,
+  },
+
+  matchTitle: {
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#183a6b",
+    marginBottom: 6,
+  },
+
+  matchText: {
+    fontSize: 14,
+    color: "#35527d",
+    marginBottom: 2,
+  },
+
+  tapText: {
+    marginTop: 8,
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#234a84",
   },
 
   courseCard: {
