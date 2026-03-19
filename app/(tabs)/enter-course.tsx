@@ -1,6 +1,7 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import database from "@/data/database.json";
+import { getCourseDayColorSet } from "@/utils/courseColors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -447,8 +448,8 @@ export default function EnterCourseScreen() {
               onChangeText={setProfessor}
             />
 
-            {professor.trim() !== "" &&
-              uniqueProfessorSuggestions.length > 0 &&
+            {uniqueProfessorSuggestions.length > 0 &&
+              (professor.trim() !== "" || course.trim() !== "") &&
               !exactProfessorChosen && (
                 <View style={styles.searchResultsCard}>
                   {uniqueProfessorSuggestions.slice(0, 8).map((name) => (
@@ -472,8 +473,8 @@ export default function EnterCourseScreen() {
               onChangeText={setCourse}
             />
 
-            {course.trim() !== "" &&
-              uniqueCourseSuggestions.length > 0 &&
+            {uniqueCourseSuggestions.length > 0 &&
+              (course.trim() !== "" || professor.trim() !== "") &&
               !exactCourseChosen && (
                 <View style={styles.searchResultsCard}>
                   {uniqueCourseSuggestions.slice(0, 8).map((item) => (
@@ -483,24 +484,6 @@ export default function EnterCourseScreen() {
                       onPress={() => chooseCourseFromDropdown(item)}
                     >
                       <Text style={styles.searchResultText}>{item.label}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              )}
-
-            {course.trim() === "" &&
-              professor.trim() !== "" &&
-              uniqueCourseSuggestions.length > 0 && (
-                <View style={styles.searchResultsCard}>
-                  {uniqueCourseSuggestions.slice(0, 8).map((item) => (
-                    <Pressable
-                      key={`${item.subject}-${item.courseNumber}`}
-                      style={styles.searchResultButton}
-                      onPress={() => chooseCourseFromDropdown(item)}
-                    >
-                      <Text style={styles.searchResultText}>
-                        {item.label}
-                      </Text>
                     </Pressable>
                   ))}
                 </View>
@@ -528,9 +511,7 @@ export default function EnterCourseScreen() {
                       Professor: {item.professorFullName}
                     </Text>
 
-                    <Text style={styles.matchText}>
-                      Building: {item.building}
-                    </Text>
+                    <Text style={styles.matchText}>Building: {item.building}</Text>
 
                     <Text style={styles.matchText}>Room: {item.room}</Text>
 
@@ -555,40 +536,92 @@ export default function EnterCourseScreen() {
                 <Text style={styles.courseText}>No saved courses yet.</Text>
               </View>
             ) : (
-              savedCourses.map((item) => (
-                <View key={item.id} style={styles.courseCard}>
-                  <Text style={styles.courseTitle}>
-                    {item.subject} {item.courseNumber}
-                  </Text>
+              savedCourses.map((item) => {
+                const colorSet = getCourseDayColorSet(item.days);
 
-                  <Text style={styles.courseText}>Section: {item.section}</Text>
-
-                  <Text style={styles.courseText}>
-                    Professor: {item.professorFullName}
-                  </Text>
-
-                  <Text style={styles.courseText}>
-                    Building: {item.building}
-                  </Text>
-
-                  <Text style={styles.courseText}>Room: {item.room}</Text>
-
-                  <Text style={styles.courseText}>
-                    Days: {formatDays(item.days)}
-                  </Text>
-
-                  <Text style={styles.courseText}>
-                    Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
-                  </Text>
-
-                  <Pressable
-                    style={styles.deleteButton}
-                    onPress={() => deleteCourse(item.id)}
+                return (
+                  <View
+                    key={item.id}
+                    style={[
+                      styles.courseCard,
+                      {
+                        backgroundColor: colorSet.backgroundColor,
+                        borderColor: colorSet.borderColor,
+                      },
+                    ]}
                   >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                  </Pressable>
-                </View>
-              ))
+                    <Text
+                      style={[
+                        styles.courseTitle,
+                        { color: colorSet.titleColor },
+                      ]}
+                    >
+                      {item.subject} {item.courseNumber}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Section: {item.section}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Professor: {item.professorFullName}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Building: {item.building}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Room: {item.room}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Days: {formatDays(item.days)}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: colorSet.textColor },
+                      ]}
+                    >
+                      Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
+                    </Text>
+
+                    <Pressable
+                      style={styles.deleteButton}
+                      onPress={() => deleteCourse(item.id)}
+                    >
+                      <Text style={styles.deleteButtonText}>Delete</Text>
+                    </Pressable>
+                  </View>
+                );
+              })
             )}
           </View>
         </ScrollView>
@@ -748,9 +781,7 @@ const styles = StyleSheet.create({
   },
 
   courseCard: {
-    backgroundColor: "#fff9eb",
     borderWidth: 2,
-    borderColor: "#f1e2b5",
     borderRadius: 20,
     padding: 14,
     marginBottom: 12,
@@ -759,13 +790,11 @@ const styles = StyleSheet.create({
   courseTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#5d4c16",
     marginBottom: 6,
   },
 
   courseText: {
     fontSize: 14,
-    color: "#735f22",
     marginBottom: 2,
   },
 

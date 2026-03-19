@@ -1,6 +1,7 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import { MAP_H, MAP_W, ROOMS, TYPES } from "@/data/floorMapData";
+import { getCourseDayColorSet } from "@/utils/courseColors";
 import { findRoute } from "@/utils/pathfinding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useMemo, useState } from "react";
@@ -388,6 +389,7 @@ export default function HomeScreen() {
                   sortedCourses.map((course) => {
                     const courseRoomId = roomIdFromSavedCourse(course.room);
                     const isActive = selectedRoomId === courseRoomId;
+                    const colorSet = getCourseDayColorSet(course.days);
 
                     return (
                       <Pressable
@@ -395,30 +397,66 @@ export default function HomeScreen() {
                         onPress={() => handleSavedCoursePress(course)}
                         style={({ hovered, pressed }) => [
                           styles.courseCard,
+                          {
+                            backgroundColor: colorSet.backgroundColor,
+                            borderColor: colorSet.borderColor,
+                          },
                           isActive && styles.courseCardActive,
                           hovered && styles.courseCardHover,
                           pressed && styles.courseCardPressed,
                         ]}
                       >
-                        <Text style={styles.courseTitle}>
+                        <Text
+                          style={[
+                            styles.courseTitle,
+                            { color: colorSet.titleColor },
+                          ]}
+                        >
                           {course.subject} {course.courseNumber}
                         </Text>
 
-                        <Text style={styles.courseText}>
+                        <Text
+                          style={[
+                            styles.courseText,
+                            { color: colorSet.textColor },
+                          ]}
+                        >
                           Section: {course.section}
                         </Text>
 
-                        <Text style={styles.courseText}>
+                        <Text
+                          style={[
+                            styles.courseText,
+                            { color: colorSet.textColor },
+                          ]}
+                        >
                           Professor: {course.professorFullName}
                         </Text>
 
-                        <Text style={styles.courseText}>Room: {course.room}</Text>
+                        <Text
+                          style={[
+                            styles.courseText,
+                            { color: colorSet.textColor },
+                          ]}
+                        >
+                          Room: {course.room}
+                        </Text>
 
-                        <Text style={styles.courseText}>
+                        <Text
+                          style={[
+                            styles.courseText,
+                            { color: colorSet.textColor },
+                          ]}
+                        >
                           Days: {formatDays(course.days)}
                         </Text>
 
-                        <Text style={styles.courseText}>
+                        <Text
+                          style={[
+                            styles.courseText,
+                            { color: colorSet.textColor },
+                          ]}
+                        >
                           Time: {formatTime(course.beginTime)} -{" "}
                           {formatTime(course.endTime)}
                         </Text>
@@ -695,9 +733,7 @@ const styles = StyleSheet.create({
   },
 
   courseCard: {
-    backgroundColor: "#fff9eb",
     borderWidth: 2,
-    borderColor: "#f1e2b5",
     borderRadius: 20,
     padding: 14,
     marginBottom: 12,
@@ -709,8 +745,6 @@ const styles = StyleSheet.create({
   },
 
   courseCardHover: {
-    borderColor: "#f3c96a",
-    backgroundColor: "#fff6db",
     shadowColor: "#f3c96a",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.35,
@@ -725,13 +759,11 @@ const styles = StyleSheet.create({
   courseTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#5d4c16",
     marginBottom: 6,
   },
 
   courseText: {
     fontSize: 14,
-    color: "#735f22",
     marginBottom: 2,
   },
 });
