@@ -1,20 +1,8 @@
 [
-  {
-    "firstName": "",
-    "lastName": "Ahmed",
-    "fullName": "Ahmed",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Tuesday": "11:00 AM - 1:30 PM",
-      "Thursday": "11:00 AM - 1:30 PM"
-    },
-    "additionalInfo": ""
-  },
-  {
+ {
     "firstName": "Scott",
-    "lastName": "Brahaney",
-    "fullName": "Scott Brahaney",
+    "lastName": "Brahney",
+    "fullName": "Scott Brahney",
     "building": "North Engineering",
     "room": "NE 1616",
     "officeHours": {
@@ -22,17 +10,6 @@
       "Thursday": "3:00 PM - 5:30 PM"
     },
     "additionalInfo": "By appointment too"
-  },
-  {
-    "firstName": "",
-    "lastName": "Cheng",
-    "fullName": "Cheng",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Wednesday": "3:00 PM - 5:00 PM"
-    },
-    "additionalInfo": "Also by Appointment"
   },
   {
     "firstName": "Bilal",
@@ -68,55 +45,6 @@
       "Wednesday": "10:45 AM - 12:30 PM"
     },
     "additionalInfo": ""
-  },
-  {
-    "firstName": "",
-    "lastName": "El-Assaad",
-    "fullName": "El-Assaad",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Tuesday": "12:30 PM - 2:30 PM",
-      "Wednesday": "4:00 PM - 5:00 PM",
-      "Thursday": "12:30 PM - 2:30 PM"
-    },
-    "additionalInfo": "Also by Appointment"
-  },
-  {
-    "firstName": "",
-    "lastName": "Evans",
-    "fullName": "Evans",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "9:30 AM - 12:00 PM",
-      "Wednesday": "9:30 AM - 12:00 PM"
-    },
-    "additionalInfo": ""
-  },
-  {
-    "firstName": "",
-    "lastName": "Georgiev",
-    "fullName": "Georgiev",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "1:00 PM - 4:00 PM",
-      "Wednesday": "1:00 PM - 3:00 PM"
-    },
-    "additionalInfo": ""
-  },
-  {
-    "firstName": "",
-    "lastName": "Javaid",
-    "fullName": "Javaid",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "9:30 AM - 12:00 PM",
-      "Wednesday": "9:30 AM - 12:00 PM"
-    },
-    "additionalInfo": "Email for appointments"
   },
   {
     "firstName": "N H M",
@@ -176,6 +104,160 @@
     "room": "NE 1625",
     "officeHours": {
       "Wednesday": "1:00 PM - 6:00 PM"
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Nassar",
+    "lastName": "Alaraje",
+    "fullName": "Nassar Alaraje",
+    "building": "North Engineering",
+    "room": "NE 1605",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Qiuying",
+    "lastName": "Zhao",
+    "fullName": "Qiuying Zhao",
+    "building": "North Engineering",
+    "room": "NE 1618",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Richard",
+    "lastName": "Springman",
+    "fullName": "Richard Springman",
+    "building": "North Engineering",
+    "room": "NE 1623",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Ngalula",
+    "lastName": "Mubenga",
+    "fullName": "Ngalula Mubenga",
+    "building": "North Engineering",
+    "room": "NE 1624",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Darlene",
+    "lastName": "Stevens",
+    "fullName": "Darlene Stevens",
+    "building": "North Engineering",
+    "room": "NE 1610",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Joseph",
+    "lastName": "Lawrence",
+    "fullName": "Joseph Lawrence",
+    "building": "North Engineering",
+    "room": "NE 2428",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "James",
+    "lastName": "Kamm",
+    "fullName": "James Kamm",
+    "building": "North Engineering",
+    "room": "NE 5026",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Tom",
+    "lastName": "Jacob",
+    "fullName": "Tom Jacob",
+    "building": "North Engineering",
+    "room": "NE 1021",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Saleh A.",
+    "lastName": "Jabarin",
+    "fullName": "Saleh A. Jabarin",
+    "building": "North Engineering",
+    "room": "NE 2429",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Corey",
+    "lastName": "Grice",
+    "fullName": "Corey Grice",
+    "building": "North Engineering",
+    "room": "NE 1469-D",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Nicoleta",
+    "lastName": "Ene",
+    "fullName": "Nicoleta Ene",
+    "building": "North Engineering",
+    "room": "NE 4052",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Carmen",
+    "lastName": "Cioc",
+    "fullName": "Carmen Cioc",
+    "building": "North Engineering",
+    "room": "NE 1621",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Josh",
+    "lastName": "Belknap",
+    "fullName": "Josh Belknap",
+    "building": "North Engineering",
+    "room": "NE 1628",
+    "officeHours": {
+      "TBD": ""
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Amy",
+    "lastName": "Bian",
+    "fullName": "Amy Bian",
+    "building": "North Engineering",
+    "room": "NE 1609",
+    "officeHours": {
+      "TBD": ""
     },
     "additionalInfo": ""
   }
