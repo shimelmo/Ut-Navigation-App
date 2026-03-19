@@ -1,6 +1,8 @@
 [
   {
-    "name": "Ahmed",
+    "firstName": "",
+    "lastName": "Ahmed",
+    "fullName": "Ahmed",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -10,9 +12,11 @@
     "additionalInfo": ""
   },
   {
-    "name": "Brahney",
+    "firstName": "Scott",
+    "lastName": "Brahaney",
+    "fullName": "Scott Brahaney",
     "building": "North Engineering",
-    "room": "TBD",
+    "room": "NE 1616",
     "officeHours": {
       "Tuesday": "3:00 PM - 5:30 PM",
       "Thursday": "3:00 PM - 5:30 PM"
@@ -20,7 +24,9 @@
     "additionalInfo": "By appointment too"
   },
   {
-    "name": "Cheng",
+    "firstName": "",
+    "lastName": "Cheng",
+    "fullName": "Cheng",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -29,7 +35,44 @@
     "additionalInfo": "Also by Appointment"
   },
   {
-    "name": "El-Assaad",
+    "firstName": "Bilal",
+    "lastName": "Sarsour",
+    "fullName": "Bilal Sarsour",
+    "building": "North Engineering",
+    "room": "NE 1630",
+    "officeHours": {
+      "Tuesday": "11:00 AM - 12:15 PM",
+      "Thursday": "11:00 AM - 12:15 PM"
+    },
+    "additionalInfo": "Also by Appointment"
+  },
+  {
+    "firstName": "Donald",
+    "lastName": "Miller",
+    "fullName": "Donald Miller",
+    "building": "North Engineering",
+    "room": "NE 1626",
+    "officeHours": {
+      "Monday": "5:30 PM - 7:00 PM",
+      "Wednesday": "5:30 PM - 7:00 PM"
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "Heidi",
+    "lastName": "Reger",
+    "fullName": "Heidi Reger",
+    "building": "North Engineering",
+    "room": "NE 1628",
+    "officeHours": {
+      "Wednesday": "10:45 AM - 12:30 PM"
+    },
+    "additionalInfo": ""
+  },
+  {
+    "firstName": "",
+    "lastName": "El-Assaad",
+    "fullName": "El-Assaad",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -40,7 +83,9 @@
     "additionalInfo": "Also by Appointment"
   },
   {
-    "name": "Evans",
+    "firstName": "",
+    "lastName": "Evans",
+    "fullName": "Evans",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -50,7 +95,9 @@
     "additionalInfo": ""
   },
   {
-    "name": "Georgiev",
+    "firstName": "",
+    "lastName": "Georgiev",
+    "fullName": "Georgiev",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -60,7 +107,9 @@
     "additionalInfo": ""
   },
   {
-    "name": "Javaid",
+    "firstName": "",
+    "lastName": "Javaid",
+    "fullName": "Javaid",
     "building": "North Engineering",
     "room": "TBD",
     "officeHours": {
@@ -70,121 +119,64 @@
     "additionalInfo": "Email for appointments"
   },
   {
-    "name": "Khanna",
+    "firstName": "N H M",
+    "lastName": "Arafat",
+    "fullName": "N H M Arafat",
     "building": "North Engineering",
-    "room": "TBD",
+    "room": "NE 1641",
     "officeHours": {
-      "Monday": "By email appt.",
-      "Tuesday": "By email appt.",
-      "Wednesday": "By email appt.",
-      "Thursday": "By email appt.",
-      "Friday": "By email appt."
-    },
-    "additionalInfo": "No in-person instruction"
-  },
-  {
-    "name": "Kharel",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Tuesday": "3:00 PM - 5:30 PM",
-      "Thursday": "3:00 PM - 5:30 PM"
+      "Tuesday": "9:00 AM - 12:00 PM",
+      "Thursday": "9:00 AM - 12:00 PM"
     },
     "additionalInfo": ""
   },
   {
-    "name": "Kim",
+    "firstName": "Robert",
+    "lastName": "Langenderfer",
+    "fullName": "Robert Langenderfer",
     "building": "North Engineering",
-    "room": "TBD",
+    "room": "NE 1632",
     "officeHours": {
-      "Monday": "1:30 PM - 4:00 PM",
-      "Wednesday": "1:30 PM - 4:00 PM"
+      "Monday": "12:00 PM - 2:00 PM",
+      "Wednesday": "12:00 PM - 2:00 PM"
+    },
+    "additionalInfo": ""
+  },
+   {
+    "firstName": "Anthony",
+    "lastName": "Smoktonowicz",
+    "fullName": "Anthony Smoktonowicz",
+    "building": "North Engineering",
+    "room": "NE 1626",
+    "officeHours": {
+      "Monday": "During Lab Hours",
+      "Tuesday": "By Appointment only",
+      "Wednesday": "By Appointment only",
+      "Thursday": "During Lab Hours"
     },
     "additionalInfo": ""
   },
   {
-    "name": "Langenderfer",
+    "firstName": "Weiqing",
+    "lastName": "Sun",
+    "fullName": "Weiqing Sun",
     "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Tuesday": "2:20 PM - 4:50 PM",
-      "Thursday": "12:50 PM - 3:20 PM"
-    },
-    "additionalInfo": ""
-  },
-  {
-    "name": "Molyet",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "10:00 AM - 12:00 PM",
-      "Tuesday": "10:00 AM - 12:00 PM",
-      "Wednesday": "10:00 AM - 12:00 PM",
-      "Thursday": "10:00 AM - 12:00 PM"
-    },
-    "additionalInfo": ""
-  },
-  {
-    "name": "Niamat",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Tuesday": "11:00 AM - 12:45 PM",
-      "Thursday": "11:00 AM - 12:45 PM, 2:30 PM - 4:00 PM"
-    },
-    "additionalInfo": "Also by appointment"
-  },
-  {
-    "name": "Semnani",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "12:00 PM - 2:30 PM",
-      "Wednesday": "12:00 PM - 2:30 PM"
-    },
-    "additionalInfo": "Also by Appointment"
-  },
-  {
-    "name": "Shalaby",
-    "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "11:00 AM - 12:00 PM",
-      "Tuesday": "11:00 AM - 12:30 PM",
-      "Wednesday": "11:00 AM - 12:00 PM",
-      "Thursday": "11:00 AM - 12:30 PM"
-    },
-    "additionalInfo": "By appointment too"
-  },
-  {
-    "name": "Sun",
-    "building": "North Engineering",
-    "room": "TBD",
+    "room": "NE 1627",
     "officeHours": {
       "Monday": "8:30 AM - 10:30 AM",
-      "Thursday": "8:30 AM - 10:30 AM",
-      "Friday": "10:00 AM - 11:00 AM"
+      "Wednesday": "8:30 AM - 10:30 AM"
     },
     "additionalInfo": ""
   },
   {
-    "name": "Tasnim",
+    "firstName": "Hong",
+    "lastName": "Wang",
+    "fullName": "Wang",
     "building": "North Engineering",
-    "room": "TBD",
-    "officeHours": {
-      "Monday": "4:00 PM - 5:15 PM",
-      "Tuesday": "2:30 PM - 5:00 PM",
-      "Wednesday": "4:00 PM - 5:15 PM"
-    },
-    "additionalInfo": "Email for appointments"
-  },
-  {
-    "name": "Wang",
-    "building": "North Engineering",
-    "room": "TBD",
+    "room": "NE 1625",
     "officeHours": {
       "Wednesday": "1:00 PM - 6:00 PM"
     },
-    "additionalInfo": "Also by Appointment"
+    "additionalInfo": ""
   }
 ]

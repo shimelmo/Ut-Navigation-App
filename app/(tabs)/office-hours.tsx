@@ -18,14 +18,31 @@ type OfficeHoursMap = {
 };
 
 type ProfessorOfficeHours = {
-  name: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
   building: string;
   room: string;
   officeHours: OfficeHoursMap;
   additionalInfo: string;
 };
 
+type SavedCourse = {
+  id: string;
+  subject: string;
+  courseNumber: string;
+  professor: string;
+  professorFullName: string;
+  room: string;
+  building: string;
+  days: string[];
+  beginTime: string;
+  endTime: string;
+  section: string;
+};
+
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
+const SAVED_COURSES_KEY = "saved_courses";
 
 function cleanProfessorName(name: string) {
   return name
@@ -45,55 +62,96 @@ function getLastName(name: string) {
   return parts.length > 0 ? parts[parts.length - 1] : "";
 }
 
-function namesMatch(nameA: string, nameB: string) {
-  const a = cleanProfessorName(nameA);
-  const b = cleanProfessorName(nameB);
+function buildDisplayName(professor: ProfessorOfficeHours) {
+  if (professor.fullName?.trim()) return professor.fullName.trim();
 
-  if (a === b) return true;
-  if (a.includes(b)) return true;
-  if (b.includes(a)) return true;
+  const combined = `${professor.firstName || ""} ${professor.lastName || ""}`.trim();
+  if (combined) return combined;
 
-  const aLast = getLastName(a);
-  const bLast = getLastName(b);
+  return professor.lastName || "Unknown Professor";
+}
 
-  return aLast !== "" && aLast === bLast;
+function namesMatch(jsonProfessor: ProfessorOfficeHours, otherName: string) {
+  const jsonFull = cleanProfessorName(buildDisplayName(jsonProfessor));
+  const jsonLast = cleanProfessorName(jsonProfessor.lastName || "");
+  const otherClean = cleanProfessorName(otherName);
+  const otherLast = getLastName(otherName);
+
+  if (jsonFull === otherClean) return true;
+  if (jsonLast !== "" && jsonLast === otherClean) return true;
+  if (jsonFull.includes(otherClean)) return true;
+  if (otherClean.includes(jsonFull)) return true;
+  if (jsonLast !== "" && jsonLast === otherLast) return true;
+
+  return false;
 }
 
 export default function OfficeHoursScreen() {
   const professorList = officeHoursData as ProfessorOfficeHours[];
 
   const [searchText, setSearchText] = useState("");
-  const [selectedProfessorName, setSelectedProfessorName] = useState("");
+  const [selectedProfessorFullName, setSelectedProfessorFullName] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
   const [hasLoadedProfessor, setHasLoadedProfessor] = useState(false);
+  const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
 
   useEffect(() => {
-    const loadLastProfessor = async () => {
-      try {
-        const savedProfessor = await AsyncStorage.getItem(
-          LAST_SELECTED_PROFESSOR_KEY
+    loadPageData();
+  }, []);
+
+  const loadPageData = async () => {
+    try {
+      const storedCourses = await AsyncStorage.getItem(SAVED_COURSES_KEY);
+      if (storedCourses) {
+        setSavedCourses(JSON.parse(storedCourses));
+      }
+
+      const savedProfessor = await AsyncStorage.getItem(LAST_SELECTED_PROFESSOR_KEY);
+
+      if (savedProfessor) {
+        const foundProfessor = professorList.find((professor) =>
+          namesMatch(professor, savedProfessor)
         );
 
-        if (savedProfessor) {
-          const foundProfessor = professorList.find((professor) =>
-            namesMatch(professor.name, savedProfessor)
-          );
-
-          if (foundProfessor) {
-            setSelectedProfessorName(foundProfessor.name);
-            const foundDays = Object.keys(foundProfessor.officeHours);
-            setSelectedDay(foundDays[0] || "");
-          }
+        if (foundProfessor) {
+          setSelectedProfessorFullName(buildDisplayName(foundProfessor));
+          const foundDays = Object.keys(foundProfessor.officeHours || {});
+          setSelectedDay(foundDays[0] || "");
         }
-      } catch (error) {
-        console.log("Could not load last professor:", error);
-      } finally {
-        setHasLoadedProfessor(true);
       }
-    };
+    } catch (error) {
+      console.log("Could not load office hours page data:", error);
+    } finally {
+      setHasLoadedProfessor(true);
+    }
+  };
 
-    loadLastProfessor();
-  }, []);
+  const savedProfessorCards = useMemo(() => {
+    const matchedProfessors: ProfessorOfficeHours[] = [];
+    const seenNames = new Set<string>();
+
+    savedCourses.forEach((course) => {
+      const possibleNames = [course.professorFullName, course.professor].filter(Boolean);
+
+      const foundProfessor = professorList.find((professor) =>
+        possibleNames.some((name) => namesMatch(professor, name))
+      );
+
+      if (foundProfessor) {
+        const displayName = buildDisplayName(foundProfessor);
+        const cleanName = cleanProfessorName(displayName);
+
+        if (!seenNames.has(cleanName)) {
+          seenNames.add(cleanName);
+          matchedProfessors.push(foundProfessor);
+        }
+      }
+    });
+
+    return matchedProfessors.sort((a, b) =>
+      buildDisplayName(a).localeCompare(buildDisplayName(b))
+    );
+  }, [savedCourses, professorList]);
 
   const filteredProfessors = useMemo(() => {
     const typed = cleanProfessorName(searchText);
@@ -102,8 +160,9 @@ export default function OfficeHoursScreen() {
 
     return professorList
       .filter((professor) => {
-        const fullName = cleanProfessorName(professor.name);
-        const lastName = getLastName(professor.name);
+        const displayName = buildDisplayName(professor);
+        const fullName = cleanProfessorName(displayName);
+        const lastName = getLastName(displayName);
 
         return (
           fullName.includes(typed) ||
@@ -112,10 +171,13 @@ export default function OfficeHoursScreen() {
         );
       })
       .sort((a, b) => {
-        const aFull = cleanProfessorName(a.name);
-        const bFull = cleanProfessorName(b.name);
-        const aLast = getLastName(a.name);
-        const bLast = getLastName(b.name);
+        const aDisplay = buildDisplayName(a);
+        const bDisplay = buildDisplayName(b);
+
+        const aFull = cleanProfessorName(aDisplay);
+        const bFull = cleanProfessorName(bDisplay);
+        const aLast = getLastName(aDisplay);
+        const bLast = getLastName(bDisplay);
 
         const aStarts =
           aFull.startsWith(typed) || aLast.startsWith(typed) ? 0 : 1;
@@ -124,18 +186,18 @@ export default function OfficeHoursScreen() {
 
         if (aStarts !== bStarts) return aStarts - bStarts;
 
-        return a.name.localeCompare(b.name);
+        return aDisplay.localeCompare(bDisplay);
       });
   }, [searchText, professorList]);
 
-  const selectedProfessor = selectedProfessorName
+  const selectedProfessor = selectedProfessorFullName
     ? professorList.find((professor) =>
-        namesMatch(professor.name, selectedProfessorName)
+        namesMatch(professor, selectedProfessorFullName)
       )
     : undefined;
 
   const availableDays = selectedProfessor
-    ? Object.keys(selectedProfessor.officeHours)
+    ? Object.keys(selectedProfessor.officeHours || {})
     : [];
 
   const activeDay =
@@ -148,16 +210,25 @@ export default function OfficeHoursScreen() {
       ? selectedProfessor.officeHours[activeDay]
       : "";
 
-  function chooseProfessor(name: string) {
-    setSelectedProfessorName(name);
+  async function chooseProfessor(fullName: string) {
+    setSelectedProfessorFullName(fullName);
 
     const foundProfessor = professorList.find((professor) =>
-      namesMatch(professor.name, name)
+      namesMatch(professor, fullName)
     );
 
     if (foundProfessor) {
-      const foundDays = Object.keys(foundProfessor.officeHours);
+      const foundDays = Object.keys(foundProfessor.officeHours || {});
       setSelectedDay(foundDays[0] || "");
+
+      try {
+        await AsyncStorage.setItem(
+          LAST_SELECTED_PROFESSOR_KEY,
+          buildDisplayName(foundProfessor)
+        );
+      } catch (error) {
+        console.log("Could not save selected professor:", error);
+      }
     } else {
       setSelectedDay("");
     }
@@ -174,12 +245,51 @@ export default function OfficeHoursScreen() {
           <View style={styles.headerCard}>
             <Text style={styles.headerTitle}>Office Hours</Text>
             <Text style={styles.headerText}>
-              Search for a professor to quickly view office hours and office
-              location.
+              View office hours for professors from your confirmed courses, or search manually.
             </Text>
           </View>
 
           <View style={styles.mainCard}>
+            <Text style={styles.sectionTitle}>Your Professors</Text>
+
+            {savedProfessorCards.length === 0 ? (
+              <View style={styles.emptyCard}>
+                <Text style={styles.emptyText}>
+                  No confirmed professors yet. Add courses in Enter Courses first,
+                  and your professors will appear here automatically.
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.savedProfessorWrap}>
+                {savedProfessorCards.map((professor) => {
+                  const displayName = buildDisplayName(professor);
+                  const isActive =
+                    cleanProfessorName(selectedProfessorFullName) ===
+                    cleanProfessorName(displayName);
+
+                  return (
+                    <Pressable
+                      key={displayName}
+                      style={[
+                        styles.savedProfessorButton,
+                        isActive && styles.savedProfessorButtonActive,
+                      ]}
+                      onPress={() => chooseProfessor(displayName)}
+                    >
+                      <Text
+                        style={[
+                          styles.savedProfessorButtonText,
+                          isActive && styles.savedProfessorButtonTextActive,
+                        ]}
+                      >
+                        {displayName}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            )}
+
             <Text style={styles.sectionTitle}>Find a Professor</Text>
 
             <TextInput
@@ -193,17 +303,21 @@ export default function OfficeHoursScreen() {
             {searchText.trim() !== "" && (
               <View style={styles.searchResultsCard}>
                 {filteredProfessors.length > 0 ? (
-                  filteredProfessors.slice(0, 8).map((professor) => (
-                    <Pressable
-                      key={professor.name}
-                      style={styles.searchResultButton}
-                      onPress={() => chooseProfessor(professor.name)}
-                    >
-                      <Text style={styles.searchResultText}>
-                        {professor.name}
-                      </Text>
-                    </Pressable>
-                  ))
+                  filteredProfessors.slice(0, 8).map((professor) => {
+                    const displayName = buildDisplayName(professor);
+
+                    return (
+                      <Pressable
+                        key={displayName}
+                        style={styles.searchResultButton}
+                        onPress={() => chooseProfessor(displayName)}
+                      >
+                        <Text style={styles.searchResultText}>
+                          {displayName}
+                        </Text>
+                      </Pressable>
+                    );
+                  })
                 ) : (
                   <Text style={styles.noResultsText}>No professors found.</Text>
                 )}
@@ -212,13 +326,17 @@ export default function OfficeHoursScreen() {
 
             {hasLoadedProfessor && selectedProfessor && (
               <>
+                <Text style={styles.sectionTitle}>Selected Professor</Text>
+
                 <View style={styles.profCard}>
                   <View style={styles.avatarCircle}>
                     <Text style={styles.avatarText}>👩‍🏫</Text>
                   </View>
 
                   <View style={styles.profInfo}>
-                    <Text style={styles.profName}>{selectedProfessor.name}</Text>
+                    <Text style={styles.profName}>
+                      {buildDisplayName(selectedProfessor)}
+                    </Text>
                     <Text style={styles.profDetail}>
                       Building: {selectedProfessor.building}
                     </Text>
@@ -336,6 +454,53 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#183a6b",
     marginBottom: 12,
+    marginTop: 6,
+  },
+
+  emptyCard: {
+    backgroundColor: "#f7faff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+    borderRadius: 18,
+    padding: 14,
+    marginBottom: 18,
+  },
+
+  emptyText: {
+    fontSize: 14,
+    color: "#5e7698",
+    lineHeight: 21,
+  },
+
+  savedProfessorWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginBottom: 18,
+  },
+
+  savedProfessorButton: {
+    backgroundColor: "#eef5ff",
+    borderWidth: 2,
+    borderColor: "#bfd6ff",
+    borderRadius: 999,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+  },
+
+  savedProfessorButtonActive: {
+    backgroundColor: "#dcecff",
+    borderColor: "#234a84",
+  },
+
+  savedProfessorButtonText: {
+    color: "#234a84",
+    fontWeight: "700",
+    fontSize: 14,
+  },
+
+  savedProfessorButtonTextActive: {
+    fontWeight: "800",
   },
 
   searchInput: {
