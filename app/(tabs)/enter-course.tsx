@@ -43,6 +43,12 @@ type SavedCourse = {
   section: string;
 };
 
+type CourseSuggestion = {
+  label: string;
+  subject: string;
+  courseNumber: string;
+};
+
 const STORAGE_KEY = "saved_courses";
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
 
@@ -62,6 +68,23 @@ function getLastName(name: string) {
   const cleaned = cleanProfessorName(name);
   const parts = cleaned.split(" ").filter(Boolean);
   return parts.length > 0 ? parts[parts.length - 1] : "";
+}
+
+function cleanText(text: string) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\./g, "")
+    .replace(/,/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function normalizeCourseInput(text: string) {
+  return cleanText(text).replace(/\s+/g, "");
+}
+
+function courseDisplay(subject: string, courseNumber: string) {
+  return `${subject} ${courseNumber}`;
 }
 
 export default function EnterCourseScreen() {
@@ -97,17 +120,10 @@ export default function EnterCourseScreen() {
     }
   };
 
-  const cleanText = (text: string) => {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/\./g, "")
-      .replace(/,/g, "")
-      .replace(/\s+/g, " ");
-  };
-
   const professorMatches = (dbCourse: DatabaseCourse, professorInput: string) => {
     const input = cleanProfessorName(professorInput);
+
+    if (input === "") return true;
 
     const lastName = cleanProfessorName(dbCourse.professorLastName || "");
     const fullName = cleanProfessorName(dbCourse.professorFullName || "");
@@ -118,23 +134,33 @@ export default function EnterCourseScreen() {
       input === fullName ||
       input === shortProfessor ||
       fullName.includes(input) ||
-      lastName.includes(input)
+      lastName.includes(input) ||
+      shortProfessor.includes(input)
     );
   };
 
   const courseMatches = (dbCourse: DatabaseCourse, courseInput: string) => {
     const input = cleanText(courseInput);
+    const inputNoSpace = normalizeCourseInput(courseInput);
+
+    if (input === "") return true;
 
     const numberOnly = cleanText(dbCourse.courseNumber || "");
     const subjectOnly = cleanText(dbCourse.subject || "");
     const subjectAndNumber = cleanText(`${dbCourse.subject} ${dbCourse.courseNumber}`);
-    const subjectAndNumberNoSpace = cleanText(`${dbCourse.subject}${dbCourse.courseNumber}`);
+    const subjectAndNumberNoSpace = normalizeCourseInput(
+      `${dbCourse.subject}${dbCourse.courseNumber}`
+    );
 
     return (
       input === numberOnly ||
       input === subjectOnly ||
       input === subjectAndNumber ||
-      input === subjectAndNumberNoSpace
+      inputNoSpace === subjectAndNumberNoSpace ||
+      subjectAndNumber.includes(input) ||
+      subjectAndNumberNoSpace.includes(inputNoSpace) ||
+      numberOnly.includes(input) ||
+      subjectOnly.includes(input)
     );
   };
 
@@ -156,14 +182,28 @@ export default function EnterCourseScreen() {
     return `${convertedHour}:${minute} ${amOrPm}`;
   };
 
-  const uniqueProfessorSuggestions = useMemo(() => {
-    const typed = cleanProfessorName(professor);
+  const filteredByTypedCourse = useMemo(() => {
+    return (database as DatabaseCourse[]).filter((item) => courseMatches(item, course));
+  }, [course]);
 
-    if (typed === "") return [];
+  const filteredByTypedProfessor = useMemo(() => {
+    return (database as DatabaseCourse[]).filter((item) =>
+      professorMatches(item, professor)
+    );
+  }, [professor]);
+
+  const uniqueProfessorSuggestions = useMemo(() => {
+    const typedProfessor = cleanProfessorName(professor);
+    const typedCourse = cleanText(course);
+
+    if (typedProfessor === "" && typedCourse === "") return [];
+
+    const source =
+      typedCourse !== "" ? filteredByTypedCourse : (database as DatabaseCourse[]);
 
     const foundNames = new Map<string, string>();
 
-    (database as DatabaseCourse[]).forEach((item) => {
+    source.forEach((item) => {
       const fullName = item.professorFullName?.trim();
       const lastName = item.professorLastName?.trim();
       const shortName = item.professor?.trim();
@@ -174,13 +214,14 @@ export default function EnterCourseScreen() {
       const lastNameClean = cleanProfessorName(lastName || "");
       const shortNameClean = cleanProfessorName(shortName || "");
 
-      const matches =
-        fullNameClean.includes(typed) ||
-        lastNameClean.includes(typed) ||
-        shortNameClean.includes(typed) ||
-        typed === getLastName(fullName);
+      const matchesProfessorText =
+        typedProfessor === "" ||
+        fullNameClean.includes(typedProfessor) ||
+        lastNameClean.includes(typedProfessor) ||
+        shortNameClean.includes(typedProfessor) ||
+        typedProfessor === getLastName(fullName);
 
-      if (matches && !foundNames.has(fullName)) {
+      if (matchesProfessorText && !foundNames.has(fullName)) {
         foundNames.set(fullName, fullName);
       }
     });
@@ -192,15 +233,84 @@ export default function EnterCourseScreen() {
       const bLast = getLastName(b);
 
       const aStarts =
-        aFull.startsWith(typed) || aLast.startsWith(typed) ? 0 : 1;
+        typedProfessor !== "" &&
+        (aFull.startsWith(typedProfessor) || aLast.startsWith(typedProfessor))
+          ? 0
+          : 1;
+
       const bStarts =
-        bFull.startsWith(typed) || bLast.startsWith(typed) ? 0 : 1;
+        typedProfessor !== "" &&
+        (bFull.startsWith(typedProfessor) || bLast.startsWith(typedProfessor))
+          ? 0
+          : 1;
 
       if (aStarts !== bStarts) return aStarts - bStarts;
-
       return a.localeCompare(b);
     });
-  }, [professor]);
+  }, [professor, course, filteredByTypedCourse]);
+
+  const uniqueCourseSuggestions = useMemo(() => {
+    const typedCourse = cleanText(course);
+    const typedProfessor = cleanProfessorName(professor);
+
+    if (typedCourse === "" && typedProfessor === "") return [];
+
+    const source =
+      typedProfessor !== "" ? filteredByTypedProfessor : (database as DatabaseCourse[]);
+
+    const foundCourses = new Map<string, CourseSuggestion>();
+
+    source.forEach((item) => {
+      const label = courseDisplay(item.subject, item.courseNumber);
+      const key = `${item.subject}-${item.courseNumber}`;
+
+      const numberOnly = cleanText(item.courseNumber || "");
+      const subjectOnly = cleanText(item.subject || "");
+      const subjectAndNumber = cleanText(`${item.subject} ${item.courseNumber}`);
+      const subjectAndNumberNoSpace = normalizeCourseInput(
+        `${item.subject}${item.courseNumber}`
+      );
+      const typedNoSpace = normalizeCourseInput(course);
+
+      const matchesCourseText =
+        typedCourse === "" ||
+        numberOnly.includes(typedCourse) ||
+        subjectOnly.includes(typedCourse) ||
+        subjectAndNumber.includes(typedCourse) ||
+        subjectAndNumberNoSpace.includes(typedNoSpace);
+
+      if (matchesCourseText && !foundCourses.has(key)) {
+        foundCourses.set(key, {
+          label,
+          subject: item.subject,
+          courseNumber: item.courseNumber,
+        });
+      }
+    });
+
+    return Array.from(foundCourses.values()).sort((a, b) => {
+      const aLabel = cleanText(a.label);
+      const bLabel = cleanText(b.label);
+      const typedNoSpace = normalizeCourseInput(course);
+      const aNoSpace = normalizeCourseInput(a.label);
+      const bNoSpace = normalizeCourseInput(b.label);
+
+      const aStarts =
+        typedCourse !== "" &&
+        (aLabel.startsWith(typedCourse) || aNoSpace.startsWith(typedNoSpace))
+          ? 0
+          : 1;
+
+      const bStarts =
+        typedCourse !== "" &&
+        (bLabel.startsWith(typedCourse) || bNoSpace.startsWith(typedNoSpace))
+          ? 0
+          : 1;
+
+      if (aStarts !== bStarts) return aStarts - bStarts;
+      return a.label.localeCompare(b.label);
+    });
+  }, [professor, course, filteredByTypedProfessor]);
 
   const saveChosenCourse = async (foundCourse: DatabaseCourse) => {
     const newCourse: SavedCourse = {
@@ -245,7 +355,10 @@ export default function EnterCourseScreen() {
 
   const addCourse = () => {
     if (professor.trim() === "" || course.trim() === "") {
-      Alert.alert("Missing Info", "Please enter both professor and course.");
+      Alert.alert(
+        "Missing Info",
+        "Please enter both professor and course. You can type either one first."
+      );
       return;
     }
 
@@ -256,7 +369,7 @@ export default function EnterCourseScreen() {
     if (foundCourses.length === 0) {
       Alert.alert(
         "Course Not Found",
-        "We could not find that class. Try the professor's last name or full name, and enter the course like CSET 3200 or just 3200."
+        "We could not find that class. Try a professor last name or full name, and use something like 1100 or CSET 1100."
       );
       setMatchingSections([]);
       return;
@@ -288,6 +401,25 @@ export default function EnterCourseScreen() {
     setMatchingSections([]);
   };
 
+  const chooseCourseFromDropdown = (chosenCourse: CourseSuggestion) => {
+    setCourse(chosenCourse.label);
+    setMatchingSections([]);
+  };
+
+  const exactProfessorChosen =
+    professor.trim() !== "" &&
+    uniqueProfessorSuggestions.some(
+      (name) => cleanProfessorName(name) === cleanProfessorName(professor)
+    );
+
+  const exactCourseChosen =
+    course.trim() !== "" &&
+    uniqueCourseSuggestions.some(
+      (item) =>
+        cleanText(item.label) === cleanText(course) ||
+        normalizeCourseInput(item.label) === normalizeCourseInput(course)
+    );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.background}>
@@ -302,6 +434,10 @@ export default function EnterCourseScreen() {
           </View>
 
           <View style={styles.mainCard}>
+            <Text style={styles.helperText}>
+              You can type professor first or course first.
+            </Text>
+
             <Text style={styles.label}>Professor Name</Text>
             <TextInput
               style={styles.input}
@@ -313,9 +449,7 @@ export default function EnterCourseScreen() {
 
             {professor.trim() !== "" &&
               uniqueProfessorSuggestions.length > 0 &&
-              !uniqueProfessorSuggestions.some(
-                (name) => cleanProfessorName(name) === cleanProfessorName(professor)
-              ) && (
+              !exactProfessorChosen && (
                 <View style={styles.searchResultsCard}>
                   {uniqueProfessorSuggestions.slice(0, 8).map((name) => (
                     <Pressable
@@ -332,11 +466,45 @@ export default function EnterCourseScreen() {
             <Text style={styles.label}>Course Number</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter CSET 3200 or 3200"
+              placeholder="Enter 1100 or CSET 1100"
               placeholderTextColor="#7f90aa"
               value={course}
               onChangeText={setCourse}
             />
+
+            {course.trim() !== "" &&
+              uniqueCourseSuggestions.length > 0 &&
+              !exactCourseChosen && (
+                <View style={styles.searchResultsCard}>
+                  {uniqueCourseSuggestions.slice(0, 8).map((item) => (
+                    <Pressable
+                      key={`${item.subject}-${item.courseNumber}`}
+                      style={styles.searchResultButton}
+                      onPress={() => chooseCourseFromDropdown(item)}
+                    >
+                      <Text style={styles.searchResultText}>{item.label}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+
+            {course.trim() === "" &&
+              professor.trim() !== "" &&
+              uniqueCourseSuggestions.length > 0 && (
+                <View style={styles.searchResultsCard}>
+                  {uniqueCourseSuggestions.slice(0, 8).map((item) => (
+                    <Pressable
+                      key={`${item.subject}-${item.courseNumber}`}
+                      style={styles.searchResultButton}
+                      onPress={() => chooseCourseFromDropdown(item)}
+                    >
+                      <Text style={styles.searchResultText}>
+                        {item.label}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
 
             <Pressable style={styles.addButton} onPress={addCourse}>
               <Text style={styles.addButtonText}>Add Course</Text>
@@ -475,6 +643,12 @@ const styles = StyleSheet.create({
     borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
+  },
+
+  helperText: {
+    fontSize: 14,
+    color: "#516b91",
+    marginBottom: 10,
   },
 
   label: {
