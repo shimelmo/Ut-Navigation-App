@@ -1,16 +1,76 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
 
+type ChatMessage = {
+  role: "user" | "assistant";
+  text: string;
+};
+
 export default function AIChatScreen() {
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      role: "assistant",
+      text: "Hi! I’m Campus AI. Ask me about classes, rooms, or campus help.",
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (!message.trim() || loading) return;
+
+    const userMessage: ChatMessage = {
+      role: "user",
+      text: message.trim(),
+    };
+
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    setMessage("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://192.168.4.79:3001/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage.text,
+        }),
+      });
+
+      const data = await response.json();
+
+      const aiMessage: ChatMessage = {
+        role: "assistant",
+        text: data.reply || "Sorry, I could not get a response.",
+      };
+
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      console.log("AI fetch error:", error);
+
+      const errorMessage: ChatMessage = {
+        role: "assistant",
+        text: "There was a problem connecting to the AI server.",
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -22,15 +82,30 @@ export default function AIChatScreen() {
         <View style={styles.headerCard}>
           <Text style={styles.title}>Campus AI</Text>
           <Text style={styles.subtitle}>
-            This is the future AI helper screen for your project.
+            Ask about classes, rooms, or campus help.
           </Text>
         </View>
 
-        <View style={styles.chatBox}>
-          <Text style={styles.chatPlaceholder}>
-            Ask about classes, rooms, or campus help here later.
-          </Text>
-        </View>
+        <ScrollView style={styles.chatBox} contentContainerStyle={styles.chatContent}>
+          {messages.map((item, index) => (
+            <View
+              key={index}
+              style={[
+                styles.messageBubble,
+                item.role === "user" ? styles.userBubble : styles.aiBubble,
+              ]}
+            >
+              <Text style={styles.messageText}>{item.text}</Text>
+            </View>
+          ))}
+
+          {loading && (
+            <View style={styles.loadingRow}>
+              <ActivityIndicator size="small" color="#183a6b" />
+              <Text style={styles.loadingText}>Campus AI is typing...</Text>
+            </View>
+          )}
+        </ScrollView>
 
         <View style={styles.inputRow}>
           <TextInput
@@ -41,7 +116,7 @@ export default function AIChatScreen() {
             onChangeText={setMessage}
           />
 
-          <Pressable style={styles.sendButton}>
+          <Pressable style={styles.sendButton} onPress={sendMessage}>
             <Text style={styles.sendButtonText}>Send</Text>
           </Pressable>
         </View>
@@ -111,10 +186,48 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  chatPlaceholder: {
-    fontSize: 16,
+  chatContent: {
+    paddingBottom: 8,
+  },
+
+  messageBubble: {
+    maxWidth: "82%",
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 18,
+    marginBottom: 10,
+  },
+
+  userBubble: {
+    alignSelf: "flex-end",
+    backgroundColor: "#dcecff",
+    borderWidth: 2,
+    borderColor: "#c0d7f7",
+  },
+
+  aiBubble: {
+    alignSelf: "flex-start",
+    backgroundColor: "#f7fbff",
+    borderWidth: 2,
+    borderColor: "#d8e3f6",
+  },
+
+  messageText: {
+    fontSize: 15,
+    color: "#183a6b",
+    lineHeight: 22,
+  },
+
+  loadingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 4,
+  },
+
+  loadingText: {
+    fontSize: 14,
     color: "#5c7394",
-    lineHeight: 24,
   },
 
   inputRow: {
