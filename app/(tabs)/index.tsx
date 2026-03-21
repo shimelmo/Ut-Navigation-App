@@ -1,6 +1,18 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
-import { MAP_H, MAP_W, ROOMS, TYPES } from "@/data/floorMapData";
+import {
+  MAP2_H,
+  MAP2_W,
+  Room2,
+  ROOMS_FLOOR_2,
+} from "@/data/floor2MapData";
+import {
+  MAP_H,
+  MAP_W,
+  Room,
+  ROOMS,
+  TYPES,
+} from "@/data/floorMapData";
 import {
   appThemes,
   defaultSettings,
@@ -8,7 +20,7 @@ import {
   UserSettings,
 } from "@/utils/appSettings";
 import { getCourseDayColorSet } from "@/utils/courseColors";
-import { findRoute } from "@/utils/pathfinding";
+import { buildRouteSummary, findRoute } from "@/utils/pathfinding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -36,15 +48,24 @@ type SavedCourse = {
   section: string;
 };
 
+type FloorNumber = 1 | 2;
+
+type RoomSelection = {
+  floor: FloorNumber;
+  roomId: string;
+};
+
 const STORAGE_KEY = "saved_courses";
 
 export default function HomeScreen() {
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [currentLocationRoomId, setCurrentLocationRoomId] = useState<string | null>(null);
+  const [selectedDestination, setSelectedDestination] =
+    useState<RoomSelection | null>(null);
+  const [currentLocation, setCurrentLocation] =
+    useState<RoomSelection | null>(null);
   const [chooseLocationMode, setChooseLocationMode] = useState(false);
   const [zoom, setZoom] = useState(0.58);
-  const [selectedFloor, setSelectedFloor] = useState<1 | 2>(1);
+  const [selectedFloor, setSelectedFloor] = useState<FloorNumber>(1);
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
 
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
@@ -59,6 +80,7 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.log("Could not load saved courses:", error);
+      setSavedCourses([]);
     }
   }, []);
 
@@ -87,20 +109,59 @@ export default function HomeScreen() {
     });
   }, [savedCourses]);
 
-  const selectedRoom = useMemo(() => {
-    if (!selectedRoomId) return null;
-    return ROOMS.find((room) => room.id === selectedRoomId) || null;
-  }, [selectedRoomId]);
+  const visibleRooms = useMemo(() => {
+    return selectedFloor === 1 ? ROOMS : ROOMS_FLOOR_2;
+  }, [selectedFloor]);
+
+  const activeMapWidth = selectedFloor === 1 ? MAP_W : MAP2_W;
+  const activeMapHeight = selectedFloor === 1 ? MAP_H : MAP2_H;
 
   const currentLocationRoom = useMemo(() => {
-    if (!currentLocationRoomId) return null;
-    return ROOMS.find((room) => room.id === currentLocationRoomId) || null;
-  }, [currentLocationRoomId]);
+    if (!currentLocation) return null;
+
+    if (currentLocation.floor === 1) {
+      return ROOMS.find((room) => room.id === currentLocation.roomId) || null;
+    }
+
+    return (
+      ROOMS_FLOOR_2.find((room) => room.id === currentLocation.roomId) || null
+    );
+  }, [currentLocation]);
+
+  const selectedRoom = useMemo(() => {
+    if (!selectedDestination) return null;
+
+    if (selectedDestination.floor === 1) {
+      return (
+        ROOMS.find((room) => room.id === selectedDestination.roomId) || null
+      );
+    }
+
+    return (
+      ROOMS_FLOOR_2.find((room) => room.id === selectedDestination.roomId) ||
+      null
+    );
+  }, [selectedDestination]);
 
   const routePoints = useMemo(() => {
-    if (!selectedRoomId || !currentLocationRoomId) return null;
-    return findRoute(currentLocationRoomId, selectedRoomId);
-  }, [currentLocationRoomId, selectedRoomId]);
+    if (!currentLocation || !selectedDestination) return null;
+
+    if (currentLocation.floor !== 1 || selectedDestination.floor !== 1) {
+      return null;
+    }
+
+    return findRoute(currentLocation.roomId, selectedDestination.roomId);
+  }, [currentLocation, selectedDestination]);
+
+  const routeSummary = useMemo(() => {
+    if (!routePoints || !currentLocationRoom || !selectedRoom) return null;
+
+    return buildRouteSummary(
+      routePoints,
+      `${currentLocationRoom.id} (${currentLocationRoom.name})`,
+      `${selectedRoom.id} (${selectedRoom.name})`
+    );
+  }, [routePoints, currentLocationRoom, selectedRoom]);
 
   const formatTime = (time: string) => {
     if (!time || time.length < 3) return time;
@@ -124,35 +185,48 @@ export default function HomeScreen() {
   };
 
   const handleRoomPress = (roomId: string) => {
-    if (selectedFloor !== 1) return;
-
-    if (!currentLocationRoomId || chooseLocationMode) {
-      setCurrentLocationRoomId(roomId);
+    if (chooseLocationMode || !currentLocation) {
+      setCurrentLocation({
+        floor: selectedFloor,
+        roomId,
+      });
       setChooseLocationMode(false);
       return;
     }
 
-    setSelectedRoomId(roomId);
+    setSelectedDestination({
+      floor: selectedFloor,
+      roomId,
+    });
   };
 
   const handleSavedCoursePress = (course: SavedCourse) => {
     const roomId = roomIdFromSavedCourse(course.room);
-    const foundRoom = ROOMS.find((room) => room.id.toUpperCase() === roomId);
+    const foundRoom = ROOMS.find(
+      (room) => room.id.toUpperCase() === roomId.toUpperCase()
+    );
 
     if (!foundRoom) return;
 
     setSelectedFloor(1);
 
-    if (selectedRoomId === foundRoom.id) {
-      setSelectedRoomId(null);
+    if (
+      selectedDestination &&
+      selectedDestination.floor === 1 &&
+      selectedDestination.roomId === foundRoom.id
+    ) {
+      setSelectedDestination(null);
       return;
     }
 
-    setSelectedRoomId(foundRoom.id);
+    setSelectedDestination({
+      floor: 1,
+      roomId: foundRoom.id,
+    });
   };
 
   const clearRoute = () => {
-    setSelectedRoomId(null);
+    setSelectedDestination(null);
     setChooseLocationMode(false);
   };
 
@@ -168,8 +242,150 @@ export default function HomeScreen() {
     setZoom(0.58);
   };
 
-  const mapWidth = MAP_W * zoom;
-  const mapHeight = MAP_H * zoom;
+  const mapWidth = activeMapWidth * zoom;
+  const mapHeight = activeMapHeight * zoom;
+
+  const renderRoomLabel = (room: Room | Room2) => {
+    const textY = room.y + room.h / 2;
+    const fontSize =
+      room.w < 90 || room.h < 60 ? 14 : room.w < 150 ? 18 : 22;
+
+    return (
+      <SvgText
+        x={room.x + room.w / 2}
+        y={textY}
+        fontSize={fontSize}
+        fill={TYPES[room.type].tc}
+        textAnchor="middle"
+      >
+        {room.id}
+      </SvgText>
+    );
+  };
+
+  const renderMap = () => {
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator
+        contentContainerStyle={styles.mapScrollContent}
+      >
+        <ScrollView showsVerticalScrollIndicator>
+          <Svg
+            width={mapWidth}
+            height={mapHeight}
+            viewBox={`0 0 ${activeMapWidth} ${activeMapHeight}`}
+          >
+            <Rect
+              x={0}
+              y={0}
+              width={activeMapWidth}
+              height={activeMapHeight}
+              fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
+            />
+
+            {selectedFloor === 1 && routePoints
+              ? routePoints.slice(0, -1).map((point, index) => {
+                  const nextPoint = routePoints[index + 1];
+                  return (
+                    <Line
+                      key={`line-${index}`}
+                      x1={point.x}
+                      y1={point.y}
+                      x2={nextPoint.x}
+                      y2={nextPoint.y}
+                      stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
+                      strokeWidth={8}
+                      strokeLinecap="round"
+                    />
+                  );
+                })
+              : null}
+
+            {visibleRooms.map((room) => {
+              const roomStyle = TYPES[room.type];
+
+              const isSelected =
+                selectedDestination?.floor === selectedFloor &&
+                selectedDestination.roomId === room.id;
+
+              const isStart =
+                currentLocation?.floor === selectedFloor &&
+                currentLocation.roomId === room.id;
+
+              return (
+                <React.Fragment key={`${selectedFloor}-${room.id}`}>
+                  <Rect
+                    x={room.x}
+                    y={room.y}
+                    width={room.w}
+                    height={room.h}
+                    fill={
+                      isSelected
+                        ? "#ffe59c"
+                        : isStart
+                        ? "#cdeccf"
+                        : roomStyle.fill
+                    }
+                    stroke={
+                      isSelected
+                        ? "#ff9f1a"
+                        : isStart
+                        ? "#2f8f46"
+                        : roomStyle.edge
+                    }
+                    strokeWidth={isSelected || isStart ? 4 : 2}
+                    rx={4}
+                    onPress={() => handleRoomPress(room.id)}
+                  />
+
+                  {renderRoomLabel(room)}
+
+                  {isStart && (
+                    <>
+                      <Circle
+                        cx={room.x + room.w / 2}
+                        cy={room.y + room.h / 2}
+                        r={28}
+                        fill="#2f8f46"
+                        opacity={0.18}
+                      />
+                      <Circle
+                        cx={room.x + room.w / 2}
+                        cy={room.y + room.h / 2}
+                        r={12}
+                        fill="#2f8f46"
+                        opacity={0.95}
+                      />
+                    </>
+                  )}
+
+                  {isSelected && (
+                    <>
+                      <Circle
+                        cx={room.x + room.w / 2}
+                        cy={room.y + room.h / 2}
+                        r={28}
+                        fill="#ff5c5c"
+                        opacity={0.18}
+                      />
+                      <Circle
+                        cx={room.x + room.w / 2}
+                        cy={room.y + room.h / 2}
+                        r={12}
+                        fill="#ff5c5c"
+                        opacity={0.95}
+                      />
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Svg>
+        </ScrollView>
+      </ScrollView>
+    );
+  };
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
@@ -234,7 +450,10 @@ export default function HomeScreen() {
                       <Text
                         style={[
                           styles.floorButtonText,
-                          { color: selectedFloor === 1 ? theme.buttonText : theme.text },
+                          {
+                            color:
+                              selectedFloor === 1 ? theme.buttonText : theme.text,
+                          },
                         ]}
                       >
                         1st Floor
@@ -258,7 +477,10 @@ export default function HomeScreen() {
                       <Text
                         style={[
                           styles.floorButtonText,
-                          { color: selectedFloor === 2 ? theme.buttonText : theme.text },
+                          {
+                            color:
+                              selectedFloor === 2 ? theme.buttonText : theme.text,
+                          },
                         ]}
                       >
                         2nd Floor
@@ -277,7 +499,9 @@ export default function HomeScreen() {
                       ]}
                       onPress={zoomOut}
                     >
-                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                      <Text
+                        style={[styles.smallButtonText, { color: theme.buttonText }]}
+                      >
                         −
                       </Text>
                     </Pressable>
@@ -292,7 +516,9 @@ export default function HomeScreen() {
                       ]}
                       onPress={resetView}
                     >
-                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                      <Text
+                        style={[styles.smallButtonText, { color: theme.buttonText }]}
+                      >
                         Reset View
                       </Text>
                     </Pressable>
@@ -307,7 +533,9 @@ export default function HomeScreen() {
                       ]}
                       onPress={zoomIn}
                     >
-                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                      <Text
+                        style={[styles.smallButtonText, { color: theme.buttonText }]}
+                      >
                         ＋
                       </Text>
                     </Pressable>
@@ -325,10 +553,12 @@ export default function HomeScreen() {
                     ]}
                     onPress={() => setChooseLocationMode(!chooseLocationMode)}
                   >
-                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>
+                    <Text
+                      style={[styles.actionButtonText, { color: theme.buttonText }]}
+                    >
                       {chooseLocationMode
                         ? "Tap a room to set location"
-                        : currentLocationRoomId
+                        : currentLocation
                         ? "Change My Location"
                         : "Set My Location"}
                     </Text>
@@ -344,7 +574,9 @@ export default function HomeScreen() {
                     ]}
                     onPress={clearRoute}
                   >
-                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>
+                    <Text
+                      style={[styles.actionButtonText, { color: theme.buttonText }]}
+                    >
                       Clear Route
                     </Text>
                   </Pressable>
@@ -365,7 +597,7 @@ export default function HomeScreen() {
                     </Text>
                     <Text style={[styles.infoValue, { color: theme.infoText }]}>
                       {currentLocationRoom
-                        ? `${currentLocationRoom.id} — ${currentLocationRoom.name}`
+                        ? `${currentLocationRoom.id} — ${currentLocationRoom.name} (Floor ${currentLocation?.floor})`
                         : "Not chosen yet"}
                     </Text>
                   </View>
@@ -384,7 +616,7 @@ export default function HomeScreen() {
                     </Text>
                     <Text style={[styles.infoValue, { color: theme.infoText }]}>
                       {selectedRoom
-                        ? `${selectedRoom.id} — ${selectedRoom.name}`
+                        ? `${selectedRoom.id} — ${selectedRoom.name} (Floor ${selectedDestination?.floor})`
                         : "Not chosen yet"}
                     </Text>
                   </View>
@@ -399,110 +631,7 @@ export default function HomeScreen() {
                     },
                   ]}
                 >
-                  {selectedFloor === 1 ? (
-                    <ScrollView
-                      horizontal
-                      showsHorizontalScrollIndicator
-                      contentContainerStyle={styles.mapScrollContent}
-                    >
-                      <ScrollView showsVerticalScrollIndicator>
-                        <Svg
-                          width={mapWidth}
-                          height={mapHeight}
-                          viewBox={`0 0 ${MAP_W} ${MAP_H}`}
-                        >
-                          <Rect
-                            x={0}
-                            y={0}
-                            width={MAP_W}
-                            height={MAP_H}
-                            fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
-                          />
-
-                          {routePoints &&
-                            routePoints.slice(0, -1).map((point, index) => {
-                              const nextPoint = routePoints[index + 1];
-                              return (
-                                <Line
-                                  key={`line-${index}`}
-                                  x1={point.x}
-                                  y1={point.y}
-                                  x2={nextPoint.x}
-                                  y2={nextPoint.y}
-                                  stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
-                                  strokeWidth={8}
-                                  strokeLinecap="round"
-                                />
-                              );
-                            })}
-
-                          {ROOMS.map((room) => {
-                            const roomStyle = TYPES[room.type];
-                            const isSelected = room.id === selectedRoomId;
-                            const isStart = room.id === currentLocationRoomId;
-
-                            return (
-                              <React.Fragment key={room.id}>
-                                <Rect
-                                  x={room.x}
-                                  y={room.y}
-                                  width={room.w}
-                                  height={room.h}
-                                  fill={
-                                    isSelected
-                                      ? "#ffe59c"
-                                      : isStart
-                                      ? "#cdeccf"
-                                      : roomStyle.fill
-                                  }
-                                  stroke={
-                                    isSelected
-                                      ? "#ff9f1a"
-                                      : isStart
-                                      ? "#2f8f46"
-                                      : roomStyle.edge
-                                  }
-                                  strokeWidth={isSelected || isStart ? 4 : 2}
-                                  rx={4}
-                                  onPress={() => handleRoomPress(room.id)}
-                                />
-
-                                <SvgText
-                                  x={room.x + room.w / 2}
-                                  y={room.y + room.h / 2}
-                                  fontSize={room.w < 90 || room.h < 60 ? 14 : 22}
-                                  fill={roomStyle.tc}
-                                  textAnchor="middle"
-                                >
-                                  {room.id}
-                                </SvgText>
-
-                                {isStart && (
-                                  <Circle
-                                    cx={room.x + room.w / 2}
-                                    cy={room.y + room.h / 2}
-                                    r={18}
-                                    fill="#2f8f46"
-                                    opacity={0.85}
-                                  />
-                                )}
-                              </React.Fragment>
-                            );
-                          })}
-                        </Svg>
-                      </ScrollView>
-                    </ScrollView>
-                  ) : (
-                    <View style={styles.floorPlaceholder}>
-                      <Text style={[styles.floorPlaceholderTitle, { color: theme.title }]}>
-                        2nd Floor Coming Next
-                      </Text>
-                      <Text style={[styles.floorPlaceholderText, { color: theme.text }]}>
-                        Later, this floor toggle can load second-floor room data
-                        and highlight that room automatically.
-                      </Text>
-                    </View>
-                  )}
+                  {renderMap()}
                 </View>
               </View>
             </View>
@@ -518,11 +647,109 @@ export default function HomeScreen() {
                 ]}
               >
                 <Text style={[styles.sideTitle, { color: theme.title }]}>
+                  Directions
+                </Text>
+
+                {!currentLocation || !selectedDestination ? (
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
+                    Pick your location first, then choose a destination room or
+                    saved course.
+                  </Text>
+                ) : currentLocation.floor !== 1 || selectedDestination.floor !== 1 ? (
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
+                    Floor 2 now appears in the UI and rooms can be selected there.
+                    Route lines and turn-by-turn steps are currently connected to
+                    the first-floor path graph only.
+                  </Text>
+                ) : !routeSummary ? (
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
+                    No route could be built for that room pair yet.
+                  </Text>
+                ) : (
+                  <>
+                    <Text style={[styles.courseText, { color: theme.text }]}>
+                      From: {routeSummary.from}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.courseText,
+                        { color: theme.text, marginBottom: 10 },
+                      ]}
+                    >
+                      To: {routeSummary.to}
+                    </Text>
+
+                    <View
+                      style={[
+                        styles.directionCard,
+                        {
+                          backgroundColor: theme.bubbleBg,
+                          borderColor: theme.bubbleBorder,
+                        },
+                      ]}
+                    >
+                      <Text style={[styles.directionStat, { color: theme.title }]}>
+                        Straight-line distance:{" "}
+                        {routeSummary.straightLineDistanceMeters} m
+                      </Text>
+                      <Text style={[styles.directionStat, { color: theme.title }]}>
+                        Total walking distance: {routeSummary.totalDistanceMeters} m
+                      </Text>
+                    </View>
+
+                    {routeSummary.steps.map((step, index) => (
+                      <View
+                        key={`step-${index}`}
+                        style={[
+                          styles.directionCard,
+                          {
+                            backgroundColor: theme.bubbleBg,
+                            borderColor: theme.bubbleBorder,
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[styles.directionStepTitle, { color: theme.title }]}
+                        >
+                          {index === 0 ? "Start" : `Step ${index}`}
+                        </Text>
+                        <Text style={[styles.courseText, { color: theme.text }]}>
+                          {step.text}
+                        </Text>
+                        <Text style={[styles.courseText, { color: theme.subtext }]}>
+                          Walk {step.distanceMeters} m
+                        </Text>
+                      </View>
+                    ))}
+
+                    <Text
+                      style={[
+                        styles.arrivalText,
+                        { color: settings.darkMode ? "#86efac" : "#157347" },
+                      ]}
+                    >
+                      Arrived at destination
+                    </Text>
+                  </>
+                )}
+              </View>
+
+              <View
+                style={[
+                  styles.sideCard,
+                  {
+                    backgroundColor: theme.cardBg,
+                    borderColor: theme.cardBorder,
+                    marginTop: 16,
+                  },
+                ]}
+              >
+                <Text style={[styles.sideTitle, { color: theme.title }]}>
                   Saved Courses
                 </Text>
                 <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                  Sorted by start time. Tap a course to highlight its room. Tap
-                  it again to deselect it.
+                  Sorted by start time. Tap a course to highlight its room.
                 </Text>
 
                 {sortedCourses.length === 0 ? (
@@ -542,7 +769,11 @@ export default function HomeScreen() {
                 ) : (
                   sortedCourses.map((course) => {
                     const courseRoomId = roomIdFromSavedCourse(course.room);
-                    const isActive = selectedRoomId === courseRoomId;
+
+                    const isActive =
+                      selectedDestination?.floor === 1 &&
+                      selectedDestination.roomId === courseRoomId;
+
                     const colorSet = getCourseDayColorSet(
                       course.days,
                       settings.showCourseColors,
@@ -553,15 +784,13 @@ export default function HomeScreen() {
                       <Pressable
                         key={course.id}
                         onPress={() => handleSavedCoursePress(course)}
-                        style={({ hovered, pressed }) => [
+                        style={[
                           styles.courseCard,
                           {
                             backgroundColor: colorSet.backgroundColor,
                             borderColor: colorSet.borderColor,
                           },
                           isActive && styles.courseCardActive,
-                          hovered && styles.courseCardHover,
-                          pressed && styles.courseCardPressed,
                         ]}
                       >
                         <Text
@@ -767,11 +996,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  actionButtonActive: {
-    backgroundColor: "#fff6cc",
-    borderColor: "#d6ad2f",
-  },
-
   actionButtonText: {
     fontSize: 15,
     fontWeight: "800",
@@ -804,7 +1028,7 @@ const styles = StyleSheet.create({
   },
 
   mapBox: {
-    height: 560,
+    height: 680,
     borderRadius: 24,
     borderWidth: 2,
     overflow: "hidden",
@@ -813,26 +1037,6 @@ const styles = StyleSheet.create({
 
   mapScrollContent: {
     alignItems: "flex-start",
-  },
-
-  floorPlaceholder: {
-    flex: 1,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-
-  floorPlaceholderTitle: {
-    fontSize: 22,
-    fontWeight: "800",
-    marginBottom: 8,
-  },
-
-  floorPlaceholderText: {
-    fontSize: 15,
-    textAlign: "center",
-    lineHeight: 22,
   },
 
   sideTitle: {
@@ -856,19 +1060,6 @@ const styles = StyleSheet.create({
 
   courseCardActive: {
     borderColor: "#ff9f1a",
-    backgroundColor: "#fff2cc",
-  },
-
-  courseCardHover: {
-    shadowColor: "#f3c96a",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-
-  courseCardPressed: {
-    transform: [{ scale: 0.99 }],
   },
 
   courseTitle: {
@@ -880,5 +1071,30 @@ const styles = StyleSheet.create({
   courseText: {
     fontSize: 14,
     marginBottom: 2,
+  },
+
+  directionCard: {
+    borderWidth: 2,
+    borderRadius: 18,
+    padding: 12,
+    marginBottom: 10,
+  },
+
+  directionStepTitle: {
+    fontSize: 15,
+    fontWeight: "800",
+    marginBottom: 4,
+  },
+
+  directionStat: {
+    fontSize: 14,
+    fontWeight: "700",
+    marginBottom: 4,
+  },
+
+  arrivalText: {
+    fontSize: 16,
+    fontWeight: "800",
+    marginTop: 4,
   },
 });
