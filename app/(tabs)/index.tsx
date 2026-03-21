@@ -1,6 +1,12 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import { MAP_H, MAP_W, ROOMS, TYPES } from "@/data/floorMapData";
+import {
+  appThemes,
+  defaultSettings,
+  loadUserSettings,
+  UserSettings,
+} from "@/utils/appSettings";
 import { getCourseDayColorSet } from "@/utils/courseColors";
 import { findRoute } from "@/utils/pathfinding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,6 +45,9 @@ export default function HomeScreen() {
   const [chooseLocationMode, setChooseLocationMode] = useState(false);
   const [zoom, setZoom] = useState(0.58);
   const [selectedFloor, setSelectedFloor] = useState<1 | 2>(1);
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
   const loadSavedCourses = useCallback(async () => {
     try {
@@ -53,14 +62,21 @@ export default function HomeScreen() {
     }
   }, []);
 
+  const loadSettings = useCallback(async () => {
+    const userSettings = await loadUserSettings();
+    setSettings(userSettings);
+  }, []);
+
   useEffect(() => {
     loadSavedCourses();
-  }, [loadSavedCourses]);
+    loadSettings();
+  }, [loadSavedCourses, loadSettings]);
 
   useFocusEffect(
     useCallback(() => {
       loadSavedCourses();
-    }, [loadSavedCourses])
+      loadSettings();
+    }, [loadSavedCourses, loadSettings])
   );
 
   const sortedCourses = useMemo(() => {
@@ -156,24 +172,44 @@ export default function HomeScreen() {
   const mapHeight = MAP_H * zoom;
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.background}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TopTabs />
+          <TopTabs settings={settings} />
 
-          <View style={styles.titleCard}>
-            <Text style={styles.title}>UT Campus Compass</Text>
-            <Text style={styles.subtitle}>
+          <View
+            style={[
+              styles.titleCard,
+              {
+                backgroundColor: theme.headerBg,
+                borderColor: theme.headerBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.title, { color: theme.headerTitle }]}>
+              UT Campus Compass
+            </Text>
+            <Text style={[styles.subtitle, { color: theme.headerText }]}>
               Pick your location, then choose a destination room or saved course.
             </Text>
           </View>
 
           <View style={styles.mainGrid}>
             <View style={styles.mapSection}>
-              <View style={styles.mainCard}>
+              <View
+                style={[
+                  styles.mainCard,
+                  {
+                    backgroundColor: theme.cardBg,
+                    borderColor: theme.cardBorder,
+                  },
+                ]}
+              >
                 <View style={styles.mapHeaderRow}>
-                  <Text style={styles.cardTitle}>Map Display</Text>
-                  <Text style={styles.cardText}>
+                  <Text style={[styles.cardTitle, { color: theme.title }]}>
+                    Map Display
+                  </Text>
+                  <Text style={[styles.cardText, { color: theme.text }]}>
                     Tap “Set My Location,” then tap a room. After that, tap any
                     destination room or a saved course.
                   </Text>
@@ -184,14 +220,21 @@ export default function HomeScreen() {
                     <Pressable
                       style={[
                         styles.floorButton,
-                        selectedFloor === 1 && styles.floorButtonActive,
+                        {
+                          backgroundColor: theme.inputBg,
+                          borderColor: theme.inputBorder,
+                        },
+                        selectedFloor === 1 && {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
                       ]}
                       onPress={() => setSelectedFloor(1)}
                     >
                       <Text
                         style={[
                           styles.floorButtonText,
-                          selectedFloor === 1 && styles.floorButtonTextActive,
+                          { color: selectedFloor === 1 ? theme.buttonText : theme.text },
                         ]}
                       >
                         1st Floor
@@ -201,14 +244,21 @@ export default function HomeScreen() {
                     <Pressable
                       style={[
                         styles.floorButton,
-                        selectedFloor === 2 && styles.floorButtonActive,
+                        {
+                          backgroundColor: theme.inputBg,
+                          borderColor: theme.inputBorder,
+                        },
+                        selectedFloor === 2 && {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
                       ]}
                       onPress={() => setSelectedFloor(2)}
                     >
                       <Text
                         style={[
                           styles.floorButtonText,
-                          selectedFloor === 2 && styles.floorButtonTextActive,
+                          { color: selectedFloor === 2 ? theme.buttonText : theme.text },
                         ]}
                       >
                         2nd Floor
@@ -217,16 +267,49 @@ export default function HomeScreen() {
                   </View>
 
                   <View style={styles.zoomControls}>
-                    <Pressable style={styles.smallButton} onPress={zoomOut}>
-                      <Text style={styles.smallButtonText}>−</Text>
+                    <Pressable
+                      style={[
+                        styles.smallButton,
+                        {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
+                      ]}
+                      onPress={zoomOut}
+                    >
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                        −
+                      </Text>
                     </Pressable>
 
-                    <Pressable style={styles.smallButton} onPress={resetView}>
-                      <Text style={styles.smallButtonText}>Reset View</Text>
+                    <Pressable
+                      style={[
+                        styles.smallButton,
+                        {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
+                      ]}
+                      onPress={resetView}
+                    >
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                        Reset View
+                      </Text>
                     </Pressable>
 
-                    <Pressable style={styles.smallButton} onPress={zoomIn}>
-                      <Text style={styles.smallButtonText}>＋</Text>
+                    <Pressable
+                      style={[
+                        styles.smallButton,
+                        {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
+                      ]}
+                      onPress={zoomIn}
+                    >
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>
+                        ＋
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -235,11 +318,14 @@ export default function HomeScreen() {
                   <Pressable
                     style={[
                       styles.actionButton,
-                      chooseLocationMode && styles.actionButtonActive,
+                      {
+                        backgroundColor: theme.buttonBg,
+                        borderColor: theme.buttonBorder,
+                      },
                     ]}
                     onPress={() => setChooseLocationMode(!chooseLocationMode)}
                   >
-                    <Text style={styles.actionButtonText}>
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>
                       {chooseLocationMode
                         ? "Tap a room to set location"
                         : currentLocationRoomId
@@ -248,24 +334,55 @@ export default function HomeScreen() {
                     </Text>
                   </Pressable>
 
-                  <Pressable style={styles.actionButton} onPress={clearRoute}>
-                    <Text style={styles.actionButtonText}>Clear Route</Text>
+                  <Pressable
+                    style={[
+                      styles.actionButton,
+                      {
+                        backgroundColor: theme.buttonBg,
+                        borderColor: theme.buttonBorder,
+                      },
+                    ]}
+                    onPress={clearRoute}
+                  >
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>
+                      Clear Route
+                    </Text>
                   </Pressable>
                 </View>
 
                 <View style={styles.infoWrap}>
-                  <View style={styles.infoBubble}>
-                    <Text style={styles.infoLabel}>Current Location</Text>
-                    <Text style={styles.infoValue}>
+                  <View
+                    style={[
+                      styles.infoBubble,
+                      {
+                        backgroundColor: theme.infoBg,
+                        borderColor: theme.infoBorder,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>
+                      Current Location
+                    </Text>
+                    <Text style={[styles.infoValue, { color: theme.infoText }]}>
                       {currentLocationRoom
                         ? `${currentLocationRoom.id} — ${currentLocationRoom.name}`
                         : "Not chosen yet"}
                     </Text>
                   </View>
 
-                  <View style={styles.infoBubble}>
-                    <Text style={styles.infoLabel}>Destination</Text>
-                    <Text style={styles.infoValue}>
+                  <View
+                    style={[
+                      styles.infoBubble,
+                      {
+                        backgroundColor: theme.infoBg,
+                        borderColor: theme.infoBorder,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>
+                      Destination
+                    </Text>
+                    <Text style={[styles.infoValue, { color: theme.infoText }]}>
                       {selectedRoom
                         ? `${selectedRoom.id} — ${selectedRoom.name}`
                         : "Not chosen yet"}
@@ -273,7 +390,15 @@ export default function HomeScreen() {
                   </View>
                 </View>
 
-                <View style={styles.mapBox}>
+                <View
+                  style={[
+                    styles.mapBox,
+                    {
+                      backgroundColor: theme.inputBg,
+                      borderColor: theme.inputBorder,
+                    },
+                  ]}
+                >
                   {selectedFloor === 1 ? (
                     <ScrollView
                       horizontal
@@ -291,7 +416,7 @@ export default function HomeScreen() {
                             y={0}
                             width={MAP_W}
                             height={MAP_H}
-                            fill="#f4efe6"
+                            fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
                           />
 
                           {routePoints &&
@@ -304,7 +429,7 @@ export default function HomeScreen() {
                                   y1={point.y}
                                   x2={nextPoint.x}
                                   y2={nextPoint.y}
-                                  stroke="#1e64d0"
+                                  stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
                                   strokeWidth={8}
                                   strokeLinecap="round"
                                 />
@@ -369,10 +494,10 @@ export default function HomeScreen() {
                     </ScrollView>
                   ) : (
                     <View style={styles.floorPlaceholder}>
-                      <Text style={styles.floorPlaceholderTitle}>
+                      <Text style={[styles.floorPlaceholderTitle, { color: theme.title }]}>
                         2nd Floor Coming Next
                       </Text>
-                      <Text style={styles.floorPlaceholderText}>
+                      <Text style={[styles.floorPlaceholderText, { color: theme.text }]}>
                         Later, this floor toggle can load second-floor room data
                         and highlight that room automatically.
                       </Text>
@@ -383,22 +508,46 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.sideSection}>
-              <View style={styles.sideCard}>
-                <Text style={styles.sideTitle}>Saved Courses</Text>
-                <Text style={styles.sideSubtitle}>
+              <View
+                style={[
+                  styles.sideCard,
+                  {
+                    backgroundColor: theme.cardBg,
+                    borderColor: theme.cardBorder,
+                  },
+                ]}
+              >
+                <Text style={[styles.sideTitle, { color: theme.title }]}>
+                  Saved Courses
+                </Text>
+                <Text style={[styles.sideSubtitle, { color: theme.text }]}>
                   Sorted by start time. Tap a course to highlight its room. Tap
                   it again to deselect it.
                 </Text>
 
                 {sortedCourses.length === 0 ? (
-                  <View style={styles.courseCard}>
-                    <Text style={styles.courseText}>No saved courses yet.</Text>
+                  <View
+                    style={[
+                      styles.courseCard,
+                      {
+                        backgroundColor: theme.bubbleBg,
+                        borderColor: theme.bubbleBorder,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.courseText, { color: theme.subtext }]}>
+                      No saved courses yet.
+                    </Text>
                   </View>
                 ) : (
                   sortedCourses.map((course) => {
                     const courseRoomId = roomIdFromSavedCourse(course.room);
                     const isActive = selectedRoomId === courseRoomId;
-                    const colorSet = getCourseDayColorSet(course.days);
+                    const colorSet = getCourseDayColorSet(
+                      course.days,
+                      settings.showCourseColors,
+                      settings.darkMode
+                    );
 
                     return (
                       <Pressable
@@ -487,12 +636,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   background: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   scrollContent: {
@@ -501,9 +648,7 @@ const styles = StyleSheet.create({
   },
 
   titleCard: {
-    backgroundColor: "#dcecff",
     borderWidth: 2,
-    borderColor: "#c0d7f7",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
@@ -512,13 +657,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 6,
   },
 
   subtitle: {
     fontSize: 15,
-    color: "#35527b",
     lineHeight: 22,
   },
 
@@ -535,17 +678,13 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
   },
 
   sideCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
   },
@@ -557,13 +696,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 8,
   },
 
   cardText: {
     fontSize: 15,
-    color: "#516b91",
     lineHeight: 22,
   },
 
@@ -582,27 +719,15 @@ const styles = StyleSheet.create({
   },
 
   floorButton: {
-    backgroundColor: "#eef4ff",
     borderWidth: 2,
-    borderColor: "#c2d6f5",
     borderRadius: 999,
     paddingVertical: 10,
     paddingHorizontal: 16,
   },
 
-  floorButtonActive: {
-    backgroundColor: "#dcecff",
-    borderColor: "#234a84",
-  },
-
   floorButtonText: {
-    color: "#54709b",
     fontWeight: "800",
     fontSize: 14,
-  },
-
-  floorButtonTextActive: {
-    color: "#183a6b",
   },
 
   zoomControls: {
@@ -614,9 +739,7 @@ const styles = StyleSheet.create({
   },
 
   smallButton: {
-    backgroundColor: "#dcecff",
     borderWidth: 2,
-    borderColor: "#234a84",
     borderRadius: 999,
     minWidth: 52,
     paddingVertical: 10,
@@ -625,7 +748,6 @@ const styles = StyleSheet.create({
   },
 
   smallButtonText: {
-    color: "#183a6b",
     fontWeight: "800",
     fontSize: 14,
   },
@@ -638,9 +760,7 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    backgroundColor: "#dcecff",
     borderWidth: 2,
-    borderColor: "#234a84",
     borderRadius: 999,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -653,7 +773,6 @@ const styles = StyleSheet.create({
   },
 
   actionButtonText: {
-    color: "#183a6b",
     fontSize: 15,
     fontWeight: "800",
   },
@@ -666,9 +785,7 @@ const styles = StyleSheet.create({
   },
 
   infoBubble: {
-    backgroundColor: "#fff9eb",
     borderWidth: 2,
-    borderColor: "#f1e2b5",
     borderRadius: 18,
     padding: 12,
     minWidth: 220,
@@ -677,23 +794,19 @@ const styles = StyleSheet.create({
   infoLabel: {
     fontSize: 12,
     fontWeight: "800",
-    color: "#8b6f19",
     marginBottom: 4,
     textTransform: "uppercase",
   },
 
   infoValue: {
     fontSize: 14,
-    color: "#6f5b19",
     fontWeight: "700",
   },
 
   mapBox: {
     height: 560,
     borderRadius: 24,
-    backgroundColor: "#fff8e8",
     borderWidth: 2,
-    borderColor: "#f0dfb2",
     overflow: "hidden",
     padding: 10,
   },
@@ -705,9 +818,6 @@ const styles = StyleSheet.create({
   floorPlaceholder: {
     flex: 1,
     borderRadius: 20,
-    backgroundColor: "#eef4ff",
-    borderWidth: 2,
-    borderColor: "#c2d6f5",
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
@@ -716,13 +826,11 @@ const styles = StyleSheet.create({
   floorPlaceholderTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 8,
   },
 
   floorPlaceholderText: {
     fontSize: 15,
-    color: "#4f6f9a",
     textAlign: "center",
     lineHeight: 22,
   },
@@ -730,13 +838,11 @@ const styles = StyleSheet.create({
   sideTitle: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 6,
   },
 
   sideSubtitle: {
     fontSize: 14,
-    color: "#516b91",
     lineHeight: 20,
     marginBottom: 14,
   },

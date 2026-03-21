@@ -1,5 +1,13 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
+import {
+  appThemes,
+  defaultSettings,
+  loadUserSettings,
+  saveUserSettings,
+  SETTINGS_KEY,
+  UserSettings,
+} from "@/utils/appSettings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
@@ -13,61 +21,30 @@ import {
   View,
 } from "react-native";
 
-const SETTINGS_KEY = "user_settings";
 const SAVED_COURSES_KEY = "saved_courses";
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
-
-type UserSettings = {
-  darkMode: boolean;
-  showCourseColors: boolean;
-};
-
-const defaultSettings: UserSettings = {
-  darkMode: false,
-  showCourseColors: true,
-};
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
   const [loaded, setLoaded] = useState(false);
 
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
+
   useEffect(() => {
+    const loadSettings = async () => {
+      const saved = await loadUserSettings();
+      setSettings(saved);
+      setLoaded(true);
+    };
+
     loadSettings();
   }, []);
 
   useEffect(() => {
     if (loaded) {
-      saveSettings(settings);
+      saveUserSettings(settings);
     }
   }, [settings, loaded]);
-
-  const loadSettings = async () => {
-    try {
-      const storedSettings = await AsyncStorage.getItem(SETTINGS_KEY);
-
-      if (storedSettings) {
-        setSettings({
-          ...defaultSettings,
-          ...JSON.parse(storedSettings),
-        });
-      } else {
-        setSettings(defaultSettings);
-      }
-    } catch (error) {
-      console.log("Could not load settings:", error);
-      setSettings(defaultSettings);
-    } finally {
-      setLoaded(true);
-    }
-  };
-
-  const saveSettings = async (newSettings: UserSettings) => {
-    try {
-      await AsyncStorage.setItem(SETTINGS_KEY, JSON.stringify(newSettings));
-    } catch (error) {
-      console.log("Could not save settings:", error);
-    }
-  };
 
   const updateSetting = (key: keyof UserSettings, value: boolean) => {
     setSettings((prev) => ({
@@ -116,11 +93,23 @@ export default function SettingsScreen() {
     value: boolean;
     onValueChange: (value: boolean) => void;
   }) => (
-    <View style={styles.settingBubble}>
+    <View
+      style={[
+        styles.settingBubble,
+        {
+          backgroundColor: theme.softCardBg,
+          borderColor: theme.softCardBorder,
+        },
+      ]}
+    >
       <View style={styles.settingRow}>
         <View style={styles.settingTextWrap}>
-          <Text style={styles.settingTitle}>{title}</Text>
-          <Text style={styles.settingText}>{description}</Text>
+          <Text style={[styles.settingTitle, { color: theme.softTitle }]}>
+            {title}
+          </Text>
+          <Text style={[styles.settingText, { color: theme.softText }]}>
+            {description}
+          </Text>
         </View>
         <Switch value={value} onValueChange={onValueChange} />
       </View>
@@ -128,22 +117,40 @@ export default function SettingsScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.background}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TopTabs />
+          <TopTabs settings={settings} />
 
-          <View style={styles.headerCard}>
-            <Text style={styles.headerTitle}>Settings</Text>
-            <Text style={styles.headerText}>
+          <View
+            style={[
+              styles.headerCard,
+              {
+                backgroundColor: theme.headerBg,
+                borderColor: theme.headerBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.headerTitle, { color: theme.headerTitle }]}>
+              Settings
+            </Text>
+            <Text style={[styles.headerText, { color: theme.headerText }]}>
               These settings are saved only on this device for this user.
             </Text>
           </View>
 
-          <View style={styles.mainCard}>
+          <View
+            style={[
+              styles.mainCard,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+          >
             <SettingRow
               title="Dark Mode"
-              description="Switch between light mode and dark mode later in the app."
+              description="Switch the app between light mode and dark mode."
               value={settings.darkMode}
               onValueChange={(value) => updateSetting("darkMode", value)}
             />
@@ -155,15 +162,36 @@ export default function SettingsScreen() {
               onValueChange={(value) => updateSetting("showCourseColors", value)}
             />
 
-            <View style={styles.infoBubble}>
-              <Text style={styles.infoText}>
+            <View
+              style={[
+                styles.infoBubble,
+                {
+                  backgroundColor: theme.bubbleBg,
+                  borderColor: theme.bubbleBorder,
+                },
+              ]}
+            >
+              <Text style={[styles.infoText, { color: theme.subtext }]}>
                 Your settings, courses, and selected professor are stored locally
                 on this device only.
               </Text>
             </View>
 
-            <Pressable style={styles.dangerButton} onPress={resetAllLocalData}>
-              <Text style={styles.dangerButtonText}>Reset My Local Data</Text>
+            <Pressable
+              style={[
+                styles.dangerButton,
+                {
+                  backgroundColor: theme.dangerBg,
+                  borderColor: theme.dangerBorder,
+                },
+              ]}
+              onPress={resetAllLocalData}
+            >
+              <Text
+                style={[styles.dangerButtonText, { color: theme.dangerText }]}
+              >
+                Reset My Local Data
+              </Text>
             </Pressable>
           </View>
         </ScrollView>
@@ -177,12 +205,10 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   background: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   scrollContent: {
@@ -191,9 +217,7 @@ const styles = StyleSheet.create({
   },
 
   headerCard: {
-    backgroundColor: "#efe9ff",
     borderWidth: 2,
-    borderColor: "#ddd2ff",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
@@ -202,28 +226,22 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#4d3c87",
     marginBottom: 6,
   },
 
   headerText: {
     fontSize: 15,
-    color: "#6b5c98",
     lineHeight: 22,
   },
 
   mainCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
   },
 
   settingBubble: {
-    backgroundColor: "#f8f5ff",
     borderWidth: 2,
-    borderColor: "#e2daf8",
     borderRadius: 22,
     padding: 16,
     marginBottom: 14,
@@ -243,20 +261,16 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#4d3c87",
     marginBottom: 6,
   },
 
   settingText: {
     fontSize: 14,
-    color: "#6b5c98",
     lineHeight: 21,
   },
 
   infoBubble: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     padding: 14,
     marginBottom: 14,
@@ -264,21 +278,17 @@ const styles = StyleSheet.create({
 
   infoText: {
     fontSize: 14,
-    color: "#5e7698",
     lineHeight: 21,
   },
 
   dangerButton: {
-    backgroundColor: "#ffe6e6",
     borderWidth: 2,
-    borderColor: "#e2aaaa",
     borderRadius: 14,
     paddingVertical: 12,
     alignItems: "center",
   },
 
   dangerButtonText: {
-    color: "#8a2f2f",
     fontWeight: "800",
     fontSize: 15,
   },

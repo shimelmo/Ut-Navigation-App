@@ -1,9 +1,19 @@
+import {
+  appThemes,
+  defaultSettings,
+  UserSettings,
+} from "@/utils/appSettings";
 import { router, usePathname } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function TopTabs() {
+type TopTabsProps = {
+  settings?: UserSettings;
+};
+
+export default function TopTabs({ settings = defaultSettings }: TopTabsProps) {
   const pathname = usePathname();
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
   const tabs = [
     { label: "Home", path: "/" },
@@ -13,7 +23,14 @@ export default function TopTabs() {
   ];
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.screenBg,
+        },
+      ]}
+    >
       {tabs.map((tab) => {
         const isActive = pathname === tab.path;
 
@@ -21,9 +38,27 @@ export default function TopTabs() {
           <Pressable
             key={tab.path}
             onPress={() => router.push(tab.path as any)}
-            style={[styles.tab, isActive && styles.activeTab]}
+            style={[
+              styles.tab,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+              isActive && {
+                backgroundColor: theme.buttonBg,
+                borderColor: theme.buttonBorder,
+              },
+            ]}
           >
-            <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color: isActive ? theme.buttonText : theme.title,
+                },
+                isActive && styles.activeTabText,
+              ]}
+            >
               {tab.label}
             </Text>
           </Pressable>
@@ -40,28 +75,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     marginBottom: 18,
-    backgroundColor: "#edf4ff",
     paddingTop: 8,
   },
+
   tab: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d7e3f7",
     borderRadius: 999,
     paddingVertical: 12,
     paddingHorizontal: 16,
     minWidth: 140,
     alignItems: "center",
   },
-  activeTab: {
-    backgroundColor: "#dcecff",
-    borderColor: "#234a84",
-  },
+
   tabText: {
-    color: "#234a84",
     fontSize: 15,
     fontWeight: "600",
   },
+
   activeTabText: {
     fontWeight: "800",
   },

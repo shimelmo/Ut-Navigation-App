@@ -1,4 +1,26 @@
-export const getCourseDayColorSet = (days: string[]) => {
+export const getCourseDayColorSet = (
+  days: string[],
+  useCourseColors: boolean = true,
+  darkMode: boolean = false
+) => {
+  if (!useCourseColors) {
+    if (darkMode) {
+      return {
+        backgroundColor: "#1f2937",
+        borderColor: "#334155",
+        titleColor: "#e5eefc",
+        textColor: "#cbd5e1",
+      };
+    }
+
+    return {
+      backgroundColor: "#fff9eb",
+      borderColor: "#f1e2b5",
+      titleColor: "#5d4c16",
+      textColor: "#735f22",
+    };
+  }
+
   const normalizedDays = (days || []).map((day) => day.toLowerCase().trim());
 
   const hasMonday = normalizedDays.includes("monday");
@@ -8,6 +30,15 @@ export const getCourseDayColorSet = (days: string[]) => {
   const hasFriday = normalizedDays.includes("friday");
 
   if (hasMonday || hasWednesday) {
+    if (darkMode) {
+      return {
+        backgroundColor: "#1e3a5f",
+        borderColor: "#3b82f6",
+        titleColor: "#dbeafe",
+        textColor: "#bfdbfe",
+      };
+    }
+
     return {
       backgroundColor: "#eef5ff",
       borderColor: "#bcd4ff",
@@ -17,6 +48,15 @@ export const getCourseDayColorSet = (days: string[]) => {
   }
 
   if (hasTuesday || hasThursday) {
+    if (darkMode) {
+      return {
+        backgroundColor: "#5a3418",
+        borderColor: "#f59e0b",
+        titleColor: "#ffedd5",
+        textColor: "#fed7aa",
+      };
+    }
+
     return {
       backgroundColor: "#fff3e8",
       borderColor: "#f5c89d",
@@ -26,11 +66,29 @@ export const getCourseDayColorSet = (days: string[]) => {
   }
 
   if (hasFriday) {
+    if (darkMode) {
+      return {
+        backgroundColor: "#153b2d",
+        borderColor: "#22c55e",
+        titleColor: "#dcfce7",
+        textColor: "#bbf7d0",
+      };
+    }
+
     return {
       backgroundColor: "#eefbf0",
       borderColor: "#b9e2bf",
       titleColor: "#2d6a39",
       textColor: "#426a49",
+    };
+  }
+
+  if (darkMode) {
+    return {
+      backgroundColor: "#1f2937",
+      borderColor: "#334155",
+      titleColor: "#e5eefc",
+      textColor: "#cbd5e1",
     };
   }
 
