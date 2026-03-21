@@ -1,6 +1,12 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import database from "@/data/database.json";
+import {
+  appThemes,
+  defaultSettings,
+  loadUserSettings,
+  UserSettings,
+} from "@/utils/appSettings";
 import { getCourseDayColorSet } from "@/utils/courseColors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -94,6 +100,9 @@ export default function EnterCourseScreen() {
   const [course, setCourse] = useState("");
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
   const [matchingSections, setMatchingSections] = useState<DatabaseCourse[]>([]);
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
   const loadSavedCourses = useCallback(async () => {
     try {
@@ -108,14 +117,21 @@ export default function EnterCourseScreen() {
     }
   }, []);
 
+  const loadSettings = useCallback(async () => {
+    const userSettings = await loadUserSettings();
+    setSettings(userSettings);
+  }, []);
+
   useEffect(() => {
     loadSavedCourses();
-  }, [loadSavedCourses]);
+    loadSettings();
+  }, [loadSavedCourses, loadSettings]);
 
   useFocusEffect(
     useCallback(() => {
       loadSavedCourses();
-    }, [loadSavedCourses])
+      loadSettings();
+    }, [loadSavedCourses, loadSettings])
   );
 
   useEffect(() => {
@@ -457,32 +473,70 @@ export default function EnterCourseScreen() {
     );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.background}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TopTabs />
+          <TopTabs settings={settings} />
 
-          <View style={styles.headerCard}>
-            <Text style={styles.headerTitle}>Enter Courses</Text>
-            <Text style={styles.headerText}>
+          <View
+            style={[
+              styles.headerCard,
+              {
+                backgroundColor: theme.headerBg,
+                borderColor: theme.headerBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.headerTitle, { color: theme.headerTitle }]}>
+              Enter Courses
+            </Text>
+            <Text style={[styles.headerText, { color: theme.headerText }]}>
               Add your class info so the map can load what matters to you.
             </Text>
           </View>
 
-          <View style={styles.mainCard}>
-            <Text style={styles.helperText}>
+          <View
+            style={[
+              styles.mainCard,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.helperText, { color: theme.text }]}>
               You can type professor first or course first.
             </Text>
 
-            <Pressable style={styles.resetButton} onPress={resetMyLocalData}>
-              <Text style={styles.resetButtonText}>Reset My Local Data</Text>
+            <Pressable
+              style={[
+                styles.resetButton,
+                {
+                  backgroundColor: theme.dangerBg,
+                  borderColor: theme.dangerBorder,
+                },
+              ]}
+              onPress={resetMyLocalData}
+            >
+              <Text style={[styles.resetButtonText, { color: theme.dangerText }]}>
+                Reset My Local Data
+              </Text>
             </Pressable>
 
-            <Text style={styles.label}>Professor Name</Text>
+            <Text style={[styles.label, { color: theme.title }]}>
+              Professor Name
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.inputText,
+                },
+              ]}
               placeholder="Enter professor last name or full name"
-              placeholderTextColor="#7f90aa"
+              placeholderTextColor={theme.subtext}
               value={professor}
               onChangeText={setProfessor}
             />
@@ -490,24 +544,46 @@ export default function EnterCourseScreen() {
             {uniqueProfessorSuggestions.length > 0 &&
               (professor.trim() !== "" || course.trim() !== "") &&
               !exactProfessorChosen && (
-                <View style={styles.searchResultsCard}>
+                <View
+                  style={[
+                    styles.searchResultsCard,
+                    {
+                      backgroundColor: theme.bubbleBg,
+                      borderColor: theme.bubbleBorder,
+                    },
+                  ]}
+                >
                   {uniqueProfessorSuggestions.slice(0, 8).map((name) => (
                     <Pressable
                       key={name}
-                      style={styles.searchResultButton}
+                      style={[
+                        styles.searchResultButton,
+                        { borderBottomColor: theme.cardBorder },
+                      ]}
                       onPress={() => chooseProfessorFromDropdown(name)}
                     >
-                      <Text style={styles.searchResultText}>{name}</Text>
+                      <Text style={[styles.searchResultText, { color: theme.title }]}>
+                        {name}
+                      </Text>
                     </Pressable>
                   ))}
                 </View>
               )}
 
-            <Text style={styles.label}>Course Number</Text>
+            <Text style={[styles.label, { color: theme.title }]}>
+              Course Number
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.inputText,
+                },
+              ]}
               placeholder="Enter 1100 or CSET 1100"
-              placeholderTextColor="#7f90aa"
+              placeholderTextColor={theme.subtext}
               value={course}
               onChangeText={setCourse}
             />
@@ -515,65 +591,122 @@ export default function EnterCourseScreen() {
             {uniqueCourseSuggestions.length > 0 &&
               (course.trim() !== "" || professor.trim() !== "") &&
               !exactCourseChosen && (
-                <View style={styles.searchResultsCard}>
+                <View
+                  style={[
+                    styles.searchResultsCard,
+                    {
+                      backgroundColor: theme.bubbleBg,
+                      borderColor: theme.bubbleBorder,
+                    },
+                  ]}
+                >
                   {uniqueCourseSuggestions.slice(0, 8).map((item) => (
                     <Pressable
                       key={`${item.subject}-${item.courseNumber}`}
-                      style={styles.searchResultButton}
+                      style={[
+                        styles.searchResultButton,
+                        { borderBottomColor: theme.cardBorder },
+                      ]}
                       onPress={() => chooseCourseFromDropdown(item)}
                     >
-                      <Text style={styles.searchResultText}>{item.label}</Text>
+                      <Text style={[styles.searchResultText, { color: theme.title }]}>
+                        {item.label}
+                      </Text>
                     </Pressable>
                   ))}
                 </View>
               )}
 
-            <Pressable style={styles.addButton} onPress={addCourse}>
-              <Text style={styles.addButtonText}>Add Course</Text>
+            <Pressable
+              style={[
+                styles.addButton,
+                {
+                  backgroundColor: theme.buttonBg,
+                  borderColor: theme.buttonBorder,
+                },
+              ]}
+              onPress={addCourse}
+            >
+              <Text style={[styles.addButtonText, { color: theme.buttonText }]}>
+                Add Course
+              </Text>
             </Pressable>
 
             {matchingSections.length > 1 && (
               <>
-                <Text style={styles.sectionTitle}>Choose a Section</Text>
+                <Text style={[styles.sectionTitle, { color: theme.title }]}>
+                  Choose a Section
+                </Text>
 
                 {matchingSections.map((item) => (
                   <Pressable
                     key={`${item.subject}-${item.courseNumber}-${item.section}-${item.beginTime}`}
-                    style={styles.matchCard}
+                    style={[
+                      styles.matchCard,
+                      {
+                        backgroundColor: theme.bubbleBg,
+                        borderColor: theme.bubbleBorder,
+                      },
+                    ]}
                     onPress={() => saveChosenCourse(item)}
                   >
-                    <Text style={styles.matchTitle}>
+                    <Text style={[styles.matchTitle, { color: theme.title }]}>
                       {item.subject} {item.courseNumber} - Section {item.section}
                     </Text>
 
-                    <Text style={styles.matchText}>
+                    <Text style={[styles.matchText, { color: theme.text }]}>
                       Professor: {item.professorFullName}
                     </Text>
 
-                    <Text style={styles.matchText}>Building: {item.building}</Text>
-                    <Text style={styles.matchText}>Room: {item.room}</Text>
-                    <Text style={styles.matchText}>
+                    <Text style={[styles.matchText, { color: theme.text }]}>
+                      Building: {item.building}
+                    </Text>
+
+                    <Text style={[styles.matchText, { color: theme.text }]}>
+                      Room: {item.room}
+                    </Text>
+
+                    <Text style={[styles.matchText, { color: theme.text }]}>
                       Days: {formatDays(item.days)}
                     </Text>
-                    <Text style={styles.matchText}>
+
+                    <Text style={[styles.matchText, { color: theme.text }]}>
                       Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
                     </Text>
 
-                    <Text style={styles.tapText}>Tap to save this section</Text>
+                    <Text style={[styles.tapText, { color: theme.buttonText }]}>
+                      Tap to save this section
+                    </Text>
                   </Pressable>
                 ))}
               </>
             )}
 
-            <Text style={styles.sectionTitle}>Saved Courses</Text>
+            <Text style={[styles.sectionTitle, { color: theme.title }]}>
+              Saved Courses
+            </Text>
 
             {savedCourses.length === 0 ? (
-              <View style={styles.courseCard}>
-                <Text style={styles.courseText}>No saved courses yet.</Text>
+              <View
+                style={[
+                  styles.courseCard,
+                  {
+                    backgroundColor: theme.bubbleBg,
+                    borderColor: theme.bubbleBorder,
+                  },
+                ]}
+              >
+                <Text style={[styles.courseText, { color: theme.subtext }]}>
+                  No saved courses yet.
+                </Text>
               </View>
             ) : (
               savedCourses.map((item) => {
-                const colorSet = getCourseDayColorSet(item.days);
+                const colorSet = getCourseDayColorSet(
+                  item.days,
+                  settings.showCourseColors,
+                  settings.darkMode
+                );
 
                 return (
                   <View
@@ -620,10 +753,20 @@ export default function EnterCourseScreen() {
                     </Text>
 
                     <Pressable
-                      style={styles.deleteButton}
+                      style={[
+                        styles.deleteButton,
+                        {
+                          backgroundColor: theme.dangerBg,
+                          borderColor: theme.dangerBorder,
+                        },
+                      ]}
                       onPress={() => deleteCourse(item.id)}
                     >
-                      <Text style={styles.deleteButtonText}>Delete</Text>
+                      <Text
+                        style={[styles.deleteButtonText, { color: theme.dangerText }]}
+                      >
+                        Delete
+                      </Text>
                     </Pressable>
                   </View>
                 );
@@ -641,12 +784,10 @@ export default function EnterCourseScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   background: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   scrollContent: {
@@ -655,9 +796,7 @@ const styles = StyleSheet.create({
   },
 
   headerCard: {
-    backgroundColor: "#ffeef4",
     borderWidth: 2,
-    borderColor: "#f4d4e1",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
@@ -666,35 +805,28 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#7a2e58",
     marginBottom: 6,
   },
 
   headerText: {
     fontSize: 15,
-    color: "#8b4f71",
     lineHeight: 22,
   },
 
   mainCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
   },
 
   helperText: {
     fontSize: 14,
-    color: "#516b91",
     marginBottom: 10,
   },
 
   resetButton: {
     alignSelf: "flex-start",
-    backgroundColor: "#fff1f1",
     borderWidth: 1.5,
-    borderColor: "#e0a1a1",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -702,7 +834,6 @@ const styles = StyleSheet.create({
   },
 
   resetButtonText: {
-    color: "#8b3a3a",
     fontWeight: "700",
     fontSize: 13,
   },
@@ -710,27 +841,21 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#183a6b",
     marginBottom: 8,
     marginTop: 4,
   },
 
   input: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
     marginBottom: 12,
-    color: "#183a6b",
   },
 
   searchResultsCard: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     marginBottom: 14,
     overflow: "hidden",
@@ -740,19 +865,15 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderBottomWidth: 1,
-    borderBottomColor: "#e3ecfa",
   },
 
   searchResultText: {
     fontSize: 15,
-    color: "#234a84",
     fontWeight: "600",
   },
 
   addButton: {
-    backgroundColor: "#dcecff",
     borderWidth: 2,
-    borderColor: "#234a84",
     borderRadius: 999,
     paddingVertical: 13,
     alignItems: "center",
@@ -761,7 +882,6 @@ const styles = StyleSheet.create({
   },
 
   addButtonText: {
-    color: "#183a6b",
     fontSize: 16,
     fontWeight: "800",
   },
@@ -769,15 +889,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 12,
     marginTop: 8,
   },
 
   matchCard: {
-    backgroundColor: "#eef5ff",
     borderWidth: 2,
-    borderColor: "#bfd6ff",
     borderRadius: 20,
     padding: 14,
     marginBottom: 12,
@@ -786,13 +903,11 @@ const styles = StyleSheet.create({
   matchTitle: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 6,
   },
 
   matchText: {
     fontSize: 14,
-    color: "#35527d",
     marginBottom: 2,
   },
 
@@ -800,7 +915,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 13,
     fontWeight: "700",
-    color: "#234a84",
   },
 
   courseCard: {
@@ -824,16 +938,13 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 10,
     alignSelf: "flex-start",
-    backgroundColor: "#ffe2e2",
     borderWidth: 1.5,
-    borderColor: "#d98b8b",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
 
   deleteButtonText: {
-    color: "#8b3a3a",
     fontWeight: "700",
     fontSize: 13,
   },

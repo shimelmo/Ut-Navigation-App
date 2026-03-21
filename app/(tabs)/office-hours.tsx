@@ -1,6 +1,12 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import officeHoursData from "@/data/officeHours.json";
+import {
+  appThemes,
+  defaultSettings,
+  loadUserSettings,
+  UserSettings,
+} from "@/utils/appSettings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -95,6 +101,9 @@ export default function OfficeHoursScreen() {
   const [selectedDay, setSelectedDay] = useState("");
   const [hasLoadedProfessor, setHasLoadedProfessor] = useState(false);
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
   const loadPageData = useCallback(async () => {
     try {
@@ -131,14 +140,21 @@ export default function OfficeHoursScreen() {
     }
   }, [professorList]);
 
+  const loadSettings = useCallback(async () => {
+    const userSettings = await loadUserSettings();
+    setSettings(userSettings);
+  }, []);
+
   useEffect(() => {
     loadPageData();
-  }, [loadPageData]);
+    loadSettings();
+  }, [loadPageData, loadSettings]);
 
   useFocusEffect(
     useCallback(() => {
       loadPageData();
-    }, [loadPageData])
+      loadSettings();
+    }, [loadPageData, loadSettings])
   );
 
   const savedProfessorCards = useMemo(() => {
@@ -252,24 +268,52 @@ export default function OfficeHoursScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.background}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TopTabs />
+          <TopTabs settings={settings} />
 
-          <View style={styles.headerCard}>
-            <Text style={styles.headerTitle}>Office Hours</Text>
-            <Text style={styles.headerText}>
+          <View
+            style={[
+              styles.headerCard,
+              {
+                backgroundColor: theme.headerBg,
+                borderColor: theme.headerBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.headerTitle, { color: theme.headerTitle }]}>
+              Office Hours
+            </Text>
+            <Text style={[styles.headerText, { color: theme.headerText }]}>
               View office hours for professors from your confirmed courses, or search manually.
             </Text>
           </View>
 
-          <View style={styles.mainCard}>
-            <Text style={styles.sectionTitle}>Your Professors</Text>
+          <View
+            style={[
+              styles.mainCard,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.sectionTitle, { color: theme.title }]}>
+              Your Professors
+            </Text>
 
             {savedProfessorCards.length === 0 ? (
-              <View style={styles.emptyCard}>
-                <Text style={styles.emptyText}>
+              <View
+                style={[
+                  styles.emptyCard,
+                  {
+                    backgroundColor: theme.bubbleBg,
+                    borderColor: theme.bubbleBorder,
+                  },
+                ]}
+              >
+                <Text style={[styles.emptyText, { color: theme.subtext }]}>
                   No confirmed professors yet. Add courses in Enter Courses first,
                   and your professors will appear here automatically.
                 </Text>
@@ -287,13 +331,21 @@ export default function OfficeHoursScreen() {
                       key={displayName}
                       style={[
                         styles.savedProfessorButton,
-                        isActive && styles.savedProfessorButtonActive,
+                        {
+                          backgroundColor: theme.inputBg,
+                          borderColor: theme.inputBorder,
+                        },
+                        isActive && {
+                          backgroundColor: theme.buttonBg,
+                          borderColor: theme.buttonBorder,
+                        },
                       ]}
                       onPress={() => chooseProfessor(displayName)}
                     >
                       <Text
                         style={[
                           styles.savedProfessorButtonText,
+                          { color: isActive ? theme.buttonText : theme.title },
                           isActive && styles.savedProfessorButtonTextActive,
                         ]}
                       >
@@ -305,18 +357,35 @@ export default function OfficeHoursScreen() {
               </View>
             )}
 
-            <Text style={styles.sectionTitle}>Find a Professor</Text>
+            <Text style={[styles.sectionTitle, { color: theme.title }]}>
+              Find a Professor
+            </Text>
 
             <TextInput
-              style={styles.searchInput}
+              style={[
+                styles.searchInput,
+                {
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.inputText,
+                },
+              ]}
               placeholder="Type professor name..."
-              placeholderTextColor="#7b90ad"
+              placeholderTextColor={theme.subtext}
               value={searchText}
               onChangeText={setSearchText}
             />
 
             {searchText.trim() !== "" && (
-              <View style={styles.searchResultsCard}>
+              <View
+                style={[
+                  styles.searchResultsCard,
+                  {
+                    backgroundColor: theme.bubbleBg,
+                    borderColor: theme.bubbleBorder,
+                  },
+                ]}
+              >
                 {filteredProfessors.length > 0 ? (
                   filteredProfessors.slice(0, 8).map((professor) => {
                     const displayName = buildDisplayName(professor);
@@ -324,38 +393,61 @@ export default function OfficeHoursScreen() {
                     return (
                       <Pressable
                         key={displayName}
-                        style={styles.searchResultButton}
+                        style={[
+                          styles.searchResultButton,
+                          { borderBottomColor: theme.cardBorder },
+                        ]}
                         onPress={() => chooseProfessor(displayName)}
                       >
-                        <Text style={styles.searchResultText}>
+                        <Text style={[styles.searchResultText, { color: theme.title }]}>
                           {displayName}
                         </Text>
                       </Pressable>
                     );
                   })
                 ) : (
-                  <Text style={styles.noResultsText}>No professors found.</Text>
+                  <Text style={[styles.noResultsText, { color: theme.subtext }]}>
+                    No professors found.
+                  </Text>
                 )}
               </View>
             )}
 
             {hasLoadedProfessor && selectedProfessor && (
               <>
-                <Text style={styles.sectionTitle}>Selected Professor</Text>
+                <Text style={[styles.sectionTitle, { color: theme.title }]}>
+                  Selected Professor
+                </Text>
 
-                <View style={styles.profCard}>
-                  <View style={styles.avatarCircle}>
+                <View
+                  style={[
+                    styles.profCard,
+                    {
+                      backgroundColor: theme.infoBg,
+                      borderColor: theme.infoBorder,
+                    },
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.avatarCircle,
+                      {
+                        backgroundColor: theme.cardBg,
+                        borderColor: theme.cardBorder,
+                      },
+                    ]}
+                  >
                     <Text style={styles.avatarText}>👩‍🏫</Text>
                   </View>
 
                   <View style={styles.profInfo}>
-                    <Text style={styles.profName}>
+                    <Text style={[styles.profName, { color: theme.infoTitle }]}>
                       {buildDisplayName(selectedProfessor)}
                     </Text>
-                    <Text style={styles.profDetail}>
+                    <Text style={[styles.profDetail, { color: theme.infoText }]}>
                       Building: {selectedProfessor.building}
                     </Text>
-                    <Text style={styles.profDetail}>
+                    <Text style={[styles.profDetail, { color: theme.infoText }]}>
                       Room: {selectedProfessor.room}
                     </Text>
                   </View>
@@ -363,7 +455,9 @@ export default function OfficeHoursScreen() {
 
                 {availableDays.length > 0 && (
                   <>
-                    <Text style={styles.sectionTitle}>Available Days</Text>
+                    <Text style={[styles.sectionTitle, { color: theme.title }]}>
+                      Available Days
+                    </Text>
 
                     <View style={styles.dayWrap}>
                       {availableDays.map((day) => {
@@ -374,13 +468,21 @@ export default function OfficeHoursScreen() {
                             key={day}
                             style={[
                               styles.dayButton,
-                              isActive && styles.activeDayButton,
+                              {
+                                backgroundColor: theme.inputBg,
+                                borderColor: theme.inputBorder,
+                              },
+                              isActive && {
+                                backgroundColor: theme.buttonBg,
+                                borderColor: theme.buttonBorder,
+                              },
                             ]}
                             onPress={() => setSelectedDay(day)}
                           >
                             <Text
                               style={[
                                 styles.dayText,
+                                { color: isActive ? theme.buttonText : theme.title },
                                 isActive && styles.activeDayText,
                               ]}
                             >
@@ -391,16 +493,28 @@ export default function OfficeHoursScreen() {
                       })}
                     </View>
 
-                    <View style={styles.hoursCard}>
-                      <Text style={styles.hoursTitle}>{activeDay}</Text>
-                      <Text style={styles.hoursTime}>{activeHours}</Text>
+                    <View
+                      style={[
+                        styles.hoursCard,
+                        {
+                          backgroundColor: theme.bubbleBg,
+                          borderColor: theme.bubbleBorder,
+                        },
+                      ]}
+                    >
+                      <Text style={[styles.hoursTitle, { color: theme.title }]}>
+                        {activeDay}
+                      </Text>
+                      <Text style={[styles.hoursTime, { color: theme.text }]}>
+                        {activeHours}
+                      </Text>
 
                       {selectedProfessor.additionalInfo ? (
-                        <Text style={styles.hoursExtra}>
+                        <Text style={[styles.hoursExtra, { color: theme.subtext }]}>
                           Additional Info: {selectedProfessor.additionalInfo}
                         </Text>
                       ) : (
-                        <Text style={styles.hoursExtra}>
+                        <Text style={[styles.hoursExtra, { color: theme.subtext }]}>
                           Additional Info: None listed
                         </Text>
                       )}
@@ -421,12 +535,10 @@ export default function OfficeHoursScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   background: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   scrollContent: {
@@ -435,9 +547,7 @@ const styles = StyleSheet.create({
   },
 
   headerCard: {
-    backgroundColor: "#e7f7ef",
     borderWidth: 2,
-    borderColor: "#cbe8d8",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
@@ -446,20 +556,16 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#1f5b49",
     marginBottom: 6,
   },
 
   headerText: {
     fontSize: 15,
-    color: "#427260",
     lineHeight: 22,
   },
 
   mainCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 28,
     padding: 18,
   },
@@ -467,15 +573,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 12,
     marginTop: 6,
   },
 
   emptyCard: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     padding: 14,
     marginBottom: 18,
@@ -483,7 +586,6 @@ const styles = StyleSheet.create({
 
   emptyText: {
     fontSize: 14,
-    color: "#5e7698",
     lineHeight: 21,
   },
 
@@ -495,21 +597,13 @@ const styles = StyleSheet.create({
   },
 
   savedProfessorButton: {
-    backgroundColor: "#eef5ff",
     borderWidth: 2,
-    borderColor: "#bfd6ff",
     borderRadius: 999,
     paddingVertical: 10,
     paddingHorizontal: 14,
   },
 
-  savedProfessorButtonActive: {
-    backgroundColor: "#dcecff",
-    borderColor: "#234a84",
-  },
-
   savedProfessorButtonText: {
-    color: "#234a84",
     fontWeight: "700",
     fontSize: 14,
   },
@@ -519,21 +613,16 @@ const styles = StyleSheet.create({
   },
 
   searchInput: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: "#183a6b",
     marginBottom: 12,
   },
 
   searchResultsCard: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     marginBottom: 16,
     overflow: "hidden",
@@ -543,27 +632,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderBottomWidth: 1,
-    borderBottomColor: "#e3ecfa",
   },
 
   searchResultText: {
     fontSize: 15,
-    color: "#234a84",
     fontWeight: "600",
   },
 
   noResultsText: {
     padding: 14,
     fontSize: 15,
-    color: "#6d83a3",
   },
 
   profCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff9eb",
     borderWidth: 2,
-    borderColor: "#f1e2b5",
     borderRadius: 22,
     padding: 14,
     marginBottom: 18,
@@ -573,12 +657,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 999,
-    backgroundColor: "#ffffff",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
     borderWidth: 2,
-    borderColor: "#d8e3f6",
   },
 
   avatarText: {
@@ -592,13 +674,11 @@ const styles = StyleSheet.create({
   profName: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 4,
   },
 
   profDetail: {
     fontSize: 14,
-    color: "#567196",
     marginBottom: 2,
   },
 
@@ -610,21 +690,13 @@ const styles = StyleSheet.create({
   },
 
   dayButton: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d7e3f7",
     borderRadius: 999,
     paddingVertical: 10,
     paddingHorizontal: 14,
   },
 
-  activeDayButton: {
-    backgroundColor: "#dcecff",
-    borderColor: "#234a84",
-  },
-
   dayText: {
-    color: "#234a84",
     fontWeight: "600",
   },
 
@@ -633,9 +705,7 @@ const styles = StyleSheet.create({
   },
 
   hoursCard: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 22,
     padding: 18,
   },
@@ -643,20 +713,17 @@ const styles = StyleSheet.create({
   hoursTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#183a6b",
     marginBottom: 8,
   },
 
   hoursTime: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#34598b",
     marginBottom: 10,
   },
 
   hoursExtra: {
     fontSize: 14,
-    color: "#5e7698",
     lineHeight: 21,
   },
 });
