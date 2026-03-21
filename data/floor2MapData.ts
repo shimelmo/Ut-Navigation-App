@@ -14,35 +14,44 @@ export const MAP2_W = 1100;
 export const MAP2_H = 780;
 
 export const ROOMS_FLOOR_2: Room2[] = [
-  { id: "2101", name: "2101", type: "lab", x: 38, y: 38, w: 200, h: 130 },
-  { id: "2102", name: "2102", type: "lab", x: 238, y: 38, w: 200, h: 130 },
-  { id: "1119", name: "1119", type: "utility", x: 438, y: 38, w: 150, h: 130 },
+  { id: "2101", name: "2101 Research Lab", type: "lab", x: 38, y: 38, w: 200, h: 130 },
+  { id: "2102", name: "2102 Research Lab", type: "lab", x: 248, y: 38, w: 210, h: 130 },
+  { id: "1119", name: "1119 Storage", type: "utility", x: 468, y: 38, w: 150, h: 130 },
 
-  { id: "2103", name: "2103", type: "lab", x: 38, y: 168, w: 150, h: 200 },
-  { id: "2100", name: "Computer Lab 2100", type: "comp", x: 188, y: 168, w: 300, h: 200 },
-  { id: "2122", name: "2122", type: "lab", x: 488, y: 168, w: 200, h: 200 },
-  { id: "2123", name: "2123", type: "lab", x: 688, y: 168, w: 180, h: 200 },
-  { id: "2124", name: "2124", type: "lab", x: 868, y: 168, w: 180, h: 200 },
+  { id: "2103", name: "2103 Research Lab", type: "lab", x: 38, y: 178, w: 155, h: 210 },
+  { id: "2100", name: "Computer Lab 2100", type: "bio", x: 203, y: 178, w: 320, h: 210 },
+  { id: "2122", name: "2122 Research Lab", type: "lab", x: 533, y: 178, w: 205, h: 210 },
+  { id: "2123", name: "2123 Research Lab", type: "lab", x: 748, y: 178, w: 185, h: 210 },
+  { id: "2124", name: "2124 Research Lab", type: "lab", x: 943, y: 178, w: 155, h: 210 },
 
-  { id: "2120", name: "2120", type: "lab", x: 38, y: 368, w: 150, h: 150 },
-  { id: "2121", name: "2121", type: "lab", x: 188, y: 368, w: 300, h: 150 },
-  { id: "2125", name: "2125", type: "office", x: 488, y: 368, w: 180, h: 150 },
+  { id: "2120", name: "2120 Research Lab", type: "lab", x: 38, y: 398, w: 155, h: 155 },
+  { id: "2121", name: "2121 Research Lab", type: "lab", x: 203, y: 398, w: 320, h: 155 },
+  { id: "2125", name: "2125 Faculty Office", type: "office", x: 533, y: 398, w: 185, h: 155 },
 
-  { id: "2104", name: "Computer Lab 2104", type: "comp", x: 38, y: 518, w: 175, h: 160 },
-  { id: "2105", name: "Computer Lab 2105", type: "comp", x: 213, y: 518, w: 175, h: 160 },
-  { id: "2106", name: "Computer Lab 2106", type: "comp", x: 388, y: 518, w: 175, h: 160 },
-  { id: "2108", name: "Computer Lab 2108", type: "comp", x: 563, y: 518, w: 195, h: 160 },
-  { id: "2109", name: "Computer Lab 2109", type: "comp", x: 758, y: 518, w: 195, h: 160 },
+  { id: "2104", name: "Computer Lab 2104", type: "comp", x: 38, y: 563, w: 185, h: 170 },
+  { id: "2105", name: "Computer Lab 2105", type: "comp", x: 233, y: 563, w: 185, h: 170 },
+  { id: "2106", name: "Computer Lab 2106", type: "comp", x: 428, y: 563, w: 185, h: 170 },
+  { id: "2108", name: "Computer Lab 2108", type: "comp", x: 623, y: 563, w: 205, h: 170 },
+  { id: "2109", name: "Computer Lab 2109", type: "comp", x: 838, y: 563, w: 195, h: 170 },
 ];
 
+export const ROOM2_BY_ID: Record<string, Room2> = Object.fromEntries(
+  ROOMS_FLOOR_2.map((room) => [room.id, room])
+);
+
+export const roomCenterFloor2 = (roomId: string) => {
+  const room = ROOM2_BY_ID[roomId];
+  return { x: room.x + room.w / 2, y: room.y + room.h / 2 };
+};
+
 export const F2_NODES: Record<string, { x: number; y: number }> = {
-  f2_l: { x: 38, y: 440 },
-  f2_m: { x: 450, y: 440 },
-  f2_r: { x: 950, y: 440 },
-  f2_t: { x: 450, y: 200 },
-  f2_b: { x: 450, y: 620 },
-  f2_tl: { x: 100, y: 100 },
-  f2_tr: { x: 700, y: 100 },
+  f2_l: { x: 120, y: 470 },
+  f2_m: { x: 450, y: 470 },
+  f2_r: { x: 935, y: 470 },
+  f2_t: { x: 450, y: 285 },
+  f2_b: { x: 450, y: 648 },
+  f2_tl: { x: 140, y: 110 },
+  f2_tr: { x: 760, y: 110 },
 };
 
 export const F2_EDGES: [string, string][] = [

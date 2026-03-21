@@ -25,6 +25,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  LayoutChangeEvent,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -67,6 +68,9 @@ export default function HomeScreen() {
   const [zoom, setZoom] = useState(0.58);
   const [selectedFloor, setSelectedFloor] = useState<FloorNumber>(1);
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  const [mapViewportWidth, setMapViewportWidth] = useState(0);
+  const [mapViewportHeight, setMapViewportHeight] = useState(0);
 
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
@@ -116,6 +120,21 @@ export default function HomeScreen() {
   const activeMapWidth = selectedFloor === 1 ? MAP_W : MAP2_W;
   const activeMapHeight = selectedFloor === 1 ? MAP_H : MAP2_H;
 
+  const fitZoom = useMemo(() => {
+    if (!mapViewportWidth || !mapViewportHeight) return 0.3;
+
+    const horizontalFit = (mapViewportWidth - 20) / activeMapWidth;
+    const verticalFit = (mapViewportHeight - 20) / activeMapHeight;
+
+    return Math.min(horizontalFit, verticalFit);
+  }, [mapViewportWidth, mapViewportHeight, activeMapWidth, activeMapHeight]);
+
+  useEffect(() => {
+    if (fitZoom > 0) {
+      setZoom(fitZoom);
+    }
+  }, [fitZoom, selectedFloor]);
+
   const currentLocationRoom = useMemo(() => {
     if (!currentLocation) return null;
 
@@ -146,11 +165,15 @@ export default function HomeScreen() {
   const routePoints = useMemo(() => {
     if (!currentLocation || !selectedDestination) return null;
 
-    if (currentLocation.floor !== 1 || selectedDestination.floor !== 1) {
+    if (currentLocation.floor !== selectedDestination.floor) {
       return null;
     }
 
-    return findRoute(currentLocation.roomId, selectedDestination.roomId);
+    return findRoute(
+      currentLocation.roomId,
+      selectedDestination.roomId,
+      currentLocation.floor
+    );
   }, [currentLocation, selectedDestination]);
 
   const routeSummary = useMemo(() => {
@@ -231,15 +254,15 @@ export default function HomeScreen() {
   };
 
   const zoomIn = () => {
-    setZoom((prev) => Math.min(prev + 0.12, 1.6));
+    setZoom((prev) => Math.min(prev + 0.1, 2.2));
   };
 
   const zoomOut = () => {
-    setZoom((prev) => Math.max(prev - 0.12, 0.35));
+    setZoom((prev) => Math.max(prev - 0.1, Math.max(fitZoom * 0.55, 0.12)));
   };
 
   const resetView = () => {
-    setZoom(0.58);
+    setZoom(fitZoom || 0.3);
   };
 
   const mapWidth = activeMapWidth * zoom;
@@ -263,14 +286,27 @@ export default function HomeScreen() {
     );
   };
 
+  const shouldDrawRoute =
+    !!routePoints &&
+    !!currentLocation &&
+    !!selectedDestination &&
+    currentLocation.floor === selectedDestination.floor &&
+    selectedFloor === currentLocation.floor;
+
   const renderMap = () => {
     return (
       <ScrollView
         horizontal
+        nestedScrollEnabled
         showsHorizontalScrollIndicator
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.mapScrollContent}
       >
-        <ScrollView showsVerticalScrollIndicator>
+        <ScrollView
+          nestedScrollEnabled
+          showsVerticalScrollIndicator
+          contentContainerStyle={styles.mapInnerScrollContent}
+        >
           <Svg
             width={mapWidth}
             height={mapHeight}
@@ -284,7 +320,7 @@ export default function HomeScreen() {
               fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
             />
 
-            {selectedFloor === 1 && routePoints
+            {shouldDrawRoute
               ? routePoints.slice(0, -1).map((point, index) => {
                   const nextPoint = routePoints[index + 1];
                   return (
@@ -623,6 +659,11 @@ export default function HomeScreen() {
                 </View>
 
                 <View
+                  onLayout={(event: LayoutChangeEvent) => {
+                    const { width, height } = event.nativeEvent.layout;
+                    setMapViewportWidth(width);
+                    setMapViewportHeight(height);
+                  }}
                   style={[
                     styles.mapBox,
                     {
@@ -655,11 +696,9 @@ export default function HomeScreen() {
                     Pick your location first, then choose a destination room or
                     saved course.
                   </Text>
-                ) : currentLocation.floor !== 1 || selectedDestination.floor !== 1 ? (
+                ) : currentLocation.floor !== selectedDestination.floor ? (
                   <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                    Floor 2 now appears in the UI and rooms can be selected there.
-                    Route lines and turn-by-turn steps are currently connected to
-                    the first-floor path graph only.
+                    Start and destination need to be on the same floor right now.
                   </Text>
                 ) : !routeSummary ? (
                   <Text style={[styles.sideSubtitle, { color: theme.text }]}>
@@ -1028,7 +1067,7 @@ const styles = StyleSheet.create({
   },
 
   mapBox: {
-    height: 680,
+    height: 760,
     borderRadius: 24,
     borderWidth: 2,
     overflow: "hidden",
@@ -1036,6 +1075,10 @@ const styles = StyleSheet.create({
   },
 
   mapScrollContent: {
+    alignItems: "flex-start",
+  },
+
+  mapInnerScrollContent: {
     alignItems: "flex-start",
   },
 
