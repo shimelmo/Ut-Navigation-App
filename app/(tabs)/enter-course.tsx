@@ -3,7 +3,8 @@ import TopTabs from "@/components/TopTabs";
 import database from "@/data/database.json";
 import { getCourseDayColorSet } from "@/utils/courseColors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Pressable,
@@ -94,32 +95,40 @@ export default function EnterCourseScreen() {
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
   const [matchingSections, setMatchingSections] = useState<DatabaseCourse[]>([]);
 
-  useEffect(() => {
-    loadSavedCourses();
-  }, []);
-
-  useEffect(() => {
-    saveSavedCourses(savedCourses);
-  }, [savedCourses]);
-
-  const loadSavedCourses = async () => {
+  const loadSavedCourses = useCallback(async () => {
     try {
       const storedCourses = await AsyncStorage.getItem(STORAGE_KEY);
       if (storedCourses) {
         setSavedCourses(JSON.parse(storedCourses));
+      } else {
+        setSavedCourses([]);
       }
     } catch (error) {
       console.log("Could not load saved courses:", error);
     }
-  };
+  }, []);
 
-  const saveSavedCourses = async (coursesToSave: SavedCourse[]) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(coursesToSave));
-    } catch (error) {
-      console.log("Could not save courses:", error);
-    }
-  };
+  useEffect(() => {
+    loadSavedCourses();
+  }, [loadSavedCourses]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadSavedCourses();
+    }, [loadSavedCourses])
+  );
+
+  useEffect(() => {
+    const saveSavedCourses = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedCourses));
+      } catch (error) {
+        console.log("Could not save courses:", error);
+      }
+    };
+
+    saveSavedCourses();
+  }, [savedCourses]);
 
   const professorMatches = (dbCourse: DatabaseCourse, professorInput: string) => {
     const input = cleanProfessorName(professorInput);
@@ -397,6 +406,32 @@ export default function EnterCourseScreen() {
     }
   };
 
+  const resetMyLocalData = () => {
+    Alert.alert(
+      "Reset My Data",
+      "This clears only this device's saved courses and selected professor.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Reset",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem(STORAGE_KEY);
+              await AsyncStorage.removeItem(LAST_SELECTED_PROFESSOR_KEY);
+              setSavedCourses([]);
+              setMatchingSections([]);
+              setProfessor("");
+              setCourse("");
+            } catch (error) {
+              console.log("Could not reset local data:", error);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const chooseProfessorFromDropdown = (name: string) => {
     setProfessor(name);
     setMatchingSections([]);
@@ -438,6 +473,10 @@ export default function EnterCourseScreen() {
             <Text style={styles.helperText}>
               You can type professor first or course first.
             </Text>
+
+            <Pressable style={styles.resetButton} onPress={resetMyLocalData}>
+              <Text style={styles.resetButtonText}>Reset My Local Data</Text>
+            </Pressable>
 
             <Text style={styles.label}>Professor Name</Text>
             <TextInput
@@ -512,13 +551,10 @@ export default function EnterCourseScreen() {
                     </Text>
 
                     <Text style={styles.matchText}>Building: {item.building}</Text>
-
                     <Text style={styles.matchText}>Room: {item.room}</Text>
-
                     <Text style={styles.matchText}>
                       Days: {formatDays(item.days)}
                     </Text>
-
                     <Text style={styles.matchText}>
                       Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
                     </Text>
@@ -559,57 +595,27 @@ export default function EnterCourseScreen() {
                       {item.subject} {item.courseNumber}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Section: {item.section}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Professor: {item.professorFullName}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Building: {item.building}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Room: {item.room}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Days: {formatDays(item.days)}
                     </Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: colorSet.textColor },
-                      ]}
-                    >
+                    <Text style={[styles.courseText, { color: colorSet.textColor }]}>
                       Time: {formatTime(item.beginTime)} - {formatTime(item.endTime)}
                     </Text>
 
@@ -682,6 +688,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#516b91",
     marginBottom: 10,
+  },
+
+  resetButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#fff1f1",
+    borderWidth: 1.5,
+    borderColor: "#e0a1a1",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 14,
+  },
+
+  resetButtonText: {
+    color: "#8b3a3a",
+    fontWeight: "700",
+    fontSize: 13,
   },
 
   label: {

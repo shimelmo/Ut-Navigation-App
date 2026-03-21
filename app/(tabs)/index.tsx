@@ -4,7 +4,8 @@ import { MAP_H, MAP_W, ROOMS, TYPES } from "@/data/floorMapData";
 import { getCourseDayColorSet } from "@/utils/courseColors";
 import { findRoute } from "@/utils/pathfinding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -39,20 +40,28 @@ export default function HomeScreen() {
   const [zoom, setZoom] = useState(0.58);
   const [selectedFloor, setSelectedFloor] = useState<1 | 2>(1);
 
-  useEffect(() => {
-    loadSavedCourses();
-  }, []);
-
-  const loadSavedCourses = async () => {
+  const loadSavedCourses = useCallback(async () => {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEY);
       if (stored) {
         setSavedCourses(JSON.parse(stored));
+      } else {
+        setSavedCourses([]);
       }
     } catch (error) {
       console.log("Could not load saved courses:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadSavedCourses();
+  }, [loadSavedCourses]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadSavedCourses();
+    }, [loadSavedCourses])
+  );
 
   const sortedCourses = useMemo(() => {
     return [...savedCourses].sort((a, b) => {

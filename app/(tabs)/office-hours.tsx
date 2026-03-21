@@ -2,7 +2,8 @@ import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import officeHoursData from "@/data/officeHours.json";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -95,15 +96,13 @@ export default function OfficeHoursScreen() {
   const [hasLoadedProfessor, setHasLoadedProfessor] = useState(false);
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
 
-  useEffect(() => {
-    loadPageData();
-  }, []);
-
-  const loadPageData = async () => {
+  const loadPageData = useCallback(async () => {
     try {
       const storedCourses = await AsyncStorage.getItem(SAVED_COURSES_KEY);
       if (storedCourses) {
         setSavedCourses(JSON.parse(storedCourses));
+      } else {
+        setSavedCourses([]);
       }
 
       const savedProfessor = await AsyncStorage.getItem(LAST_SELECTED_PROFESSOR_KEY);
@@ -117,14 +116,30 @@ export default function OfficeHoursScreen() {
           setSelectedProfessorFullName(buildDisplayName(foundProfessor));
           const foundDays = Object.keys(foundProfessor.officeHours || {});
           setSelectedDay(foundDays[0] || "");
+        } else {
+          setSelectedProfessorFullName("");
+          setSelectedDay("");
         }
+      } else {
+        setSelectedProfessorFullName("");
+        setSelectedDay("");
       }
     } catch (error) {
       console.log("Could not load office hours page data:", error);
     } finally {
       setHasLoadedProfessor(true);
     }
-  };
+  }, [professorList]);
+
+  useEffect(() => {
+    loadPageData();
+  }, [loadPageData]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadPageData();
+    }, [loadPageData])
+  );
 
   const savedProfessorCards = useMemo(() => {
     const matchedProfessors: ProfessorOfficeHours[] = [];
