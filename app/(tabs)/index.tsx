@@ -7,11 +7,11 @@ import {
   ROOMS_FLOOR_2,
 } from "@/data/floor2MapData";
 import {
+  getRoomStyles,
   MAP_H,
   MAP_W,
   Room,
-  ROOMS,
-  TYPES,
+  ROOMS
 } from "@/data/floorMapData";
 import {
   appThemes,
@@ -278,7 +278,7 @@ export default function HomeScreen() {
         x={room.x + room.w / 2}
         y={textY}
         fontSize={fontSize}
-        fill={TYPES[room.type].tc}
+        fill={getRoomStyles(settings.darkMode)[room.type].tc}
         textAnchor="middle"
       >
         {room.id}
@@ -339,8 +339,8 @@ export default function HomeScreen() {
               : null}
 
             {visibleRooms.map((room) => {
-              const roomStyle = TYPES[room.type];
-
+              const roomStyles = getRoomStyles(settings.darkMode);
+              const roomStyle = roomStyles[room.type];
               const isSelected =
                 selectedDestination?.floor === selectedFloor &&
                 selectedDestination.roomId === room.id;

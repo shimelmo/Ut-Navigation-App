@@ -25,10 +25,15 @@ export type Room = {
 export const MAP_W = 2600;
 export const MAP_H = 2100;
 export const MPU = 0.054;
-
-export const TYPES: Record<
+//used for determining room color depending on if dark mode is enabled
+export const getRoomStyles = (darkMode: boolean) => {
+  return darkMode ? TYPESDark : TYPESLight;
+};
+//Color data for each room type in the light mode
+export const TYPESLight: Record<
   RoomType,
   { fill: string; edge: string; tc: string; label: string }
+  
 > = {
   lab: {
     fill: "#dce8f7",
@@ -103,6 +108,86 @@ export const TYPES: Record<
     label: "Corridor",
   },
 };
+export const TYPESDark: Record<
+  RoomType,
+  { fill: string; edge: string; tc: string; label: string }
+//Starting The Dark Mode room color data
+
+> = {
+  lab: {
+    fill: "#93bdf186",
+    edge: "#4a98d886",
+    tc: "#ffffff",
+    label: "Research / Lab",
+  },
+  bio: {
+    fill: "#a2f1a971",
+    edge: "#4dc5537e",
+    tc: "#ffffff",
+    label: "Bio Lab (BSL2)",
+  },
+  class: {
+    fill: "#fccd827c",
+    edge: "#fa980579",
+    tc: "#ffffff",
+    label: "Classroom",
+  },
+  comp: {
+    fill: "#8595f081",
+    edge: "#445bdb79",
+    tc: "#ffffff",
+    label: "Computer Lab",
+  },
+  office: {
+    fill: "#df80ee73",
+    edge: "#bf3bd669",
+    tc: "#ffffff",
+    label: "Office",
+  },
+  restroom: {
+    fill: "#f887ad75",
+    edge: "#fc38796c",
+    tc: "#ffffff",
+    label: "Restroom",
+  },
+  utility: {
+    fill: "#f58a8a6c",
+    edge: "#b640406c",
+    tc: "#ffffff",
+    label: "Utility",
+  },
+  stair: {
+    fill: "#faf08269",
+    edge: "#fccf0a71",
+    tc: "#ffffff",
+    label: "Stairs / Lift",
+  },
+  entrance: {
+    fill: "#86cbfc6b",
+    edge: "#1696ff73",
+    tc: "#ffffff",
+    label: "Entrance",
+  },
+  shop: {
+    fill: "#e9a7856c",
+    edge: "#b3513169",
+    tc: "#ffffff",
+    label: "Workshop",
+  },
+  maker: {
+    fill: "#8aeee962",
+    edge: "#37c9ba6c",
+    tc: "#ffffff",
+    label: "Maker Space",
+  },
+  corridor: {
+    fill: "#eed1836e",
+    edge: "#d6a3356b",
+    tc: "#ffffff",
+    label: "Corridor",
+  },
+};
+
 
 export const ROOMS: Room[] = [
   { id: "1191", name: "Turbine Lab", type: "lab", x: 280, y: 38, w: 350, h: 220 },
