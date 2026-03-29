@@ -1,3 +1,5 @@
+import database from "@/data/database.json";
+import officeHours from "@/data/officeHours.json";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -21,7 +23,7 @@ export default function AIChatScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Hi! I’m Campus AI. Ask me about classes, rooms, or campus help.",
+      text: "Hi! I’m Campus AI. Ask me about classes, rooms, professors, or office hours.",
     },
   ]);
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,10 @@ export default function AIChatScreen() {
         },
         body: JSON.stringify({
           message: userMessage.text,
+          classData: database,
+          officeHourData: officeHours,
+          systemPrompt:
+            "You are Campus AI for the University of Toledo North Engineering building. Use only the provided class and office hour data. Do not make up professors, rooms, times, or locations. If the answer is not in the data, clearly say that you could not find it in the North Engineering campus data. Keep answers short, clear, and helpful for students.",
         }),
       });
 
@@ -82,11 +88,14 @@ export default function AIChatScreen() {
         <View style={styles.headerCard}>
           <Text style={styles.title}>Campus AI</Text>
           <Text style={styles.subtitle}>
-            Ask about classes, rooms, or campus help.
+            Ask about classes, rooms, professors, or office hours.
           </Text>
         </View>
 
-        <ScrollView style={styles.chatBox} contentContainerStyle={styles.chatContent}>
+        <ScrollView
+          style={styles.chatBox}
+          contentContainerStyle={styles.chatContent}
+        >
           {messages.map((item, index) => (
             <View
               key={index}
