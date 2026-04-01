@@ -1,9 +1,11 @@
 import database from "@/data/database.json";
 import officeHours from "@/data/officeHours.json";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -28,6 +30,8 @@ export default function AIChatScreen() {
   ]);
   const [loading, setLoading] = useState(false);
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
   const sendMessage = async () => {
     if (!message.trim() || loading) return;
 
@@ -40,6 +44,10 @@ export default function AIChatScreen() {
     setMessages(updatedMessages);
     setMessage("");
     setLoading(true);
+
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
 
     try {
       const response = await fetch("https://ut-ai-server.onrender.com/chat", {
@@ -64,6 +72,10 @@ export default function AIChatScreen() {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
+
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     } catch (error) {
       console.log("AI fetch error:", error);
 
@@ -73,6 +85,10 @@ export default function AIChatScreen() {
       };
 
       setMessages((prev) => [...prev, errorMessage]);
+
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     } finally {
       setLoading(false);
     }
@@ -80,56 +96,69 @@ export default function AIChatScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Pressable style={styles.backButton} onPress={() => router.back()}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </Pressable>
-
-        <View style={styles.headerCard}>
-          <Text style={styles.title}>Campus AI</Text>
-          <Text style={styles.subtitle}>
-            Ask about classes, rooms, professors, or office hours.
-          </Text>
-        </View>
-
-        <ScrollView
-          style={styles.chatBox}
-          contentContainerStyle={styles.chatContent}
-        >
-          {messages.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.messageBubble,
-                item.role === "user" ? styles.userBubble : styles.aiBubble,
-              ]}
-            >
-              <Text style={styles.messageText}>{item.text}</Text>
-            </View>
-          ))}
-
-          {loading && (
-            <View style={styles.loadingRow}>
-              <ActivityIndicator size="small" color="#183a6b" />
-              <Text style={styles.loadingText}>Campus AI is typing...</Text>
-            </View>
-          )}
-        </ScrollView>
-
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type a message..."
-            placeholderTextColor="#7f90aa"
-            value={message}
-            onChangeText={setMessage}
-          />
-
-          <Pressable style={styles.sendButton} onPress={sendMessage}>
-            <Text style={styles.sendButtonText}>Send</Text>
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+      >
+        <View style={styles.container}>
+          <Pressable style={styles.backButton} onPress={() => router.back()}>
+            <Text style={styles.backButtonText}>← Back</Text>
           </Pressable>
+
+          <View style={styles.headerCard}>
+            <Text style={styles.title}>Campus AI</Text>
+            <Text style={styles.subtitle}>
+              Ask about classes, rooms, professors, or office hours.
+            </Text>
+          </View>
+
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.chatBox}
+            contentContainerStyle={styles.chatContent}
+            keyboardShouldPersistTaps="handled"
+            onContentSizeChange={() =>
+              scrollViewRef.current?.scrollToEnd({ animated: true })
+            }
+          >
+            {messages.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  item.role === "user" ? styles.userBubble : styles.aiBubble,
+                ]}
+              >
+                <Text style={styles.messageText}>{item.text}</Text>
+              </View>
+            ))}
+
+            {loading && (
+              <View style={styles.loadingRow}>
+                <ActivityIndicator size="small" color="#183a6b" />
+                <Text style={styles.loadingText}>Campus AI is typing...</Text>
+              </View>
+            )}
+          </ScrollView>
+
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder="Type a message..."
+              placeholderTextColor="#7f90aa"
+              value={message}
+              onChangeText={setMessage}
+              returnKeyType="send"
+              onSubmitEditing={sendMessage}
+            />
+
+            <Pressable style={styles.sendButton} onPress={sendMessage}>
+              <Text style={styles.sendButtonText}>Send</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -138,6 +167,10 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#edf4ff",
+  },
+
+  keyboardContainer: {
+    flex: 1,
   },
 
   container: {
@@ -243,6 +276,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
+    paddingBottom: 6,
   },
 
   input: {
