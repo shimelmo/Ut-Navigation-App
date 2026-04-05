@@ -1,19 +1,25 @@
 import AIBubble from "@/components/AIBubble";
 import TopTabs from "@/components/TopTabs";
 import database from "@/data/database.json";
-import { MAP_H, MAP_W, ROOMS, TYPES } from "@/data/floorMapData";
-import { findRoute } from "@/utils/pathfinding";
-import React, { useMemo, useState } from "react";
+import { getRoomStyles, MAP_H, MAP_W, ROOMS } from "@/data/floorMapData";
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  appThemes,
+  defaultSettings,
+  loadUserSettings,
+  UserSettings,
+} from "@/utils/appSettings";
+import { findRoute } from "@/utils/pathfinding";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
-import Svg, { Line, Rect, Text as SvgText } from "react-native-svg";
+import Svg, { Circle, Line, Rect, Text as SvgText } from "react-native-svg";
 
 type DatabaseCourse = {
   professor: string;
@@ -31,13 +37,30 @@ const START_ROOM_ID = "C1002";
 export default function MapScreen() {
   const [roomSearch, setRoomSearch] = useState("");
   const [selectedRoomId, setSelectedRoomId] = useState<string>("1200");
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+
+  useEffect(() => {
+    const loadSettingsIntoScreen = async () => {
+      const userSettings = await loadUserSettings();
+      setSettings(userSettings);
+    };
+
+    loadSettingsIntoScreen();
+  }, []);
+
+  const theme = settings.darkMode ? appThemes.dark : appThemes.light;
+  const roomStyles = getRoomStyles(settings.darkMode);
 
   const selectedRoom = useMemo(() => {
     return ROOMS.find((room) => room.id === selectedRoomId) || null;
   }, [selectedRoomId]);
 
+  const startRoom = useMemo(() => {
+    return ROOMS.find((room) => room.id === START_ROOM_ID) || null;
+  }, []);
+
   const routePoints = useMemo(() => {
-    return findRoute(START_ROOM_ID, selectedRoomId);
+    return findRoute(START_ROOM_ID, selectedRoomId, 1);
   }, [selectedRoomId]);
 
   const searchRoom = () => {
@@ -61,61 +84,189 @@ export default function MapScreen() {
 
     if (!match) return;
 
-    const roomId = match.room.replace("NE ", "").trim();
-    const foundRoom = ROOMS.find((room) => room.id === roomId);
+    const roomId = match.room.replace("NE ", "").trim().toUpperCase();
+    const foundRoom = ROOMS.find((room) => room.id.toUpperCase() === roomId);
 
     if (foundRoom) {
       setSelectedRoomId(foundRoom.id);
     }
   };
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.background}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TopTabs />
+  const resetSelection = () => {
+    setSelectedRoomId("1200");
+    setRoomSearch("");
+  };
 
-          <View style={styles.headerCard}>
-            <Text style={styles.headerTitle}>1st Floor Building Map</Text>
-            <Text style={styles.headerText}>
-              Search a room or highlight a room from course data.
+  return (
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <TopTabs settings={settings} />
+
+          <View
+            style={[
+              styles.headerCard,
+              {
+                backgroundColor: theme.headerBg,
+                borderColor: theme.headerBorder,
+              },
+            ]}
+          >
+            <Text style={[styles.headerTitle, { color: theme.headerTitle }]}>
+              1st Floor Building Map
+            </Text>
+            <Text style={[styles.headerText, { color: theme.headerText }]}>
+              Search a room, load an example course room, and view the route from
+              the main entrance.
             </Text>
           </View>
 
-          <View style={styles.controlsCard}>
+          <View
+            style={[
+              styles.controlsCard,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+          >
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: theme.inputBg,
+                  borderColor: theme.inputBorder,
+                  color: theme.text,
+                },
+              ]}
               placeholder="Search room like 1200 or Large Classroom"
-              placeholderTextColor="#7f90aa"
+              placeholderTextColor={settings.darkMode ? "#94a3b8" : "#7f90aa"}
               value={roomSearch}
               onChangeText={setRoomSearch}
             />
 
             <View style={styles.buttonRow}>
-              <Pressable style={styles.actionButton} onPress={searchRoom}>
-                <Text style={styles.actionButtonText}>Search Room</Text>
+              <Pressable
+                style={[
+                  styles.actionButton,
+                  {
+                    backgroundColor: theme.buttonBg,
+                    borderColor: theme.buttonBorder,
+                  },
+                ]}
+                onPress={searchRoom}
+              >
+                <Text
+                  style={[
+                    styles.actionButtonText,
+                    { color: theme.buttonText },
+                  ]}
+                >
+                  Search Room
+                </Text>
               </Pressable>
 
-              <Pressable style={styles.actionButton} onPress={loadExampleCourseRoom}>
-                <Text style={styles.actionButtonText}>Load Example Course</Text>
+              <Pressable
+                style={[
+                  styles.actionButton,
+                  {
+                    backgroundColor: theme.buttonBg,
+                    borderColor: theme.buttonBorder,
+                  },
+                ]}
+                onPress={loadExampleCourseRoom}
+              >
+                <Text
+                  style={[
+                    styles.actionButtonText,
+                    { color: theme.buttonText },
+                  ]}
+                >
+                  Load Example Course
+                </Text>
+              </Pressable>
+
+              <Pressable
+                style={[
+                  styles.actionButton,
+                  {
+                    backgroundColor: theme.buttonBg,
+                    borderColor: theme.buttonBorder,
+                  },
+                ]}
+                onPress={resetSelection}
+              >
+                <Text
+                  style={[
+                    styles.actionButtonText,
+                    { color: theme.buttonText },
+                  ]}
+                >
+                  Reset
+                </Text>
               </Pressable>
             </View>
 
-            {selectedRoom && (
-              <View style={styles.infoCard}>
-                <Text style={styles.infoTitle}>
-                  Selected Room: {selectedRoom.id}
+            <View style={styles.infoWrap}>
+              <View
+                style={[
+                  styles.infoCard,
+                  {
+                    backgroundColor: theme.infoBg,
+                    borderColor: theme.infoBorder,
+                  },
+                ]}
+              >
+                <Text style={[styles.infoTitle, { color: theme.infoTitle }]}>
+                  Current Location
                 </Text>
-                <Text style={styles.infoText}>{selectedRoom.name}</Text>
+                <Text style={[styles.infoText, { color: theme.infoText }]}>
+                  {startRoom
+                    ? `${startRoom.id} — ${startRoom.name}`
+                    : "Not chosen yet"}
+                </Text>
               </View>
-            )}
+
+              <View
+                style={[
+                  styles.infoCard,
+                  {
+                    backgroundColor: theme.infoBg,
+                    borderColor: theme.infoBorder,
+                  },
+                ]}
+              >
+                <Text style={[styles.infoTitle, { color: theme.infoTitle }]}>
+                  Destination
+                </Text>
+                <Text style={[styles.infoText, { color: theme.infoText }]}>
+                  {selectedRoom
+                    ? `${selectedRoom.id} — ${selectedRoom.name}`
+                    : "Not chosen yet"}
+                </Text>
+              </View>
+            </View>
           </View>
 
-          <View style={styles.mapCard}>
+          <View
+            style={[
+              styles.mapCard,
+              {
+                backgroundColor: theme.cardBg,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+          >
             <ScrollView horizontal showsHorizontalScrollIndicator>
               <ScrollView showsVerticalScrollIndicator>
                 <Svg width={MAP_W} height={MAP_H} viewBox={`0 0 ${MAP_W} ${MAP_H}`}>
-                  <Rect x={0} y={0} width={MAP_W} height={MAP_H} fill="#f4efe6" />
+                  <Rect
+                    x={0}
+                    y={0}
+                    width={MAP_W}
+                    height={MAP_H}
+                    fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
+                  />
 
                   {routePoints &&
                     routePoints.slice(0, -1).map((point, index) => {
@@ -127,7 +278,7 @@ export default function MapScreen() {
                           y1={point.y}
                           x2={nextPoint.x}
                           y2={nextPoint.y}
-                          stroke="#1e64d0"
+                          stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
                           strokeWidth={8}
                           strokeLinecap="round"
                         />
@@ -135,8 +286,9 @@ export default function MapScreen() {
                     })}
 
                   {ROOMS.map((room) => {
-                    const roomStyle = TYPES[room.type];
+                    const roomStyle = roomStyles[room.type];
                     const isSelected = room.id === selectedRoomId;
+                    const isStart = room.id === START_ROOM_ID;
 
                     return (
                       <React.Fragment key={room.id}>
@@ -145,9 +297,21 @@ export default function MapScreen() {
                           y={room.y}
                           width={room.w}
                           height={room.h}
-                          fill={isSelected ? "#ffe59c" : roomStyle.fill}
-                          stroke={isSelected ? "#ff9f1a" : roomStyle.edge}
-                          strokeWidth={isSelected ? 4 : 2}
+                          fill={
+                            isSelected
+                              ? "#ffe59c"
+                              : isStart
+                              ? "#cdeccf"
+                              : roomStyle.fill
+                          }
+                          stroke={
+                            isSelected
+                              ? "#ff9f1a"
+                              : isStart
+                              ? "#2f8f46"
+                              : roomStyle.edge
+                          }
+                          strokeWidth={isSelected || isStart ? 4 : 2}
                           rx={4}
                         />
 
@@ -160,6 +324,44 @@ export default function MapScreen() {
                         >
                           {room.id}
                         </SvgText>
+
+                        {isStart && (
+                          <>
+                            <Circle
+                              cx={room.x + room.w / 2}
+                              cy={room.y + room.h / 2}
+                              r={28}
+                              fill="#2f8f46"
+                              opacity={0.18}
+                            />
+                            <Circle
+                              cx={room.x + room.w / 2}
+                              cy={room.y + room.h / 2}
+                              r={12}
+                              fill="#2f8f46"
+                              opacity={0.95}
+                            />
+                          </>
+                        )}
+
+                        {isSelected && (
+                          <>
+                            <Circle
+                              cx={room.x + room.w / 2}
+                              cy={room.y + room.h / 2}
+                              r={28}
+                              fill="#ff5c5c"
+                              opacity={0.18}
+                            />
+                            <Circle
+                              cx={room.x + room.w / 2}
+                              cy={room.y + room.h / 2}
+                              r={12}
+                              fill="#ff5c5c"
+                              opacity={0.95}
+                            />
+                          </>
+                        )}
                       </React.Fragment>
                     );
                   })}
@@ -178,12 +380,10 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   background: {
     flex: 1,
-    backgroundColor: "#edf4ff",
   },
 
   scrollContent: {
@@ -192,9 +392,7 @@ const styles = StyleSheet.create({
   },
 
   headerCard: {
-    backgroundColor: "#ffeef4",
     borderWidth: 2,
-    borderColor: "#f4d4e1",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
@@ -203,35 +401,28 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#7a2e58",
     marginBottom: 6,
   },
 
   headerText: {
     fontSize: 15,
-    color: "#8b4f71",
     lineHeight: 22,
   },
 
   controlsCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
   },
 
   input: {
-    backgroundColor: "#f7faff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 18,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
     marginBottom: 14,
-    color: "#183a6b",
   },
 
   buttonRow: {
@@ -242,9 +433,7 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    backgroundColor: "#dcecff",
     borderWidth: 2,
-    borderColor: "#234a84",
     borderRadius: 999,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -252,35 +441,35 @@ const styles = StyleSheet.create({
   },
 
   actionButtonText: {
-    color: "#183a6b",
     fontSize: 15,
     fontWeight: "800",
   },
 
+  infoWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+
   infoCard: {
-    backgroundColor: "#fff9eb",
     borderWidth: 2,
-    borderColor: "#f1e2b5",
     borderRadius: 18,
     padding: 14,
+    minWidth: 220,
   },
 
   infoTitle: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#5d4c16",
     marginBottom: 4,
   },
 
   infoText: {
     fontSize: 14,
-    color: "#735f22",
   },
 
   mapCard: {
-    backgroundColor: "#ffffff",
     borderWidth: 2,
-    borderColor: "#d8e3f6",
     borderRadius: 24,
     padding: 10,
   },

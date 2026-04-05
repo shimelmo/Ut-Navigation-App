@@ -108,9 +108,9 @@
     "additionalInfo": ""
   },
   {
-    "firstName": "Nassar",
+    "firstName": "Nasser",
     "lastName": "Alaraje",
-    "fullName": "Nassar Alaraje",
+    "fullName": "Nasser Alaraje",
     "building": "North Engineering",
     "room": "NE 1605",
     "officeHours": {
@@ -147,7 +147,7 @@
     "building": "North Engineering",
     "room": "NE 1624",
     "officeHours": {
-      "TBD": ""
+      "TBD": "On leave"
     },
     "additionalInfo": ""
   },
@@ -250,7 +250,7 @@
     },
     "additionalInfo": ""
   },
-  {
+ {
     "firstName": "Amy",
     "lastName": "Bian",
     "fullName": "Amy Bian",

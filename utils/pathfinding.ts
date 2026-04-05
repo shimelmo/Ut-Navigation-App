@@ -19,7 +19,7 @@ type RouteStep = {
   distanceMeters: number;
 };
 
-type RouteSummary = {
+export type RouteSummary = {
   from: string;
   to: string;
   straightLineDistanceMeters: number;
@@ -27,15 +27,10 @@ type RouteSummary = {
   steps: RouteStep[];
 };
 
-type FloorNumber = 1 | 2;
+export type FloorNumber = 1 | 2;
 
-const distance = (a: Point, b: Point) => {
-  return Math.hypot(b.x - a.x, b.y - a.y);
-};
-
-const pixelsToMeters = (pixels: number) => {
-  return Math.round(pixels * MPU);
-};
+const distance = (a: Point, b: Point) => Math.hypot(b.x - a.x, b.y - a.y);
+const pixelsToMeters = (pixels: number) => Math.round(pixels * MPU);
 
 const buildGraph = (
   nodes: Record<string, Point>,
@@ -170,14 +165,8 @@ const getTurnInstruction = (prev: Point, current: Point, next: Point) => {
     return "Continue straight";
   }
 
-  if (cross > 0) {
-    return "Turn right";
-  }
-
-  if (cross < 0) {
-    return "Turn left";
-  }
-
+  if (cross > 0) return "Turn right";
+  if (cross < 0) return "Turn left";
   return "Continue";
 };
 
@@ -189,7 +178,6 @@ export const buildRouteSummary = (
   if (!routePoints || routePoints.length < 2) return null;
 
   const steps: RouteStep[] = [];
-
   const first = routePoints[0];
   const second = routePoints[1];
 
@@ -210,7 +198,6 @@ export const buildRouteSummary = (
   }
 
   let totalPixels = 0;
-
   for (let i = 0; i < routePoints.length - 1; i++) {
     totalPixels += distance(routePoints[i], routePoints[i + 1]);
   }

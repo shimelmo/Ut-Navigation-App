@@ -6,13 +6,7 @@ import {
   Room2,
   ROOMS_FLOOR_2,
 } from "@/data/floor2MapData";
-import {
-  getRoomStyles,
-  MAP_H,
-  MAP_W,
-  Room,
-  ROOMS
-} from "@/data/floorMapData";
+import { getRoomStyles, MAP_H, MAP_W, Room, ROOMS } from "@/data/floorMapData";
 import {
   appThemes,
   defaultSettings,
@@ -31,6 +25,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import Svg, { Circle, Line, Rect, Text as SvgText } from "react-native-svg";
@@ -57,17 +52,23 @@ type RoomSelection = {
 };
 
 const STORAGE_KEY = "saved_courses";
+const DEFAULT_LOCATION_BY_FLOOR: Record<FloorNumber, string> = {
+  1: "C1002",
+  2: "2100",
+};
 
 export default function HomeScreen() {
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
-  const [selectedDestination, setSelectedDestination] =
-    useState<RoomSelection | null>(null);
-  const [currentLocation, setCurrentLocation] =
-    useState<RoomSelection | null>(null);
+  const [selectedDestination, setSelectedDestination] = useState<RoomSelection | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<RoomSelection>({
+    floor: 1,
+    roomId: DEFAULT_LOCATION_BY_FLOOR[1],
+  });
   const [chooseLocationMode, setChooseLocationMode] = useState(false);
   const [zoom, setZoom] = useState(0.58);
   const [selectedFloor, setSelectedFloor] = useState<FloorNumber>(1);
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+  const [roomSearch, setRoomSearch] = useState("");
 
   const [mapViewportWidth, setMapViewportWidth] = useState(0);
   const [mapViewportHeight, setMapViewportHeight] = useState(0);
@@ -106,11 +107,7 @@ export default function HomeScreen() {
   );
 
   const sortedCourses = useMemo(() => {
-    return [...savedCourses].sort((a, b) => {
-      const aTime = Number(a.beginTime || "9999");
-      const bTime = Number(b.beginTime || "9999");
-      return aTime - bTime;
-    });
+    return [...savedCourses].sort((a, b) => Number(a.beginTime || "9999") - Number(b.beginTime || "9999"));
   }, [savedCourses]);
 
   const visibleRooms = useMemo(() => {
@@ -136,44 +133,28 @@ export default function HomeScreen() {
   }, [fitZoom, selectedFloor]);
 
   const currentLocationRoom = useMemo(() => {
-    if (!currentLocation) return null;
-
     if (currentLocation.floor === 1) {
       return ROOMS.find((room) => room.id === currentLocation.roomId) || null;
     }
 
-    return (
-      ROOMS_FLOOR_2.find((room) => room.id === currentLocation.roomId) || null
-    );
+    return ROOMS_FLOOR_2.find((room) => room.id === currentLocation.roomId) || null;
   }, [currentLocation]);
 
   const selectedRoom = useMemo(() => {
     if (!selectedDestination) return null;
 
     if (selectedDestination.floor === 1) {
-      return (
-        ROOMS.find((room) => room.id === selectedDestination.roomId) || null
-      );
+      return ROOMS.find((room) => room.id === selectedDestination.roomId) || null;
     }
 
-    return (
-      ROOMS_FLOOR_2.find((room) => room.id === selectedDestination.roomId) ||
-      null
-    );
+    return ROOMS_FLOOR_2.find((room) => room.id === selectedDestination.roomId) || null;
   }, [selectedDestination]);
 
   const routePoints = useMemo(() => {
     if (!currentLocation || !selectedDestination) return null;
+    if (currentLocation.floor !== selectedDestination.floor) return null;
 
-    if (currentLocation.floor !== selectedDestination.floor) {
-      return null;
-    }
-
-    return findRoute(
-      currentLocation.roomId,
-      selectedDestination.roomId,
-      currentLocation.floor
-    );
+    return findRoute(currentLocation.roomId, selectedDestination.roomId, currentLocation.floor);
   }, [currentLocation, selectedDestination]);
 
   const routeSummary = useMemo(() => {
@@ -203,32 +184,21 @@ export default function HomeScreen() {
     return days.join(", ");
   };
 
-  const roomIdFromSavedCourse = (room: string) => {
-    return room.replace("NE ", "").trim().toUpperCase();
-  };
+  const roomIdFromSavedCourse = (room: string) => room.replace("NE ", "").trim().toUpperCase();
 
   const handleRoomPress = (roomId: string) => {
-    if (chooseLocationMode || !currentLocation) {
-      setCurrentLocation({
-        floor: selectedFloor,
-        roomId,
-      });
+    if (chooseLocationMode) {
+      setCurrentLocation({ floor: selectedFloor, roomId });
       setChooseLocationMode(false);
       return;
     }
 
-    setSelectedDestination({
-      floor: selectedFloor,
-      roomId,
-    });
+    setSelectedDestination({ floor: selectedFloor, roomId });
   };
 
   const handleSavedCoursePress = (course: SavedCourse) => {
     const roomId = roomIdFromSavedCourse(course.room);
-    const foundRoom = ROOMS.find(
-      (room) => room.id.toUpperCase() === roomId.toUpperCase()
-    );
-
+    const foundRoom = ROOMS.find((room) => room.id.toUpperCase() === roomId.toUpperCase());
     if (!foundRoom) return;
 
     setSelectedFloor(1);
@@ -242,10 +212,32 @@ export default function HomeScreen() {
       return;
     }
 
-    setSelectedDestination({
-      floor: 1,
-      roomId: foundRoom.id,
+    setSelectedDestination({ floor: 1, roomId: foundRoom.id });
+  };
+
+  const handleSearch = () => {
+    const cleaned = roomSearch.trim().toUpperCase().replace("NE ", "");
+    if (!cleaned) return;
+
+    const pool = selectedFloor === 1 ? ROOMS : ROOMS_FLOOR_2;
+    const found = pool.find(
+      (room) =>
+        room.id.toUpperCase() === cleaned ||
+        room.name.toUpperCase().includes(cleaned)
+    );
+
+    if (found) {
+      setSelectedDestination({ floor: selectedFloor, roomId: found.id });
+      setRoomSearch("");
+    }
+  };
+
+  const resetCurrentLocation = () => {
+    setCurrentLocation({
+      floor: selectedFloor,
+      roomId: DEFAULT_LOCATION_BY_FLOOR[selectedFloor],
     });
+    setChooseLocationMode(false);
   };
 
   const clearRoute = () => {
@@ -253,30 +245,20 @@ export default function HomeScreen() {
     setChooseLocationMode(false);
   };
 
-  const zoomIn = () => {
-    setZoom((prev) => Math.min(prev + 0.1, 2.2));
-  };
-
-  const zoomOut = () => {
-    setZoom((prev) => Math.max(prev - 0.1, Math.max(fitZoom * 0.55, 0.12)));
-  };
-
-  const resetView = () => {
-    setZoom(fitZoom || 0.3);
-  };
+  const zoomIn = () => setZoom((prev) => Math.min(prev + 0.1, 2.2));
+  const zoomOut = () => setZoom((prev) => Math.max(prev - 0.1, Math.max(fitZoom * 0.55, 0.12)));
+  const resetView = () => setZoom(fitZoom || 0.3);
 
   const mapWidth = activeMapWidth * zoom;
   const mapHeight = activeMapHeight * zoom;
 
   const renderRoomLabel = (room: Room | Room2) => {
-    const textY = room.y + room.h / 2;
-    const fontSize =
-      room.w < 90 || room.h < 60 ? 14 : room.w < 150 ? 18 : 22;
+    const fontSize = room.w < 90 || room.h < 60 ? 14 : room.w < 150 ? 18 : 22;
 
     return (
       <SvgText
         x={room.x + room.w / 2}
-        y={textY}
+        y={room.y + room.h / 2}
         fontSize={fontSize}
         fill={getRoomStyles(settings.darkMode)[room.type].tc}
         textAnchor="middle"
@@ -307,11 +289,7 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator
           contentContainerStyle={styles.mapInnerScrollContent}
         >
-          <Svg
-            width={mapWidth}
-            height={mapHeight}
-            viewBox={`0 0 ${activeMapWidth} ${activeMapHeight}`}
-          >
+          <Svg width={mapWidth} height={mapHeight} viewBox={`0 0 ${activeMapWidth} ${activeMapHeight}`}>
             <Rect
               x={0}
               y={0}
@@ -339,12 +317,10 @@ export default function HomeScreen() {
               : null}
 
             {visibleRooms.map((room) => {
-              const roomStyles = getRoomStyles(settings.darkMode);
-              const roomStyle = roomStyles[room.type];
+              const roomStyle = getRoomStyles(settings.darkMode)[room.type];
               const isSelected =
                 selectedDestination?.floor === selectedFloor &&
                 selectedDestination.roomId === room.id;
-
               const isStart =
                 currentLocation?.floor === selectedFloor &&
                 currentLocation.roomId === room.id;
@@ -356,20 +332,8 @@ export default function HomeScreen() {
                     y={room.y}
                     width={room.w}
                     height={room.h}
-                    fill={
-                      isSelected
-                        ? "#ffe59c"
-                        : isStart
-                        ? "#cdeccf"
-                        : roomStyle.fill
-                    }
-                    stroke={
-                      isSelected
-                        ? "#ff9f1a"
-                        : isStart
-                        ? "#2f8f46"
-                        : roomStyle.edge
-                    }
+                    fill={isSelected ? "#ffe59c" : isStart ? "#cdeccf" : roomStyle.fill}
+                    stroke={isSelected ? "#ff9f1a" : isStart ? "#2f8f46" : roomStyle.edge}
                     strokeWidth={isSelected || isStart ? 4 : 2}
                     rx={4}
                     onPress={() => handleRoomPress(room.id)}
@@ -379,39 +343,15 @@ export default function HomeScreen() {
 
                   {isStart && (
                     <>
-                      <Circle
-                        cx={room.x + room.w / 2}
-                        cy={room.y + room.h / 2}
-                        r={28}
-                        fill="#2f8f46"
-                        opacity={0.18}
-                      />
-                      <Circle
-                        cx={room.x + room.w / 2}
-                        cy={room.y + room.h / 2}
-                        r={12}
-                        fill="#2f8f46"
-                        opacity={0.95}
-                      />
+                      <Circle cx={room.x + room.w / 2} cy={room.y + room.h / 2} r={28} fill="#2f8f46" opacity={0.18} />
+                      <Circle cx={room.x + room.w / 2} cy={room.y + room.h / 2} r={12} fill="#2f8f46" opacity={0.95} />
                     </>
                   )}
 
                   {isSelected && (
                     <>
-                      <Circle
-                        cx={room.x + room.w / 2}
-                        cy={room.y + room.h / 2}
-                        r={28}
-                        fill="#ff5c5c"
-                        opacity={0.18}
-                      />
-                      <Circle
-                        cx={room.x + room.w / 2}
-                        cy={room.y + room.h / 2}
-                        r={12}
-                        fill="#ff5c5c"
-                        opacity={0.95}
-                      />
+                      <Circle cx={room.x + room.w / 2} cy={room.y + room.h / 2} r={28} fill="#ff5c5c" opacity={0.18} />
+                      <Circle cx={room.x + room.w / 2} cy={room.y + room.h / 2} r={12} fill="#ff5c5c" opacity={0.95} />
                     </>
                   )}
                 </React.Fragment>
@@ -425,46 +365,40 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
-      <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
+      <View style={[styles.background, { backgroundColor: theme.screenBg }]}> 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <TopTabs settings={settings} />
 
-          <View
-            style={[
-              styles.titleCard,
-              {
-                backgroundColor: theme.headerBg,
-                borderColor: theme.headerBorder,
-              },
-            ]}
-          >
-            <Text style={[styles.title, { color: theme.headerTitle }]}>
-              UT Campus Compass
-            </Text>
+          <View style={[styles.titleCard, { backgroundColor: theme.headerBg, borderColor: theme.headerBorder }]}>
+            <Text style={[styles.title, { color: theme.headerTitle }]}>UT Campus Compass</Text>
             <Text style={[styles.subtitle, { color: theme.headerText }]}>
-              Pick your location, then choose a destination room or saved course.
+              Pick your location, search for a room, or tap a saved course to build a route.
             </Text>
           </View>
 
           <View style={styles.mainGrid}>
             <View style={styles.mapSection}>
-              <View
-                style={[
-                  styles.mainCard,
-                  {
-                    backgroundColor: theme.cardBg,
-                    borderColor: theme.cardBorder,
-                  },
-                ]}
-              >
+              <View style={[styles.mainCard, { backgroundColor: theme.cardBg, borderColor: theme.cardBorder }]}>
                 <View style={styles.mapHeaderRow}>
-                  <Text style={[styles.cardTitle, { color: theme.title }]}>
-                    Map Display
-                  </Text>
-                  <Text style={[styles.cardText, { color: theme.text }]}>
-                    Tap “Set My Location,” then tap a room. After that, tap any
-                    destination room or a saved course.
-                  </Text>
+                  <Text style={[styles.cardTitle, { color: theme.title }]}>Map Display</Text>
+                  <Text style={[styles.cardText, { color: theme.text }]}>Tap “Set My Location,” then tap a room. After that, tap a destination room or saved course.</Text>
+                </View>
+
+                <View style={styles.searchRow}>
+                  <TextInput
+                    style={[
+                      styles.searchInput,
+                      { backgroundColor: theme.inputBg, borderColor: theme.inputBorder, color: theme.text },
+                    ]}
+                    placeholder={selectedFloor === 1 ? "Search 1st floor room" : "Search 2nd floor room"}
+                    placeholderTextColor={theme.subtext}
+                    value={roomSearch}
+                    onChangeText={setRoomSearch}
+                    onSubmitEditing={handleSearch}
+                  />
+                  <Pressable style={[styles.searchButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={handleSearch}>
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>Search</Text>
+                  </Pressable>
                 </View>
 
                 <View style={styles.topControlsRow}>
@@ -472,189 +406,64 @@ export default function HomeScreen() {
                     <Pressable
                       style={[
                         styles.floorButton,
-                        {
-                          backgroundColor: theme.inputBg,
-                          borderColor: theme.inputBorder,
-                        },
-                        selectedFloor === 1 && {
-                          backgroundColor: theme.buttonBg,
-                          borderColor: theme.buttonBorder,
-                        },
+                        { backgroundColor: theme.inputBg, borderColor: theme.inputBorder },
+                        selectedFloor === 1 && { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder },
                       ]}
                       onPress={() => setSelectedFloor(1)}
                     >
-                      <Text
-                        style={[
-                          styles.floorButtonText,
-                          {
-                            color:
-                              selectedFloor === 1 ? theme.buttonText : theme.text,
-                          },
-                        ]}
-                      >
-                        1st Floor
-                      </Text>
+                      <Text style={[styles.floorButtonText, { color: selectedFloor === 1 ? theme.buttonText : theme.text }]}>1st Floor</Text>
                     </Pressable>
 
                     <Pressable
                       style={[
                         styles.floorButton,
-                        {
-                          backgroundColor: theme.inputBg,
-                          borderColor: theme.inputBorder,
-                        },
-                        selectedFloor === 2 && {
-                          backgroundColor: theme.buttonBg,
-                          borderColor: theme.buttonBorder,
-                        },
+                        { backgroundColor: theme.inputBg, borderColor: theme.inputBorder },
+                        selectedFloor === 2 && { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder },
                       ]}
                       onPress={() => setSelectedFloor(2)}
                     >
-                      <Text
-                        style={[
-                          styles.floorButtonText,
-                          {
-                            color:
-                              selectedFloor === 2 ? theme.buttonText : theme.text,
-                          },
-                        ]}
-                      >
-                        2nd Floor
-                      </Text>
+                      <Text style={[styles.floorButtonText, { color: selectedFloor === 2 ? theme.buttonText : theme.text }]}>2nd Floor</Text>
                     </Pressable>
                   </View>
 
                   <View style={styles.zoomControls}>
-                    <Pressable
-                      style={[
-                        styles.smallButton,
-                        {
-                          backgroundColor: theme.buttonBg,
-                          borderColor: theme.buttonBorder,
-                        },
-                      ]}
-                      onPress={zoomOut}
-                    >
-                      <Text
-                        style={[styles.smallButtonText, { color: theme.buttonText }]}
-                      >
-                        −
-                      </Text>
+                    <Pressable style={[styles.smallButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={zoomOut}>
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>−</Text>
                     </Pressable>
-
-                    <Pressable
-                      style={[
-                        styles.smallButton,
-                        {
-                          backgroundColor: theme.buttonBg,
-                          borderColor: theme.buttonBorder,
-                        },
-                      ]}
-                      onPress={resetView}
-                    >
-                      <Text
-                        style={[styles.smallButtonText, { color: theme.buttonText }]}
-                      >
-                        Reset View
-                      </Text>
+                    <Pressable style={[styles.smallButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={resetView}>
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>Reset View</Text>
                     </Pressable>
-
-                    <Pressable
-                      style={[
-                        styles.smallButton,
-                        {
-                          backgroundColor: theme.buttonBg,
-                          borderColor: theme.buttonBorder,
-                        },
-                      ]}
-                      onPress={zoomIn}
-                    >
-                      <Text
-                        style={[styles.smallButtonText, { color: theme.buttonText }]}
-                      >
-                        ＋
-                      </Text>
+                    <Pressable style={[styles.smallButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={zoomIn}>
+                      <Text style={[styles.smallButtonText, { color: theme.buttonText }]}>＋</Text>
                     </Pressable>
                   </View>
                 </View>
 
                 <View style={styles.actionRow}>
-                  <Pressable
-                    style={[
-                      styles.actionButton,
-                      {
-                        backgroundColor: theme.buttonBg,
-                        borderColor: theme.buttonBorder,
-                      },
-                    ]}
-                    onPress={() => setChooseLocationMode(!chooseLocationMode)}
-                  >
-                    <Text
-                      style={[styles.actionButtonText, { color: theme.buttonText }]}
-                    >
-                      {chooseLocationMode
-                        ? "Tap a room to set location"
-                        : currentLocation
-                        ? "Change My Location"
-                        : "Set My Location"}
+                  <Pressable style={[styles.actionButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={() => setChooseLocationMode(!chooseLocationMode)}>
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>
+                      {chooseLocationMode ? "Tap a room to set location" : "Set My Location"}
                     </Text>
                   </Pressable>
 
-                  <Pressable
-                    style={[
-                      styles.actionButton,
-                      {
-                        backgroundColor: theme.buttonBg,
-                        borderColor: theme.buttonBorder,
-                      },
-                    ]}
-                    onPress={clearRoute}
-                  >
-                    <Text
-                      style={[styles.actionButtonText, { color: theme.buttonText }]}
-                    >
-                      Clear Route
-                    </Text>
+                  <Pressable style={[styles.actionButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={resetCurrentLocation}>
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>Reset My Location</Text>
+                  </Pressable>
+
+                  <Pressable style={[styles.actionButton, { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder }]} onPress={clearRoute}>
+                    <Text style={[styles.actionButtonText, { color: theme.buttonText }]}>Clear Route</Text>
                   </Pressable>
                 </View>
 
                 <View style={styles.infoWrap}>
-                  <View
-                    style={[
-                      styles.infoBubble,
-                      {
-                        backgroundColor: theme.infoBg,
-                        borderColor: theme.infoBorder,
-                      },
-                    ]}
-                  >
-                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>
-                      Current Location
-                    </Text>
-                    <Text style={[styles.infoValue, { color: theme.infoText }]}>
-                      {currentLocationRoom
-                        ? `${currentLocationRoom.id} — ${currentLocationRoom.name} (Floor ${currentLocation?.floor})`
-                        : "Not chosen yet"}
-                    </Text>
+                  <View style={[styles.infoBubble, { backgroundColor: theme.infoBg, borderColor: theme.infoBorder }]}>
+                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>Current Location</Text>
+                    <Text style={[styles.infoValue, { color: theme.infoText }]}>Current location: {currentLocationRoom ? `${currentLocationRoom.id} — ${currentLocationRoom.name} (Floor ${currentLocation.floor})` : "not chosen yet"}</Text>
                   </View>
 
-                  <View
-                    style={[
-                      styles.infoBubble,
-                      {
-                        backgroundColor: theme.infoBg,
-                        borderColor: theme.infoBorder,
-                      },
-                    ]}
-                  >
-                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>
-                      Destination
-                    </Text>
-                    <Text style={[styles.infoValue, { color: theme.infoText }]}>
-                      {selectedRoom
-                        ? `${selectedRoom.id} — ${selectedRoom.name} (Floor ${selectedDestination?.floor})`
-                        : "Not chosen yet"}
-                    </Text>
+                  <View style={[styles.infoBubble, { backgroundColor: theme.infoBg, borderColor: theme.infoBorder }]}>
+                    <Text style={[styles.infoLabel, { color: theme.infoTitle }]}>Destination</Text>
+                    <Text style={[styles.infoValue, { color: theme.infoText }]}>Destination: {selectedRoom ? `${selectedRoom.id} — ${selectedRoom.name} (Floor ${selectedDestination?.floor})` : "not chosen yet"}</Text>
                   </View>
                 </View>
 
@@ -664,13 +473,7 @@ export default function HomeScreen() {
                     setMapViewportWidth(width);
                     setMapViewportHeight(height);
                   }}
-                  style={[
-                    styles.mapBox,
-                    {
-                      backgroundColor: theme.inputBg,
-                      borderColor: theme.inputBorder,
-                    },
-                  ]}
+                  style={[styles.mapBox, { backgroundColor: theme.inputBg, borderColor: theme.inputBorder }]}
                 >
                   {renderMap()}
                 </View>
@@ -678,146 +481,51 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.sideSection}>
-              <View
-                style={[
-                  styles.sideCard,
-                  {
-                    backgroundColor: theme.cardBg,
-                    borderColor: theme.cardBorder,
-                  },
-                ]}
-              >
-                <Text style={[styles.sideTitle, { color: theme.title }]}>
-                  Directions
-                </Text>
+              <View style={[styles.sideCard, { backgroundColor: theme.cardBg, borderColor: theme.cardBorder }]}>
+                <Text style={[styles.sideTitle, { color: theme.title }]}>Directions</Text>
 
-                {!currentLocation || !selectedDestination ? (
-                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                    Pick your location first, then choose a destination room or
-                    saved course.
-                  </Text>
+                {!selectedDestination ? (
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>Choose a destination room or saved course.</Text>
                 ) : currentLocation.floor !== selectedDestination.floor ? (
-                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                    Start and destination need to be on the same floor right now.
-                  </Text>
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>Start and destination need to be on the same floor right now.</Text>
                 ) : !routeSummary ? (
-                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                    No route could be built for that room pair yet.
-                  </Text>
+                  <Text style={[styles.sideSubtitle, { color: theme.text }]}>No route could be built for that room pair yet.</Text>
                 ) : (
                   <>
-                    <Text style={[styles.courseText, { color: theme.text }]}>
-                      From: {routeSummary.from}
-                    </Text>
+                    <Text style={[styles.courseText, { color: theme.text }]}>From: {routeSummary.from}</Text>
+                    <Text style={[styles.courseText, { color: theme.text, marginBottom: 10 }]}>To: {routeSummary.to}</Text>
 
-                    <Text
-                      style={[
-                        styles.courseText,
-                        { color: theme.text, marginBottom: 10 },
-                      ]}
-                    >
-                      To: {routeSummary.to}
-                    </Text>
-
-                    <View
-                      style={[
-                        styles.directionCard,
-                        {
-                          backgroundColor: theme.bubbleBg,
-                          borderColor: theme.bubbleBorder,
-                        },
-                      ]}
-                    >
-                      <Text style={[styles.directionStat, { color: theme.title }]}>
-                        Straight-line distance:{" "}
-                        {routeSummary.straightLineDistanceMeters} m
-                      </Text>
-                      <Text style={[styles.directionStat, { color: theme.title }]}>
-                        Total walking distance: {routeSummary.totalDistanceMeters} m
-                      </Text>
+                    <View style={[styles.directionCard, { backgroundColor: theme.bubbleBg, borderColor: theme.bubbleBorder }]}>
+                      <Text style={[styles.directionStat, { color: theme.title }]}>Straight-line distance: {routeSummary.straightLineDistanceMeters} m</Text>
+                      <Text style={[styles.directionStat, { color: theme.title }]}>Total walking distance: {routeSummary.totalDistanceMeters} m</Text>
                     </View>
 
                     {routeSummary.steps.map((step, index) => (
-                      <View
-                        key={`step-${index}`}
-                        style={[
-                          styles.directionCard,
-                          {
-                            backgroundColor: theme.bubbleBg,
-                            borderColor: theme.bubbleBorder,
-                          },
-                        ]}
-                      >
-                        <Text
-                          style={[styles.directionStepTitle, { color: theme.title }]}
-                        >
-                          {index === 0 ? "Start" : `Step ${index}`}
-                        </Text>
-                        <Text style={[styles.courseText, { color: theme.text }]}>
-                          {step.text}
-                        </Text>
-                        <Text style={[styles.courseText, { color: theme.subtext }]}>
-                          Walk {step.distanceMeters} m
-                        </Text>
+                      <View key={`step-${index}`} style={[styles.directionCard, { backgroundColor: theme.bubbleBg, borderColor: theme.bubbleBorder }]}>
+                        <Text style={[styles.directionStepTitle, { color: theme.title }]}>{index === 0 ? "Start" : `Step ${index}`}</Text>
+                        <Text style={[styles.courseText, { color: theme.text }]}>{step.text}</Text>
+                        <Text style={[styles.courseText, { color: theme.subtext }]}>Walk {step.distanceMeters} m</Text>
                       </View>
                     ))}
 
-                    <Text
-                      style={[
-                        styles.arrivalText,
-                        { color: settings.darkMode ? "#86efac" : "#157347" },
-                      ]}
-                    >
-                      Arrived at destination
-                    </Text>
+                    <Text style={[styles.arrivalText, { color: settings.darkMode ? "#86efac" : "#157347" }]}>Arrived at destination</Text>
                   </>
                 )}
               </View>
 
-              <View
-                style={[
-                  styles.sideCard,
-                  {
-                    backgroundColor: theme.cardBg,
-                    borderColor: theme.cardBorder,
-                    marginTop: 16,
-                  },
-                ]}
-              >
-                <Text style={[styles.sideTitle, { color: theme.title }]}>
-                  Saved Courses
-                </Text>
-                <Text style={[styles.sideSubtitle, { color: theme.text }]}>
-                  Sorted by start time. Tap a course to highlight its room.
-                </Text>
+              <View style={[styles.sideCard, { backgroundColor: theme.cardBg, borderColor: theme.cardBorder, marginTop: 16 }]}>
+                <Text style={[styles.sideTitle, { color: theme.title }]}>Saved Courses</Text>
+                <Text style={[styles.sideSubtitle, { color: theme.text }]}>Sorted by start time. Tap a course to highlight its room.</Text>
 
                 {sortedCourses.length === 0 ? (
-                  <View
-                    style={[
-                      styles.courseCard,
-                      {
-                        backgroundColor: theme.bubbleBg,
-                        borderColor: theme.bubbleBorder,
-                      },
-                    ]}
-                  >
-                    <Text style={[styles.courseText, { color: theme.subtext }]}>
-                      No saved courses yet.
-                    </Text>
+                  <View style={[styles.courseCard, { backgroundColor: theme.bubbleBg, borderColor: theme.bubbleBorder }]}>
+                    <Text style={[styles.courseText, { color: theme.subtext }]}>No saved courses yet.</Text>
                   </View>
                 ) : (
                   sortedCourses.map((course) => {
                     const courseRoomId = roomIdFromSavedCourse(course.room);
-
-                    const isActive =
-                      selectedDestination?.floor === 1 &&
-                      selectedDestination.roomId === courseRoomId;
-
-                    const colorSet = getCourseDayColorSet(
-                      course.days,
-                      settings.showCourseColors,
-                      settings.darkMode
-                    );
+                    const isActive = selectedDestination?.floor === 1 && selectedDestination.roomId === courseRoomId;
+                    const colorSet = getCourseDayColorSet(course.days, settings.showCourseColors, settings.darkMode);
 
                     return (
                       <Pressable
@@ -825,67 +533,16 @@ export default function HomeScreen() {
                         onPress={() => handleSavedCoursePress(course)}
                         style={[
                           styles.courseCard,
-                          {
-                            backgroundColor: colorSet.backgroundColor,
-                            borderColor: colorSet.borderColor,
-                          },
+                          { backgroundColor: colorSet.backgroundColor, borderColor: colorSet.borderColor },
                           isActive && styles.courseCardActive,
                         ]}
                       >
-                        <Text
-                          style={[
-                            styles.courseTitle,
-                            { color: colorSet.titleColor },
-                          ]}
-                        >
-                          {course.subject} {course.courseNumber}
-                        </Text>
-
-                        <Text
-                          style={[
-                            styles.courseText,
-                            { color: colorSet.textColor },
-                          ]}
-                        >
-                          Section: {course.section}
-                        </Text>
-
-                        <Text
-                          style={[
-                            styles.courseText,
-                            { color: colorSet.textColor },
-                          ]}
-                        >
-                          Professor: {course.professorFullName}
-                        </Text>
-
-                        <Text
-                          style={[
-                            styles.courseText,
-                            { color: colorSet.textColor },
-                          ]}
-                        >
-                          Room: {course.room}
-                        </Text>
-
-                        <Text
-                          style={[
-                            styles.courseText,
-                            { color: colorSet.textColor },
-                          ]}
-                        >
-                          Days: {formatDays(course.days)}
-                        </Text>
-
-                        <Text
-                          style={[
-                            styles.courseText,
-                            { color: colorSet.textColor },
-                          ]}
-                        >
-                          Time: {formatTime(course.beginTime)} -{" "}
-                          {formatTime(course.endTime)}
-                        </Text>
+                        <Text style={[styles.courseTitle, { color: colorSet.titleColor }]}>{course.subject} {course.courseNumber}</Text>
+                        <Text style={[styles.courseText, { color: colorSet.textColor }]}>Section: {course.section}</Text>
+                        <Text style={[styles.courseText, { color: colorSet.textColor }]}>Professor: {course.professorFullName}</Text>
+                        <Text style={[styles.courseText, { color: colorSet.textColor }]}>Room: {course.room}</Text>
+                        <Text style={[styles.courseText, { color: colorSet.textColor }]}>Days: {formatDays(course.days)}</Text>
+                        <Text style={[styles.courseText, { color: colorSet.textColor }]}>Time: {formatTime(course.beginTime)} - {formatTime(course.endTime)}</Text>
                       </Pressable>
                     );
                   })
@@ -902,242 +559,48 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-
-  background: {
-    flex: 1,
-  },
-
-  scrollContent: {
-    padding: 18,
-    paddingBottom: 120,
-  },
-
-  titleCard: {
-    borderWidth: 2,
-    borderRadius: 24,
-    padding: 18,
-    marginBottom: 16,
-  },
-
-  title: {
-    fontSize: 30,
-    fontWeight: "800",
-    marginBottom: 6,
-  },
-
-  subtitle: {
-    fontSize: 15,
-    lineHeight: 22,
-  },
-
-  mainGrid: {
-    gap: 16,
-  },
-
-  mapSection: {
-    width: "100%",
-  },
-
-  sideSection: {
-    width: "100%",
-  },
-
-  mainCard: {
-    borderWidth: 2,
-    borderRadius: 28,
-    padding: 18,
-  },
-
-  sideCard: {
-    borderWidth: 2,
-    borderRadius: 28,
-    padding: 18,
-  },
-
-  mapHeaderRow: {
-    marginBottom: 14,
-  },
-
-  cardTitle: {
-    fontSize: 28,
-    fontWeight: "800",
-    marginBottom: 8,
-  },
-
-  cardText: {
-    fontSize: 15,
-    lineHeight: 22,
-  },
-
-  topControlsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap",
-    gap: 10,
-    marginBottom: 12,
-  },
-
-  floorToggleWrap: {
-    flexDirection: "row",
-    gap: 8,
-  },
-
-  floorButton: {
-    borderWidth: 2,
-    borderRadius: 999,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-  },
-
-  floorButtonText: {
-    fontWeight: "800",
-    fontSize: 14,
-  },
-
-  zoomControls: {
-    flexDirection: "row",
-    gap: 8,
-    alignItems: "center",
-    flexWrap: "wrap",
-    justifyContent: "flex-end",
-  },
-
-  smallButton: {
-    borderWidth: 2,
-    borderRadius: 999,
-    minWidth: 52,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    alignItems: "center",
-  },
-
-  smallButtonText: {
-    fontWeight: "800",
-    fontSize: 14,
-  },
-
-  actionRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-    marginBottom: 12,
-  },
-
-  actionButton: {
-    borderWidth: 2,
-    borderRadius: 999,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    alignItems: "center",
-  },
-
-  actionButtonText: {
-    fontSize: 15,
-    fontWeight: "800",
-  },
-
-  infoWrap: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-    marginBottom: 14,
-  },
-
-  infoBubble: {
-    borderWidth: 2,
-    borderRadius: 18,
-    padding: 12,
-    minWidth: 220,
-  },
-
-  infoLabel: {
-    fontSize: 12,
-    fontWeight: "800",
-    marginBottom: 4,
-    textTransform: "uppercase",
-  },
-
-  infoValue: {
-    fontSize: 14,
-    fontWeight: "700",
-  },
-
-  mapBox: {
-    height: 760,
-    borderRadius: 24,
-    borderWidth: 2,
-    overflow: "hidden",
-    padding: 10,
-  },
-
-  mapScrollContent: {
-    alignItems: "flex-start",
-  },
-
-  mapInnerScrollContent: {
-    alignItems: "flex-start",
-  },
-
-  sideTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    marginBottom: 6,
-  },
-
-  sideSubtitle: {
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 14,
-  },
-
-  courseCard: {
-    borderWidth: 2,
-    borderRadius: 20,
-    padding: 14,
-    marginBottom: 12,
-  },
-
-  courseCardActive: {
-    borderColor: "#ff9f1a",
-  },
-
-  courseTitle: {
-    fontSize: 18,
-    fontWeight: "800",
-    marginBottom: 6,
-  },
-
-  courseText: {
-    fontSize: 14,
-    marginBottom: 2,
-  },
-
-  directionCard: {
-    borderWidth: 2,
-    borderRadius: 18,
-    padding: 12,
-    marginBottom: 10,
-  },
-
-  directionStepTitle: {
-    fontSize: 15,
-    fontWeight: "800",
-    marginBottom: 4,
-  },
-
-  directionStat: {
-    fontSize: 14,
-    fontWeight: "700",
-    marginBottom: 4,
-  },
-
-  arrivalText: {
-    fontSize: 16,
-    fontWeight: "800",
-    marginTop: 4,
-  },
+  safeArea: { flex: 1 },
+  background: { flex: 1 },
+  scrollContent: { padding: 18, paddingBottom: 120 },
+  titleCard: { borderWidth: 2, borderRadius: 24, padding: 18, marginBottom: 16 },
+  title: { fontSize: 30, fontWeight: "800", marginBottom: 6 },
+  subtitle: { fontSize: 15, lineHeight: 22 },
+  mainGrid: { gap: 16 },
+  mapSection: { width: "100%" },
+  sideSection: { width: "100%" },
+  mainCard: { borderWidth: 2, borderRadius: 28, padding: 18 },
+  sideCard: { borderWidth: 2, borderRadius: 28, padding: 18 },
+  mapHeaderRow: { marginBottom: 14 },
+  cardTitle: { fontSize: 28, fontWeight: "800", marginBottom: 8 },
+  cardText: { fontSize: 15, lineHeight: 22 },
+  searchRow: { flexDirection: "row", gap: 10, flexWrap: "wrap", marginBottom: 12 },
+  searchInput: { flex: 1, minWidth: 200, borderWidth: 2, borderRadius: 18, paddingHorizontal: 14, paddingVertical: 12, fontSize: 15 },
+  searchButton: { borderWidth: 2, borderRadius: 999, paddingHorizontal: 16, paddingVertical: 12, justifyContent: "center", alignItems: "center" },
+  topControlsRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 12 },
+  floorToggleWrap: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
+  floorButton: { borderWidth: 2, borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14 },
+  floorButtonText: { fontSize: 14, fontWeight: "800" },
+  zoomControls: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
+  smallButton: { borderWidth: 2, borderRadius: 999, paddingVertical: 10, paddingHorizontal: 14 },
+  smallButtonText: { fontSize: 14, fontWeight: "800" },
+  actionRow: { flexDirection: "row", gap: 10, flexWrap: "wrap", marginBottom: 14 },
+  actionButton: { borderWidth: 2, borderRadius: 999, paddingVertical: 12, paddingHorizontal: 16, alignItems: "center" },
+  actionButtonText: { fontSize: 14, fontWeight: "800" },
+  infoWrap: { gap: 10, marginBottom: 14 },
+  infoBubble: { borderWidth: 2, borderRadius: 18, padding: 14 },
+  infoLabel: { fontSize: 14, fontWeight: "800", marginBottom: 4 },
+  infoValue: { fontSize: 14, lineHeight: 20 },
+  mapBox: { borderWidth: 2, borderRadius: 22, minHeight: 440, overflow: "hidden" },
+  mapScrollContent: { minWidth: "100%" },
+  mapInnerScrollContent: { minHeight: "100%" },
+  sideTitle: { fontSize: 24, fontWeight: "800", marginBottom: 8 },
+  sideSubtitle: { fontSize: 14, lineHeight: 21, marginBottom: 12 },
+  directionCard: { borderWidth: 2, borderRadius: 18, padding: 14, marginBottom: 10 },
+  directionStat: { fontSize: 14, fontWeight: "700", lineHeight: 21 },
+  directionStepTitle: { fontSize: 15, fontWeight: "800", marginBottom: 4 },
+  arrivalText: { fontSize: 15, fontWeight: "800", marginTop: 6 },
+  courseCard: { borderWidth: 2, borderRadius: 20, padding: 14, marginTop: 12 },
+  courseCardActive: { borderWidth: 3 },
+  courseTitle: { fontSize: 16, fontWeight: "800", marginBottom: 6 },
+  courseText: { fontSize: 14, lineHeight: 21 },
 });

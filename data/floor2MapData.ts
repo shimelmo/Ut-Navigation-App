@@ -44,42 +44,97 @@ export const roomCenterFloor2 = (roomId: string) => {
   return { x: room.x + room.w / 2, y: room.y + room.h / 2 };
 };
 
+/*
+  Floor 2 hallway graph
+
+  The nodes are placed on the actual hallway gaps between room rows/blocks,
+  so the blue line stays in the hallway instead of cutting across the open
+  front/back space around the rooms.
+*/
+
 export const F2_NODES: Record<string, { x: number; y: number }> = {
-  f2_l: { x: 120, y: 470 },
-  f2_m: { x: 450, y: 470 },
-  f2_r: { x: 935, y: 470 },
-  f2_t: { x: 450, y: 285 },
-  f2_b: { x: 450, y: 648 },
-  f2_tl: { x: 140, y: 110 },
-  f2_tr: { x: 760, y: 110 },
+  // top hallway: between the top row and the 2103 / 2100 / 2122 row
+  f2_t_2101: { x: 138, y: 173 },
+  f2_t_2102: { x: 353, y: 173 },
+  f2_t_1119: { x: 543, y: 173 },
+
+  // vertical hall between 2103 and 2100
+  f2_v_left_top: { x: 198, y: 173 },
+  f2_v_left_mid: { x: 198, y: 393 },
+
+  // vertical hall between 2100 and 2122 / 2125
+  f2_v_mid_top: { x: 528, y: 173 },
+  f2_v_mid_mid: { x: 528, y: 393 },
+  f2_v_mid_bot: { x: 528, y: 558 },
+
+  // middle hallway: between the upper middle row and the 2120 / 2121 / 2125 row
+  f2_m_2100: { x: 363, y: 393 },
+  f2_m_2122: { x: 635, y: 393 },
+  f2_m_2123: { x: 840, y: 393 },
+  f2_m_2124: { x: 1020, y: 393 },
+
+  // bottom hallway: between 2120 / 2121 / 2125 and 2104 / 2105 / 2106 / 2108 / 2109
+  f2_b_2120: { x: 115, y: 558 },
+  f2_b_2121: { x: 363, y: 558 },
+  f2_b_2125: { x: 625, y: 558 },
+  f2_b_2108: { x: 725, y: 558 },
+  f2_b_2109: { x: 935, y: 558 },
+
+  // right vertical drop to keep the 2124 ↔ 2109 path straight
+  f2_v_right_top: { x: 1020, y: 393 },
+  f2_v_right_bot: { x: 935, y: 558 },
 };
 
 export const F2_EDGES: [string, string][] = [
-  ["f2_l", "f2_m"],
-  ["f2_m", "f2_r"],
-  ["f2_m", "f2_t"],
-  ["f2_m", "f2_b"],
-  ["f2_l", "f2_b"],
-  ["f2_r", "f2_b"],
-  ["f2_tl", "f2_t"],
-  ["f2_t", "f2_tr"],
+  // top hallway
+  ["f2_t_2101", "f2_v_left_top"],
+  ["f2_v_left_top", "f2_t_2102"],
+  ["f2_t_2102", "f2_v_mid_top"],
+  ["f2_v_mid_top", "f2_t_1119"],
+
+  // left vertical hallway
+  ["f2_v_left_top", "f2_v_left_mid"],
+
+  // middle vertical hallway
+  ["f2_v_mid_top", "f2_v_mid_mid"],
+  ["f2_v_mid_mid", "f2_v_mid_bot"],
+
+  // middle hallway
+  ["f2_v_left_mid", "f2_m_2100"],
+  ["f2_m_2100", "f2_v_mid_mid"],
+  ["f2_v_mid_mid", "f2_m_2122"],
+  ["f2_m_2122", "f2_m_2123"],
+  ["f2_m_2123", "f2_m_2124"],
+
+  // bottom hallway
+  ["f2_b_2120", "f2_b_2121"],
+  ["f2_b_2121", "f2_v_mid_bot"],
+  ["f2_v_mid_bot", "f2_b_2125"],
+  ["f2_b_2125", "f2_b_2108"],
+  ["f2_b_2108", "f2_b_2109"],
+
+  // right-side connection used for 2124/2109 style routes
+  ["f2_m_2124", "f2_b_2109"],
 ];
 
 export const F2_DOOR: Record<string, string> = {
-  "2101": "f2_tl",
-  "2102": "f2_t",
-  "1119": "f2_tr",
-  "2103": "f2_l",
-  "2100": "f2_t",
-  "2122": "f2_m",
-  "2123": "f2_tr",
-  "2124": "f2_tr",
-  "2120": "f2_l",
-  "2121": "f2_m",
-  "2125": "f2_m",
-  "2104": "f2_b",
-  "2105": "f2_b",
-  "2106": "f2_b",
-  "2108": "f2_r",
-  "2109": "f2_r",
+  "2101": "f2_t_2101",
+  "2102": "f2_t_2102",
+  "1119": "f2_t_1119",
+
+  "2103": "f2_v_left_mid",
+  "2100": "f2_m_2100",
+  "2122": "f2_m_2122",
+  "2123": "f2_m_2123",
+  "2124": "f2_m_2124",
+
+  "2120": "f2_b_2120",
+  "2121": "f2_b_2121",
+  "2125": "f2_b_2125",
+
+  "2104": "f2_b_2120",
+  "2105": "f2_b_2121",
+  "2106": "f2_v_mid_bot",
+  "2108": "f2_b_2108",
+  "2109": "f2_b_2109",
 };
