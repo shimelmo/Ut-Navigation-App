@@ -33,6 +33,7 @@ type DatabaseCourse = {
 };
 
 const START_ROOM_ID = "C1002";
+const ROOM_INSET = 8;
 
 export default function MapScreen() {
   const [roomSearch, setRoomSearch] = useState("");
@@ -290,13 +291,24 @@ export default function MapScreen() {
                     const isSelected = room.id === selectedRoomId;
                     const isStart = room.id === START_ROOM_ID;
 
+                    const inset = Math.min(
+                      ROOM_INSET,
+                      Math.max(2, room.w * 0.08),
+                      Math.max(2, room.h * 0.08)
+                    );
+
+                    const drawX = room.x + inset / 2;
+                    const drawY = room.y + inset / 2;
+                    const drawW = Math.max(8, room.w - inset);
+                    const drawH = Math.max(8, room.h - inset);
+
                     return (
                       <React.Fragment key={room.id}>
                         <Rect
-                          x={room.x}
-                          y={room.y}
-                          width={room.w}
-                          height={room.h}
+                          x={drawX}
+                          y={drawY}
+                          width={drawW}
+                          height={drawH}
                           fill={
                             isSelected
                               ? "#ffe59c"

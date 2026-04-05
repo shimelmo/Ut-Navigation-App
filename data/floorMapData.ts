@@ -339,12 +339,14 @@ export const ROOM_BY_ID: Record<string, Room> = Object.fromEntries(
 );
 
 export const NODES: Record<string, { x: number; y: number }> = {
+  // left lab-wing hallway spine
   l0: { x: 258, y: 280 },
   l1: { x: 258, y: 390 },
   l2: { x: 258, y: 628 },
   l3: { x: 258, y: 870 },
   l4: { x: 258, y: 1080 },
 
+  // center hallway spine
   c0: { x: 630, y: 38 },
   c1: { x: 630, y: 360 },
   c2: { x: 630, y: 628 },
@@ -353,22 +355,36 @@ export const NODES: Record<string, { x: number; y: number }> = {
   c5: { x: 630, y: 1270 },
   c6: { x: 759, y: 1334 },
 
+  // right-side hallway nodes
   r0: { x: 950, y: 38 },
   r1: { x: 950, y: 203 },
   r2: { x: 950, y: 458 },
-  r3: { x: 950, y: 668 },
+
+  // actual hallway strips / bends
+  tc: { x: 630, y: 280 },
+  trh: { x: 950, y: 280 },
+  h2a: { x: 459, y: 870 },
+
+  // hall under 1133 / above restrooms
+  c3r: { x: 950, y: 870 },
+
+  // hall below restrooms / by stair + wood shop
   r4: { x: 950, y: 1040 },
   r5: { x: 950, y: 1058 },
 
-  h2a: { x: 459, y: 870 },
-  tc: { x: 630, y: 280 },
-  rw1: { x: 1240, y: 463 },
+  // right-side bridge corridor
   rw2: { x: 1390, y: 628 },
   rw3: { x: 1390, y: 870 },
   rw4: { x: 1260, y: 870 },
+
+  // teaching-lab hallway only
+  rw1: { x: 1240, y: 463 },
+
+  // lower hall by 1190C / maker / entrance
   cn: { x: 720, y: 1080 },
   cs: { x: 720, y: 1265 },
 
+  // upper wing
   uw0: { x: 1700, y: 628 },
   uw1: { x: 1700, y: 408 },
   uw2: { x: 1700, y: 168 },
@@ -378,57 +394,75 @@ export const NODES: Record<string, { x: number; y: number }> = {
   uw6: { x: 2445, y: 848 },
   uw7: { x: 1700, y: 848 },
 
+  // ET section lanes
+  // top strip above ET rooms
   et0: { x: 759, y: 1382 },
   et1: { x: 160, y: 1382 },
   et2: { x: 815, y: 1382 },
   et3: { x: 1220, y: 1382 },
-  et4: { x: 1800, y: 1530 },
+
+  // outside left lane for lower-left ET rooms
+  etL0: { x: 20, y: 1382 },
+  etL1: { x: 20, y: 1700 },
+
+  // outside right lane for ET office block
+  etR0: { x: 2010, y: 1382 },
+  etR1: { x: 2010, y: 1760 },
 };
 
 export const EDGES: [string, string][] = [
+  // left spine
   ["l0", "l1"],
   ["l1", "l2"],
   ["l2", "l3"],
   ["l3", "l4"],
 
+  // center spine
   ["c0", "c1"],
   ["c1", "c2"],
   ["c2", "c3"],
   ["c3", "c4"],
 
+  // right upper short spine
   ["r0", "r1"],
   ["r1", "r2"],
-  ["r2", "r3"],
-  ["r3", "r4"],
-  ["r4", "r5"],
 
+  // top hallway under 1191 / toward 1160 side
   ["l0", "tc"],
-  ["tc", "c1"],
-  ["tc", "r0"],
+  ["tc", "trh"],
+  ["trh", "r1"],
+  ["trh", "r0"],
 
+  // middle hallway between upper and middle room clusters
   ["l2", "c2"],
-  ["c2", "r3"],
 
+  // lower-middle hallway between middle and lower room clusters
   ["l3", "h2a"],
   ["h2a", "c3"],
-  ["c3", "r4"],
+  ["c3", "c3r"],
 
+  // lower hall by 1190C / maker / entrance
   ["l4", "c4"],
-  ["c4", "r5"],
-
   ["c4", "cn"],
   ["cn", "cs"],
   ["cs", "c5"],
   ["cs", "c6"],
   ["c5", "c6"],
 
+  // teaching-lab area
   ["r2", "rw1"],
-  ["r3", "rw2"],
-  ["rw2", "rw3"],
-  ["rw3", "rw4"],
-  ["rw4", "r4"],
 
+  // lower-right hallway and bridge to upper wing
+  ["c3r", "rw4"],
+  ["rw4", "rw3"],
+  ["rw3", "rw2"],
+  ["c3r", "r4"],
+  ["r4", "r5"],
+
+  // bridge to upper wing
   ["rw2", "uw0"],
+
+  // upper wing orthogonal ring
   ["uw0", "uw1"],
   ["uw1", "uw2"],
   ["uw2", "uw3"],
@@ -440,15 +474,25 @@ export const EDGES: [string, string][] = [
   ["uw7", "uw0"],
   ["uw1", "uw4"],
 
+  // ET section routing
   ["c6", "et0"],
   ["et0", "et1"],
+  ["et0", "et2"],
+  ["et0", "et3"],
   ["et1", "et2"],
   ["et2", "et3"],
-  ["et3", "et4"],
+
+  // outside left lane
+  ["et1", "etL0"],
+  ["etL0", "etL1"],
+
+  // outside right lane
+  ["et3", "etR0"],
+  ["etR0", "etR1"],
 ];
 
 export const DOOR: Record<string, string> = {
-  "1191": "c1",
+  "1191": "tc",
   "1150": "l2",
   "1152A": "l0",
   "1152B": "l0",
@@ -456,19 +500,23 @@ export const DOOR: Record<string, string> = {
   "1152D": "tc",
   "1152E": "tc",
   "1152F": "c1",
+
   "1151": "l2",
   "1153": "c2",
   "1143": "c2",
   "1142": "c2",
+
   "1145": "l3",
   "1144": "c3",
   "1141": "c3",
-  "1147": "r4",
+  "1147": "c3r",
+
   "1123": "l3",
   "1122": "c3",
   "1121": "c3",
   "1121A": "r4",
   "1120": "r4",
+
   "C1192": "r0",
   "C1191": "r0",
   "C1180": "r1",
@@ -476,6 +524,7 @@ export const DOOR: Record<string, string> = {
   "1190A": "r0",
   "1489": "r0",
   "C1033": "r0",
+
   "1160": "rw1",
   "1180": "r2",
   "1130": "r2",
@@ -485,19 +534,22 @@ export const DOOR: Record<string, string> = {
   "1130E": "rw1",
   "1132": "rw1",
   "1134": "rw1",
-  "1133": "r4",
+
+  "1133": "c3r",
   "1137": "r4",
   "1136": "r4",
+
   "1460": "rw2",
+  "1455": "rw2",
   "1254": "rw3",
   "1252": "rw3",
   "1253": "rw3",
-  "1455": "rw2",
+
   "C1111": "r5",
-  "1190C": "cn",
-  "1102": "r5",
-  "1200": "cn",
   "1251A": "c4",
+  "1190C": "cn",
+  "1200": "cn",
+  "1102": "r5",
   "1251": "r5",
   "1230": "c5",
   "C1002": "c6",
@@ -511,6 +563,7 @@ export const DOOR: Record<string, string> = {
   "1056": "uw2",
   "1060": "uw3",
   "1061": "uw3",
+
   "1013": "uw1",
   "1012": "uw1",
   "1002": "uw1",
@@ -525,6 +578,7 @@ export const DOOR: Record<string, string> = {
   "1014": "uw1",
   "1015": "uw1",
   "1016": "uw1",
+
   "1022": "uw0",
   "1023": "uw0",
   "1024": "uw0",
@@ -540,37 +594,44 @@ export const DOOR: Record<string, string> = {
   "1100": "uw7",
   "1101A": "uw7",
 
+  // ET top strip rooms
   "1225": "et1",
   "1215": "et1",
   "1459": "et1",
   "1290": "et2",
   "1410": "et3",
   "1500": "et3",
-  "1601": "et4",
-  "1603": "et4",
-  "1600A": "et4",
-  "1625": "et4",
-  "1300": "et1",
-  "1302": "et1",
+
+  // ET lower-left cluster should use the outside left lane
+  "1300": "etL1",
+  "1302": "etL1",
+  "1342": "etL1",
+
+  // ET center / lower classrooms can still use top strip center
   "1360": "et2",
   "1365": "et2",
   "1430": "et2",
   "1540": "et3",
-  "1602": "et4",
-  "1604": "et4",
-  "1606": "et4",
-  "1608": "et4",
-  "1614": "et4",
-  "1607": "et4",
-  "1609": "et4",
-  "1611": "et4",
-  "1613": "et4",
-  "1615": "et4",
-  "1342": "et1",
-  "1382": "et1",
+  "1382": "et2",
   "1392": "et2",
   "1381": "et2",
   "1391": "et2",
+
+  // office block should use the outside right lane
+  "1601": "etR0",
+  "1603": "etR0",
+  "1600A": "etR0",
+  "1625": "etR0",
+  "1602": "etR1",
+  "1604": "etR1",
+  "1606": "etR1",
+  "1608": "etR1",
+  "1614": "etR1",
+  "1607": "etR1",
+  "1609": "etR1",
+  "1611": "etR1",
+  "1613": "etR1",
+  "1615": "etR1",
 };
 
 export const roomCenter = (roomId: string) => {
