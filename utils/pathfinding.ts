@@ -380,6 +380,10 @@ export const findRoute = (
     rawRoute = [startPoint, ...nodePath.map((node) => nodes[node]), endPoint];
   }
 
+  if (floor === 1) {
+    return simplifyRoutePoints(rawRoute);
+  }
+
   return orthogonalizeRoute(rawRoute, floor);
 };
 

@@ -33,7 +33,8 @@ type DatabaseCourse = {
 };
 
 const START_ROOM_ID = "C1002";
-const ROOM_INSET = 8;
+const ROOM_INSET = 18;
+const ROUTE_STROKE_WIDTH = 6;
 
 export default function MapScreen() {
   const [roomSearch, setRoomSearch] = useState("");
@@ -280,7 +281,7 @@ export default function MapScreen() {
                           x2={nextPoint.x}
                           y2={nextPoint.y}
                           stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
-                          strokeWidth={8}
+                          strokeWidth={ROUTE_STROKE_WIDTH}
                           strokeLinecap="round"
                         />
                       );

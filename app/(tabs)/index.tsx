@@ -35,6 +35,8 @@ import {
 } from "react-native";
 import Svg, { Circle, Line, Rect, Text as SvgText } from "react-native-svg";
 
+const ROOM_INSET = 10;
+
 type SavedCourse = {
   id: string;
   subject: string;
@@ -359,7 +361,7 @@ export default function HomeScreen() {
                       x2={nextPoint.x}
                       y2={nextPoint.y}
                       stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
-                      strokeWidth={8}
+                      strokeWidth={6}
                       strokeLinecap="round"
                     />
                   );
@@ -378,13 +380,24 @@ export default function HomeScreen() {
                 currentLocation?.floor === selectedFloor &&
                 currentLocation.roomId === room.id;
 
+              const inset = Math.min(
+                ROOM_INSET,
+                Math.max(2, room.w * 0.08),
+                Math.max(2, room.h * 0.08)
+              );
+
+              const drawX = room.x + inset / 2;
+              const drawY = room.y + inset / 2;
+              const drawW = Math.max(8, room.w - inset);
+              const drawH = Math.max(8, room.h - inset);
+
               return (
                 <React.Fragment key={`${selectedFloor}-${room.id}`}>
                   <Rect
-                    x={room.x}
-                    y={room.y}
-                    width={room.w}
-                    height={room.h}
+                    x={drawX}
+                    y={drawY}
+                    width={drawW}
+                    height={drawH}
                     fill={
                       isSelected
                         ? "#ffe59c"
