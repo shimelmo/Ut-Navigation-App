@@ -339,128 +339,129 @@ export const ROOM_BY_ID: Record<string, Room> = Object.fromEntries(
 );
 
 export const NODES: Record<string, { x: number; y: number }> = {
-  // left hallway spine
-  l0: { x: 258, y: 258 },
-  l1: { x: 258, y: 390 },
-  l2: { x: 258, y: 845 },
-  l3: { x: 258, y: 1080 },
+  // upper-left hallway system
+  // these sit in the open corridor gaps, not inside the room blocks
+  l0: { x: 250, y: 258 },
+  l1: { x: 250, y: 650 },
+  l2: { x: 250, y: 985 },
+  l3: { x: 250, y: 1085 },
 
-  // center hallway spine
+  // central bend that follows the left wing hall down the right side of 1191 / 1142
   c0: { x: 630, y: 258 },
-  c1: { x: 630, y: 390 },
-  c2: { x: 630, y: 845 },
-  c3: { x: 630, y: 1080 },
-  c4: { x: 630, y: 1270 },
-  c5: { x: 759, y: 1334 },
+  c1: { x: 630, y: 650 },
+  c2: { x: 630, y: 985 },
+  c3: { x: 630, y: 1085 },
+  c4: { x: 720, y: 1270 },
+  c5: { x: 720, y: 1334 },
 
-  // right-center hallway spine
-  // moved left so routes stay in the hallway beside 1130B / 1133 / restrooms
-  r0: { x: 905, y: 280 },
-  r1: { x: 905, y: 458 },
-  r2: { x: 905, y: 845 },
-  r3: { x: 905, y: 1040 },
-  r4: { x: 905, y: 1058 },
+  // right-side hallway beside 1130 / 1133 / restrooms
+  // keep this on the shared corridor edge so the route bends around rooms
+  r0: { x: 920, y: 258 },
+  r1: { x: 920, y: 650 },
+  r2: { x: 920, y: 845 },
+  r3: { x: 920, y: 1085 },
+  r4: { x: 920, y: 1270 },
 
   // hallway connectors
   h_top_mid: { x: 459, y: 258 },
-  h_mid: { x: 459, y: 845 },
-  h_low: { x: 720, y: 1080 },
-  h_entry: { x: 720, y: 1265 },
+  h_mid: { x: 459, y: 650 },
+  h_low: { x: 720, y: 1085 },
+  h_entry: { x: 720, y: 1270 },
 
   // teaching lab spur
-  teach: { x: 1240, y: 463 },
+  teach: { x: 1240, y: 543 },
 
-  // right-side bridge corridor
+  // bridge into the east wing
   br0: { x: 1260, y: 845 },
   br1: { x: 1390, y: 845 },
-  br2: { x: 1390, y: 628 },
+  br2: { x: 1700, y: 845 },
 
-  // upper wing
-  uw0: { x: 1700, y: 628 },
-  uw1: { x: 1700, y: 302 },
+  // east wing hall graph
+  uw0: { x: 1700, y: 778 },
+  uw1: { x: 1700, y: 528 },
   uw2: { x: 1700, y: 168 },
-  uw3: { x: 2365, y: 168 },
-  uw4: { x: 2250, y: 408 },
-  uw5: { x: 2250, y: 628 },
-  uw6: { x: 2445, y: 848 },
-  uw7: { x: 1700, y: 848 },
+  uw3: { x: 2240, y: 168 },
+  uw4: { x: 2240, y: 343 },
+  uw5: { x: 2240, y: 528 },
+  uw6: { x: 2240, y: 848 },
+  uw7: { x: 1700, y: 908 },
 
-  // ET section
-  et0: { x: 759, y: 1382 },
-  et1: { x: 160, y: 1382 },
-  et2: { x: 815, y: 1382 },
-  et3: { x: 1220, y: 1382 },
-  etL0: { x: 20, y: 1382 },
-  etL1: { x: 20, y: 1700 },
-  etR0: { x: 2010, y: 1382 },
-  etR1: { x: 2010, y: 1760 },
+  // lower ET corridor system
+  et0: { x: 720, y: 1600 },
+  et1: { x: 160, y: 1600 },
+  et2: { x: 815, y: 1600 },
+  et3: { x: 1220, y: 1600 },
+  etL0: { x: 20, y: 1600 },
+  etL1: { x: 20, y: 1780 },
+  etR0: { x: 1878, y: 1530 },
+  etR1: { x: 1878, y: 1780 },
 };
 
 export const EDGES: [string, string][] = [
-  // left spine
+  // upper-left vertical spines
   ["l0", "l1"],
   ["l1", "l2"],
   ["l2", "l3"],
 
-  // center spine
   ["c0", "c1"],
   ["c1", "c2"],
   ["c2", "c3"],
   ["c3", "c4"],
   ["c4", "c5"],
 
-  // right-center spine
   ["r0", "r1"],
   ["r1", "r2"],
   ["r2", "r3"],
   ["r3", "r4"],
 
-  // upper hallway
+  // upper hallway by 1150 / 1191 / 1160
   ["l0", "h_top_mid"],
   ["h_top_mid", "c0"],
   ["c0", "r0"],
 
-  // middle hallway
-  ["l2", "h_mid"],
-  ["h_mid", "c2"],
-  ["c2", "r2"],
+  // main classroom corridor between the 115x/114x blocks and the lower rooms
+  ["l1", "h_mid"],
+  ["h_mid", "c1"],
+  ["c1", "r1"],
 
-  // lower hall by 1190C / maker / entrance
+  // lower hall by 1190C / 1200 / 1102 / 1251 / C1002
   ["l3", "c3"],
   ["c3", "h_low"],
-  ["h_low", "r4"],
+  ["h_low", "r3"],
   ["h_low", "h_entry"],
   ["h_entry", "c4"],
   ["h_entry", "c5"],
 
+  // lower classroom corridor by 112x / 1133 / 1137 / 1136 / 1254
+  ["l2", "c2"],
+  ["c2", "r2"],
+
   // teaching lab area
   ["r1", "teach"],
 
-  // right-side bridge corridor
+  // east bridge
   ["r2", "br0"],
   ["br0", "br1"],
   ["br1", "br2"],
-  ["br2", "uw0"],
 
-  // upper wing orthogonal ring
+  // east wing orthogonal hall graph
+  ["br2", "uw0"],
   ["uw0", "uw1"],
   ["uw1", "uw2"],
   ["uw2", "uw3"],
   ["uw3", "uw4"],
   ["uw4", "uw5"],
-  ["uw0", "uw5"],
   ["uw5", "uw6"],
-  ["uw6", "uw7"],
-  ["uw7", "uw0"],
-  ["uw1", "uw4"],
+  ["uw0", "uw6"],
+  ["uw0", "uw7"],
+  ["uw1", "uw5"],
+  ["uw7", "uw6"],
 
-  // ET section
+  // lower ET section
   ["c5", "et0"],
   ["et0", "et1"],
   ["et0", "et2"],
   ["et0", "et3"],
-  ["et1", "et2"],
-  ["et2", "et3"],
   ["et1", "etL0"],
   ["etL0", "etL1"],
   ["et3", "etR0"],
@@ -482,16 +483,16 @@ export const DOOR: Record<string, string> = {
   "1143": "c1",
   "1142": "c1",
 
-  "1145": "l2",
+  "1145": "l1",
   "1144": "h_mid",
-  "1141": "c2",
-  "1147": "r2",
+  "1141": "c1",
+  "1147": "r1",
 
   "1123": "l2",
-  "1122": "h_mid",
+  "1122": "c2",
   "1121": "c2",
   "1121A": "r2",
-  "1120": "r3",
+  "1120": "r2",
 
   "C1192": "r0",
   "C1191": "r0",
@@ -511,21 +512,21 @@ export const DOOR: Record<string, string> = {
   "1132": "teach",
   "1134": "teach",
 
-  "1133": "r2",
-  "1137": "r3",
-  "1136": "r3",
+  "1133": "r1",
+  "1137": "r2",
+  "1136": "r2",
 
-  "1460": "br2",
-  "1455": "br2",
+  "1460": "br1",
+  "1455": "br1",
   "1254": "br0",
   "1252": "br1",
   "1253": "br1",
 
-  "C1111": "r4",
+  "C1111": "r3",
   "1251A": "c3",
   "1190C": "h_low",
   "1200": "h_low",
-  "1102": "r4",
+  "1102": "r3",
   "1251": "r4",
   "1230": "c4",
   "C1002": "c5",
@@ -542,15 +543,15 @@ export const DOOR: Record<string, string> = {
 
   "1013": "uw1",
   "1012": "uw1",
-  "1002": "uw1",
+  "1002": "uw4",
   "1050": "uw4",
   "1049": "uw4",
   "1047": "uw4",
   "1017": "uw1",
   "1018": "uw1",
-  "1021": "uw1",
-  "1051": "uw4",
-  "1045": "uw4",
+  "1021": "uw4",
+  "1051": "uw5",
+  "1045": "uw5",
   "1014": "uw1",
   "1015": "uw1",
   "1016": "uw1",
@@ -584,10 +585,10 @@ export const DOOR: Record<string, string> = {
   "1430": "et2",
   "1540": "et3",
   "1342": "etL1",
-  "1382": "et1",
-  "1392": "et2",
-  "1381": "et2",
-  "1391": "et2",
+  "1382": "etL1",
+  "1392": "etL1",
+  "1381": "etL1",
+  "1391": "etL1",
 
   "1601": "etR0",
   "1603": "etR0",
@@ -606,6 +607,7 @@ export const DOOR: Record<string, string> = {
 };
 
 export const roomCenter = (roomId: string) => {
+
   const room = ROOM_BY_ID[roomId];
   return { x: room.x + room.w / 2, y: room.y + room.h / 2 };
 };

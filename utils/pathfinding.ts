@@ -381,7 +381,7 @@ export const findRoute = (
   }
 
   if (floor === 1) {
-    return simplifyRoutePoints(rawRoute);
+    return orthogonalizeRoute(rawRoute, floor);
   }
 
   return orthogonalizeRoute(rawRoute, floor);

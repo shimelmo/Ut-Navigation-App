@@ -108,24 +108,14 @@
     "additionalInfo": ""
   },
   {
-    "firstName": "Nasser",
-    "lastName": "Alaraje",
-    "fullName": "Nasser Alaraje",
-    "building": "North Engineering",
-    "room": "NE 1605",
-    "officeHours": {
-      "TBD": ""
-    },
-    "additionalInfo": ""
-  },
-  {
     "firstName": "Qiuying",
     "lastName": "Zhao",
     "fullName": "Qiuying Zhao",
     "building": "North Engineering",
     "room": "NE 1618",
     "officeHours": {
-      "TBD": ""
+       "Monday": "10:20 AM - 12:50 PM",
+      "Wednesday": "10:20 AM - 12:50 PM"
     },
     "additionalInfo": ""
   },
@@ -136,7 +126,10 @@
     "building": "North Engineering",
     "room": "NE 1623",
     "officeHours": {
-      "TBD": ""
+      "Tuesday": "2:00 PM - 3:00 PM",
+	"Thrusday": "2:00 PM - 3:00 PM"
+
+
     },
     "additionalInfo": ""
   },
@@ -158,7 +151,7 @@
     "building": "North Engineering",
     "room": "NE 1610",
     "officeHours": {
-      "TBD": ""
+      "Wednesday": "9:00 AM - 4:30 PM"
     },
     "additionalInfo": ""
   },
@@ -169,7 +162,10 @@
     "building": "North Engineering",
     "room": "NE 2428",
     "officeHours": {
-      "TBD": ""
+      "Monday": "1:00 PM - 2:00 PM",
+	"Wednesday": "1:00 PM - 2:00 PM"
+
+
     },
     "additionalInfo": ""
   },
@@ -180,7 +176,7 @@
     "building": "North Engineering",
     "room": "NE 5026",
     "officeHours": {
-      "TBD": ""
+      "Schedule Online!": ""
     },
     "additionalInfo": ""
   },
@@ -191,18 +187,8 @@
     "building": "North Engineering",
     "room": "NE 1021",
     "officeHours": {
-      "TBD": ""
-    },
-    "additionalInfo": ""
-  },
-  {
-    "firstName": "Saleh A.",
-    "lastName": "Jabarin",
-    "fullName": "Saleh A. Jabarin",
-    "building": "North Engineering",
-    "room": "NE 2429",
-    "officeHours": {
-      "TBD": ""
+      "Monday to Friday": "10:15 AM - 11:45 AM & 1:00 PM 3:00 PM"
+ 
     },
     "additionalInfo": ""
   },
@@ -213,18 +199,8 @@
     "building": "North Engineering",
     "room": "NE 1469-D",
     "officeHours": {
-      "TBD": ""
-    },
-    "additionalInfo": ""
-  },
-  {
-    "firstName": "Nicoleta",
-    "lastName": "Ene",
-    "fullName": "Nicoleta Ene",
-    "building": "North Engineering",
-    "room": "NE 4052",
-    "officeHours": {
-      "TBD": ""
+      "Monday": "8:30 AM - 5:00 PM",
+	    "Friday": "8:30 AM - 5:00 PM"
     },
     "additionalInfo": ""
   },
@@ -240,24 +216,14 @@
     "additionalInfo": ""
   },
   {
-    "firstName": "Josh",
-    "lastName": "Belknap",
-    "fullName": "Josh Belknap",
-    "building": "North Engineering",
-    "room": "NE 1628",
-    "officeHours": {
-      "TBD": ""
-    },
-    "additionalInfo": ""
-  },
- {
     "firstName": "Amy",
     "lastName": "Bian",
     "fullName": "Amy Bian",
     "building": "North Engineering",
     "room": "NE 1609",
     "officeHours": {
-      "TBD": ""
+      "Tuesday": "11:00 AM - 1:30 PM",
+	"Thursday": "11:00 AM - 1:30 PM"
     },
     "additionalInfo": ""
   }

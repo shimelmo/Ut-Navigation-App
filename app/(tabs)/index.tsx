@@ -35,7 +35,8 @@ import {
 } from "react-native";
 import Svg, { Circle, Line, Rect, Text as SvgText } from "react-native-svg";
 
-const ROOM_INSET = 10;
+const ROOM_INSET = 26;
+const ROUTE_STROKE_WIDTH = 8;
 
 type SavedCourse = {
   id: string;
@@ -360,8 +361,8 @@ export default function HomeScreen() {
                       y1={point.y}
                       x2={nextPoint.x}
                       y2={nextPoint.y}
-                      stroke={settings.darkMode ? "#60a5fa" : "#1e64d0"}
-                      strokeWidth={6}
+                      stroke={settings.darkMode ? "#60a5fa" : "#d62828"}
+                      strokeWidth={ROUTE_STROKE_WIDTH}
                       strokeLinecap="round"
                     />
                   );
@@ -382,8 +383,8 @@ export default function HomeScreen() {
 
               const inset = Math.min(
                 ROOM_INSET,
-                Math.max(2, room.w * 0.08),
-                Math.max(2, room.h * 0.08)
+                Math.max(6, room.w * 0.18),
+                Math.max(6, room.h * 0.18)
               );
 
               const drawX = room.x + inset / 2;
