@@ -1,6 +1,10 @@
+// Floating AI helper button shown in bottom corner on this screen
 import AIBubble from "@/components/AIBubble";
+// Custom navigation tabs displayed at top of page
 import TopTabs from "@/components/TopTabs";
+// Local JSON file containing class/course data used for example room loading
 import database from "@/data/database.json";
+// Floor map room definitions and styling info for every room on floor 1
 import { getRoomStyles, MAP_H, MAP_W, ROOMS } from "@/data/floorMapData";
 import {
   appThemes,
@@ -21,6 +25,7 @@ import {
 } from "react-native";
 import Svg, { Circle, Line, Rect, Text as SvgText } from "react-native-svg";
 
+// Shape of one course record pulled from database.json
 type DatabaseCourse = {
   professor: string;
   professorFullName: string;
@@ -32,15 +37,21 @@ type DatabaseCourse = {
   section: string;
 };
 
+// Fixed starting room: route always begins from this entrance room
 const START_ROOM_ID = "C1002";
 const ROOM_INSET = 18;
 const ROUTE_STROKE_WIDTH = 6;
 
+// Main map screen component: handles room search, route generation, and map drawing
 export default function MapScreen() {
+  // Text typed by user into room search box
   const [roomSearch, setRoomSearch] = useState("");
+  // Currently selected destination room on map
   const [selectedRoomId, setSelectedRoomId] = useState<string>("1200");
+  // User settings like dark mode
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
 
+  // Runs once when screen loads: load saved settings into screen
   useEffect(() => {
     const loadSettingsIntoScreen = async () => {
       const userSettings = await loadUserSettings();
@@ -53,18 +64,22 @@ export default function MapScreen() {
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
   const roomStyles = getRoomStyles(settings.darkMode);
 
+  // Find full room object for currently selected destination room
   const selectedRoom = useMemo(() => {
     return ROOMS.find((room) => room.id === selectedRoomId) || null;
   }, [selectedRoomId]);
 
+  // Find full room object for starting room
   const startRoom = useMemo(() => {
     return ROOMS.find((room) => room.id === START_ROOM_ID) || null;
   }, []);
 
+  // Calculate route path points from start room to destination room
   const routePoints = useMemo(() => {
     return findRoute(START_ROOM_ID, selectedRoomId, 1);
   }, [selectedRoomId]);
 
+  // Search for typed room number/name and select it if found
   const searchRoom = () => {
     const cleaned = roomSearch.trim().toUpperCase().replace("NE ", "");
 
@@ -79,6 +94,7 @@ export default function MapScreen() {
     }
   };
 
+  // Demo button: loads BIOE 1010 room from database and selects that room on map
   const loadExampleCourseRoom = () => {
     const match = (database as DatabaseCourse[]).find(
       (course) => course.subject === "BIOE" && course.courseNumber === "1010"
@@ -94,11 +110,13 @@ export default function MapScreen() {
     }
   };
 
+  // Reset destination back to default room and clear search box
   const resetSelection = () => {
     setSelectedRoomId("1200");
     setRoomSearch("");
   };
 
+  // Begin rendering visible screen UI below
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
       <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
@@ -270,9 +288,11 @@ export default function MapScreen() {
                     fill={settings.darkMode ? "#0f172a" : "#f4efe6"}
                   />
 
+                  {/* Draw blue route line segment-by-segment between each route point */}
                   {routePoints &&
                     routePoints.slice(0, -1).map((point, index) => {
                       const nextPoint = routePoints[index + 1];
+  // Begin rendering visible screen UI below
                       return (
                         <Line
                           key={`line-${index}`}
@@ -287,11 +307,16 @@ export default function MapScreen() {
                       );
                     })}
 
+                  {/* Draw every room rectangle on the map */}
                   {ROOMS.map((room) => {
+                    // Get color/style based on room type (lab, classroom, office, etc.)
                     const roomStyle = roomStyles[room.type];
+                    // True if this room is the chosen destination
                     const isSelected = room.id === selectedRoomId;
+                    // True if this room is the fixed starting entrance room
                     const isStart = room.id === START_ROOM_ID;
 
+                    // Shrink room rectangle inward slightly so borders look cleaner
                     const inset = Math.min(
                       ROOM_INSET,
                       Math.max(2, room.w * 0.08),
@@ -303,6 +328,7 @@ export default function MapScreen() {
                     const drawW = Math.max(8, room.w - inset);
                     const drawH = Math.max(8, room.h - inset);
 
+  // Begin rendering visible screen UI below
                     return (
                       <React.Fragment key={room.id}>
                         <Rect
@@ -390,6 +416,7 @@ export default function MapScreen() {
   );
 }
 
+// Style definitions: controls layout, spacing, borders, text sizes, etc.
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

@@ -1,3 +1,4 @@
+// All possible room categories used in the building map
 export type RoomType =
   | "lab"
   | "bio"
@@ -12,6 +13,7 @@ export type RoomType =
   | "maker"
   | "corridor";
 
+// Shape of one room object placed on the map
 export type Room = {
   id: string;
   name: string;
@@ -22,14 +24,19 @@ export type Room = {
   h: number;
 };
 
+// Full width of floor map canvas in pixels
 export const MAP_W = 2600;
+// Full height of floor map canvas in pixels
 export const MAP_H = 2100;
+// Meters Per Unit: converts map pixels into approximate real-world meters
 export const MPU = 0.054;
 //used for determining room color depending on if dark mode is enabled
+// Returns correct color palette depending on whether dark mode is enabled
 export const getRoomStyles = (darkMode: boolean) => {
   return darkMode ? TYPESDark : TYPESLight;
 };
 //Color data for each room type in the light mode
+// Light mode color palette for every room type
 export const TYPESLight: Record<
   RoomType,
   { fill: string; edge: string; tc: string; label: string }
@@ -108,6 +115,7 @@ export const TYPESLight: Record<
     label: "Corridor",
   },
 };
+// Dark mode color palette for every room type
 export const TYPESDark: Record<
   RoomType,
   { fill: string; edge: string; tc: string; label: string }
@@ -189,6 +197,7 @@ export const TYPESDark: Record<
 };
 
 
+// MASTER ROOM LIST: every room on floor 1 with ID, name, type, and exact map coordinates
 export const ROOMS: Room[] = [
   { id: "1191", name: "Turbine Lab", type: "lab", x: 280, y: 38, w: 350, h: 220 },
   { id: "1150", name: "Mechanical", type: "utility", x: 38, y: 240, w: 200, h: 140 },
@@ -334,11 +343,14 @@ export const ROOMS: Room[] = [
   { id: "1391", name: "Men's Restroom", type: "restroom", x: 738, y: 1800, w: 100, h: 160 },
 ];
 
+// Fast lookup table: lets app instantly find room object by room ID
 export const ROOM_BY_ID: Record<string, Room> = Object.fromEntries(
   ROOMS.map((room) => [room.id, room])
 );
 
+// HALLWAY NODES: invisible routing points used by pathfinding graph
 export const NODES: Record<string, { x: number; y: number }> = {
+// --- Hallway routing graph sections below define corridor intersections ---
   // upper-left hallway system
   // these sit in the open corridor gaps, not inside the room blocks
   l0: { x: 250, y: 258 },
@@ -397,6 +409,7 @@ export const NODES: Record<string, { x: number; y: number }> = {
   etR1: { x: 1878, y: 1780 },
 };
 
+// EDGES: hallway connections between nodes (these form the walkable graph paths)
 export const EDGES: [string, string][] = [
   // upper-left vertical spines
   ["l0", "l1"],
@@ -468,6 +481,7 @@ export const EDGES: [string, string][] = [
   ["etR0", "etR1"],
 ];
 
+// DOOR MAP: connects each room ID to the nearest hallway node where route enters/exits
 export const DOOR: Record<string, string> = {
   "1191": "c0",
   "1150": "l0",
@@ -606,8 +620,11 @@ export const DOOR: Record<string, string> = {
   "1615": "etR1",
 };
 
+// Helper function: returns center point of a room rectangle
 export const roomCenter = (roomId: string) => {
 
+  // Find requested room by ID
   const room = ROOM_BY_ID[roomId];
+  // Calculate exact center coordinate of that room
   return { x: room.x + room.w / 2, y: room.y + room.h / 2 };
 };

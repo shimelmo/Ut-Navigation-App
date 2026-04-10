@@ -1,5 +1,8 @@
+// AIBubble = floating AI assistant button shown at bottom of the screen
 import AIBubble from "@/components/AIBubble";
+// TopTabs = custom top navigation tabs for moving between app pages
 import TopTabs from "@/components/TopTabs";
+// officeHours.json = local data file containing professor office hours information
 import officeHoursData from "@/data/officeHours.json";
 import {
   appThemes,
@@ -7,8 +10,11 @@ import {
   loadUserSettings,
   UserSettings,
 } from "@/utils/appSettings";
+// AsyncStorage = local phone storage used to remember saved professor/course info
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// useFocusEffect = reruns logic when user comes back to this screen
 import { useFocusEffect } from "@react-navigation/native";
+// React hooks used for state, effects, memoized values, and callbacks
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Pressable,
@@ -20,10 +26,12 @@ import {
   View,
 } from "react-native";
 
+// A map object where key = day name and value = office hours string for that day
 type OfficeHoursMap = {
   [day: string]: string;
 };
 
+// Shape of one professor object from officeHours.json
 type ProfessorOfficeHours = {
   firstName: string;
   lastName: string;
@@ -34,6 +42,7 @@ type ProfessorOfficeHours = {
   additionalInfo: string;
 };
 
+// Shape of a saved course object from local storage
 type SavedCourse = {
   id: string;
   subject: string;
@@ -48,9 +57,12 @@ type SavedCourse = {
   section: string;
 };
 
+// Storage key for remembering the last professor the user selected
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
+// Storage key for remembering courses the user saved in Enter Courses
 const SAVED_COURSES_KEY = "saved_courses";
 
+// Clean professor name text so searching is flexible and ignores punctuation/titles
 function cleanProfessorName(name: string) {
   return name
     .toLowerCase()
@@ -63,12 +75,14 @@ function cleanProfessorName(name: string) {
     .trim();
 }
 
+// Pull only the last name from a full professor name
 function getLastName(name: string) {
   const cleaned = cleanProfessorName(name);
   const parts = cleaned.split(" ").filter(Boolean);
   return parts.length > 0 ? parts[parts.length - 1] : "";
 }
 
+// Decide the best name to display for a professor card or search result
 function buildDisplayName(professor: ProfessorOfficeHours) {
   if (professor.fullName?.trim()) return professor.fullName.trim();
 
@@ -78,6 +92,7 @@ function buildDisplayName(professor: ProfessorOfficeHours) {
   return professor.lastName || "Unknown Professor";
 }
 
+// Compare two professor names in a forgiving way so full names and last names still match
 function namesMatch(jsonProfessor: ProfessorOfficeHours, otherName: string) {
   const jsonFull = cleanProfessorName(buildDisplayName(jsonProfessor));
   const jsonLast = cleanProfessorName(jsonProfessor.lastName || "");
@@ -93,20 +108,31 @@ function namesMatch(jsonProfessor: ProfessorOfficeHours, otherName: string) {
   return false;
 }
 
+// Main Office Hours screen component
 export default function OfficeHoursScreen() {
+  // Convert imported JSON into a typed professor list we can search
   const professorList = officeHoursData as ProfessorOfficeHours[];
 
+  // Text typed by user into the manual professor search box
   const [searchText, setSearchText] = useState("");
+  // Name of the professor currently selected on the page
   const [selectedProfessorFullName, setSelectedProfessorFullName] = useState("");
+  // Which office-hours day button is currently selected
   const [selectedDay, setSelectedDay] = useState("");
+  // Helps prevent the UI from showing professor details before loading finishes
   const [hasLoadedProfessor, setHasLoadedProfessor] = useState(false);
+  // Courses loaded from local storage so we can find "your professors" automatically
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
+  // User settings such as dark mode
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
 
+  // Choose light or dark color theme based on saved settings
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
+  // Load saved courses + remembered professor from device storage when page opens
   const loadPageData = useCallback(async () => {
     try {
+      // Get saved courses from local storage
       const storedCourses = await AsyncStorage.getItem(SAVED_COURSES_KEY);
       if (storedCourses) {
         setSavedCourses(JSON.parse(storedCourses));
@@ -114,15 +140,20 @@ export default function OfficeHoursScreen() {
         setSavedCourses([]);
       }
 
+      // Get the last professor the user selected on this page
       const savedProfessor = await AsyncStorage.getItem(LAST_SELECTED_PROFESSOR_KEY);
 
       if (savedProfessor) {
+        // Try to match remembered professor name to one professor in officeHours.json
+      // Look for a professor in officeHours.json whose name matches the saved course
+    // Find the full professor object that matches the clicked name
         const foundProfessor = professorList.find((professor) =>
           namesMatch(professor, savedProfessor)
         );
 
         if (foundProfessor) {
           setSelectedProfessorFullName(buildDisplayName(foundProfessor));
+          // Grab all available office-hour days for that professor
           const foundDays = Object.keys(foundProfessor.officeHours || {});
           setSelectedDay(foundDays[0] || "");
         } else {
@@ -136,20 +167,24 @@ export default function OfficeHoursScreen() {
     } catch (error) {
       console.log("Could not load office hours page data:", error);
     } finally {
+      // Mark loading as finished, even if nothing was found
       setHasLoadedProfessor(true);
     }
   }, [professorList]);
 
+  // Load saved app settings like dark mode
   const loadSettings = useCallback(async () => {
     const userSettings = await loadUserSettings();
     setSettings(userSettings);
   }, []);
 
+  // Run once on first screen load to bring in saved data + settings
   useEffect(() => {
     loadPageData();
     loadSettings();
   }, [loadPageData, loadSettings]);
 
+  // Also refresh page data whenever user returns to this screen
   useFocusEffect(
     useCallback(() => {
       loadPageData();
@@ -157,13 +192,20 @@ export default function OfficeHoursScreen() {
     }, [loadPageData, loadSettings])
   );
 
+  // Build the "Your Professors" buttons from professors found in saved courses
   const savedProfessorCards = useMemo(() => {
+    // This array will hold professors that match the user’s saved courses
     const matchedProfessors: ProfessorOfficeHours[] = [];
+    // Prevent duplicate professor buttons from being added
     const seenNames = new Set<string>();
 
     savedCourses.forEach((course) => {
+      // Try both full professor name and shorter professor field from saved course
       const possibleNames = [course.professorFullName, course.professor].filter(Boolean);
 
+        // Try to match remembered professor name to one professor in officeHours.json
+      // Look for a professor in officeHours.json whose name matches the saved course
+    // Find the full professor object that matches the clicked name
       const foundProfessor = professorList.find((professor) =>
         possibleNames.some((name) => namesMatch(professor, name))
       );
@@ -179,14 +221,18 @@ export default function OfficeHoursScreen() {
       }
     });
 
+    // Sort professor buttons alphabetically before showing them
     return matchedProfessors.sort((a, b) =>
       buildDisplayName(a).localeCompare(buildDisplayName(b))
     );
   }, [savedCourses, professorList]);
 
+  // Build search results list based on what user typed in search box
   const filteredProfessors = useMemo(() => {
+    // Clean the typed search text so matching is easier
     const typed = cleanProfessorName(searchText);
 
+    // If search box is empty, do not show any dropdown results
     if (typed === "") return [];
 
     return professorList
@@ -195,6 +241,7 @@ export default function OfficeHoursScreen() {
         const fullName = cleanProfessorName(displayName);
         const lastName = getLastName(displayName);
 
+  // Start rendering everything visible on the screen
         return (
           fullName.includes(typed) ||
           lastName.includes(typed) ||
@@ -221,38 +268,49 @@ export default function OfficeHoursScreen() {
       });
   }, [searchText, professorList]);
 
+  // Find the full professor object for the currently selected professor name
   const selectedProfessor = selectedProfessorFullName
     ? professorList.find((professor) =>
         namesMatch(professor, selectedProfessorFullName)
       )
     : undefined;
 
+  // List of day names this professor has office hours for
   const availableDays = selectedProfessor
     ? Object.keys(selectedProfessor.officeHours || {})
     : [];
 
+  // Decide which day should currently be shown in the office hours card
   const activeDay =
     selectedDay && selectedProfessor?.officeHours[selectedDay]
       ? selectedDay
       : availableDays[0] || "";
 
+  // Office hours text for the selected day
   const activeHours =
     selectedProfessor && activeDay
       ? selectedProfessor.officeHours[activeDay]
       : "";
 
+  // Runs when user clicks a professor button or search result
   async function chooseProfessor(fullName: string) {
+    // Save selected professor name into state
     setSelectedProfessorFullName(fullName);
 
+        // Try to match remembered professor name to one professor in officeHours.json
+      // Look for a professor in officeHours.json whose name matches the saved course
+    // Find the full professor object that matches the clicked name
     const foundProfessor = professorList.find((professor) =>
       namesMatch(professor, fullName)
     );
 
     if (foundProfessor) {
+          // Grab all available office-hour days for that professor
       const foundDays = Object.keys(foundProfessor.officeHours || {});
       setSelectedDay(foundDays[0] || "");
 
       try {
+        // Save selected professor to local storage so page remembers it later
         await AsyncStorage.setItem(
           LAST_SELECTED_PROFESSOR_KEY,
           buildDisplayName(foundProfessor)
@@ -264,13 +322,16 @@ export default function OfficeHoursScreen() {
       setSelectedDay("");
     }
 
+    // Clear the search box after professor is chosen
     setSearchText("");
   }
 
+  // Start rendering everything visible on the screen
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
       <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* Custom top navigation tabs */}
           <TopTabs settings={settings} />
 
           <View
@@ -303,6 +364,7 @@ export default function OfficeHoursScreen() {
               Your Professors
             </Text>
 
+            {/* If user has no saved-course professors, show empty message */}
             {savedProfessorCards.length === 0 ? (
               <View
                 style={[
@@ -320,12 +382,14 @@ export default function OfficeHoursScreen() {
               </View>
             ) : (
               <View style={styles.savedProfessorWrap}>
+                {/* Draw one button for each professor found from saved courses */}
                 {savedProfessorCards.map((professor) => {
                   const displayName = buildDisplayName(professor);
                   const isActive =
                     cleanProfessorName(selectedProfessorFullName) ===
                     cleanProfessorName(displayName);
 
+  // Start rendering everything visible on the screen
                   return (
                     <Pressable
                       key={displayName}
@@ -376,6 +440,7 @@ export default function OfficeHoursScreen() {
               onChangeText={setSearchText}
             />
 
+            {/* Show live search results only while user is typing */}
             {searchText.trim() !== "" && (
               <View
                 style={[
@@ -386,10 +451,12 @@ export default function OfficeHoursScreen() {
                   },
                 ]}
               >
+                {/* If matches exist, list clickable professor results */}
                 {filteredProfessors.length > 0 ? (
                   filteredProfessors.slice(0, 8).map((professor) => {
                     const displayName = buildDisplayName(professor);
 
+  // Start rendering everything visible on the screen
                     return (
                       <Pressable
                         key={displayName}
@@ -413,6 +480,7 @@ export default function OfficeHoursScreen() {
               </View>
             )}
 
+            {/* Only show professor details after loading is finished and a professor is selected */}
             {hasLoadedProfessor && selectedProfessor && (
               <>
                 <Text style={[styles.sectionTitle, { color: theme.title }]}>
@@ -453,6 +521,7 @@ export default function OfficeHoursScreen() {
                   </View>
                 </View>
 
+                {/* Show day buttons only if this professor actually has office hours listed */}
                 {availableDays.length > 0 && (
                   <>
                     <Text style={[styles.sectionTitle, { color: theme.title }]}>
@@ -460,9 +529,11 @@ export default function OfficeHoursScreen() {
                     </Text>
 
                     <View style={styles.dayWrap}>
+                      {/* Draw one button for each available office-hours day */}
                       {availableDays.map((day) => {
                         const isActive = activeDay === day;
 
+  // Start rendering everything visible on the screen
                         return (
                           <Pressable
                             key={day}
@@ -532,6 +603,7 @@ export default function OfficeHoursScreen() {
   );
 }
 
+// Styles for layout, spacing, cards, buttons, and text
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

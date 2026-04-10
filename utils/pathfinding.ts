@@ -14,8 +14,10 @@ import {
   ROOMS,
 } from "@/data/floorMapData";
 
+// Basic x,y coordinate point used everywhere in routing
 type Point = { x: number; y: number };
 
+// Rectangle shape of a room on the map
 type RoomShape = {
   x: number;
   y: number;
@@ -23,11 +25,13 @@ type RoomShape = {
   h: number;
 };
 
+// One human-readable direction step, like "Turn left for 5 meters"
 type RouteStep = {
   text: string;
   distanceMeters: number;
 };
 
+// Full route summary returned for directions panel
 type RouteSummary = {
   from: string;
   to: string;
@@ -36,19 +40,25 @@ type RouteSummary = {
   steps: RouteStep[];
 };
 
+// Only valid floors in this app
 type FloorNumber = 1 | 2;
 
+// Keeps route start/end points slightly inside room edges instead of exact wall borders
 const ROOM_EXIT_PADDING = 10;
+// Extra invisible padding around rooms so route lines avoid clipping walls
 const COLLISION_PADDING = 6;
 
+// Calculate straight-line distance between two points
 const distance = (a: Point, b: Point) => {
   return Math.hypot(b.x - a.x, b.y - a.y);
 };
 
+// Convert map pixels into estimated real-world meters
 const pixelsToMeters = (pixels: number) => {
   return Math.round(pixels * MPU);
 };
 
+// Build hallway graph: turns node list + edge list into connected graph for pathfinding
 const buildGraph = (
   nodes: Record<string, Point>,
   edges: [string, string][]
@@ -68,9 +78,12 @@ const buildGraph = (
   return graph;
 };
 
+// Prebuilt hallway graph for floor 1
 const GRAPH_F1 = buildGraph(NODES, EDGES);
+// Prebuilt hallway graph for floor 2
 const GRAPH_F2 = buildGraph(F2_NODES, F2_EDGES);
 
+// A* pathfinding algorithm: finds shortest hallway route between two hallway nodes
 const astarOnGraph = (
   startNode: string,
   goalNode: string,
@@ -79,8 +92,10 @@ const astarOnGraph = (
 ) => {
   if (startNode === goalNode) return [startNode];
 
+  // Heuristic guess: straight-line distance to destination
   const heuristic = (node: string) => distance(nodes[node], nodes[goalNode]);
 
+  // Priority queue of possible nodes to explore next
   const openQueue: {
     f: number;
     g: number;
@@ -95,6 +110,7 @@ const astarOnGraph = (
     },
   ];
 
+  // Keeps track of nodes already checked
   const visited = new Set<string>();
 
   while (openQueue.length > 0) {
@@ -126,6 +142,7 @@ const astarOnGraph = (
   return null;
 };
 
+// Return one room object from whichever floor is requested
 const getRoomByFloor = (
   roomId: string,
   floor: FloorNumber
@@ -137,10 +154,12 @@ const getRoomByFloor = (
   return ROOM2_BY_ID[roomId] || null;
 };
 
+// Return all rooms for a given floor
 const getRoomsByFloor = (floor: FloorNumber): RoomShape[] => {
   return floor === 1 ? ROOMS : ROOMS_FLOOR_2;
 };
 
+// Clamp a value so it stays inside min/max bounds
 const clamp = (value: number, min: number, max: number) => {
   return Math.max(min, Math.min(max, value));
 };
@@ -149,6 +168,7 @@ const clamp = (value: number, min: number, max: number) => {
   Use a doorway-like point on the room edge instead of the room center.
   This makes the blue route leave and enter from the hallway side of the room.
 */
+// Pick doorway-like point on room edge facing hallway, instead of using room center
 const roomEdgePointTowardNode = (
   room: RoomShape,
   hallwayNode: Point
@@ -202,12 +222,15 @@ const roomEdgePointTowardNode = (
   };
 };
 
+// Convert point into text key for duplicate comparison
 const pointKey = (point: Point) => `${Math.round(point.x)}:${Math.round(point.y)}`;
 
+// Check if 3 points lie in one straight horizontal/vertical line
 const isCollinear = (a: Point, b: Point, c: Point) => {
   return (a.x === b.x && b.x === c.x) || (a.y === b.y && b.y === c.y);
 };
 
+// Remove unnecessary middle points so route line looks cleaner
 const simplifyRoutePoints = (points: Point[]) => {
   if (points.length <= 2) return points;
 
@@ -232,6 +255,7 @@ const simplifyRoutePoints = (points: Point[]) => {
   return result;
 };
 
+// Check whether one route segment crosses through a room rectangle
 const segmentHitsRoom = (
   a: Point,
   b: Point,
@@ -262,6 +286,7 @@ const segmentHitsRoom = (
   return false;
 };
 
+// Check if segment collides with any room on floor
 const segmentHitsAnyRoom = (
   a: Point,
   b: Point,
@@ -270,6 +295,7 @@ const segmentHitsAnyRoom = (
   return rooms.some((room) => segmentHitsRoom(a, b, room));
 };
 
+// Count how many room collisions happen if we use a proposed bend point
 const collisionCountForBentPath = (
   a: Point,
   bend: Point,
@@ -285,6 +311,7 @@ const collisionCountForBentPath = (
   }, 0);
 };
 
+// Choose best 90-degree bend between two points to keep route in hallways
 const chooseOrthogonalBend = (
   a: Point,
   b: Point,
@@ -316,6 +343,7 @@ const chooseOrthogonalBend = (
   return bend1Collisions <= bend2Collisions ? bend1 : bend2;
 };
 
+// Convert raw route into hallway-style right-angle route segments
 const orthogonalizeRoute = (
   rawPoints: Point[],
   floor: FloorNumber
@@ -345,16 +373,20 @@ const orthogonalizeRoute = (
   return simplifyRoutePoints(expanded);
 };
 
+// Main route function: finds complete route from one room to another
 export const findRoute = (
   startRoomId: string,
   endRoomId: string,
   floor: FloorNumber = 1
 ) => {
+  // Load correct hallway graph data depending on selected floor
   const nodes = floor === 1 ? NODES : F2_NODES;
   const doors = floor === 1 ? DOOR : F2_DOOR;
   const graph = floor === 1 ? GRAPH_F1 : GRAPH_F2;
 
+  // Find hallway doorway node attached to starting room
   const startDoor = doors[startRoomId];
+  // Find hallway doorway node attached to destination room
   const endDoor = doors[endRoomId];
 
   if (!startDoor || !endDoor) return null;
@@ -367,7 +399,9 @@ export const findRoute = (
   const startDoorNode = nodes[startDoor];
   const endDoorNode = nodes[endDoor];
 
+  // Exact point where route exits starting room
   const startPoint = roomEdgePointTowardNode(startRoom, startDoorNode);
+  // Exact point where route enters destination room
   const endPoint = roomEdgePointTowardNode(endRoom, endDoorNode);
 
   let rawRoute: Point[] | null = null;
@@ -375,6 +409,7 @@ export const findRoute = (
   if (startDoor === endDoor) {
     rawRoute = [startPoint, startDoorNode, endPoint];
   } else {
+    // Find shortest hallway path between doorway nodes
     const nodePath = astarOnGraph(startDoor, endDoor, nodes, graph);
     if (!nodePath) return null;
     rawRoute = [startPoint, ...nodePath.map((node) => nodes[node]), endPoint];
@@ -387,6 +422,7 @@ export const findRoute = (
   return orthogonalizeRoute(rawRoute, floor);
 };
 
+// Convert dx/dy movement into compass direction like North, East, Southwest
 const getCompassDirection = (dx: number, dy: number) => {
   const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
 
@@ -400,6 +436,7 @@ const getCompassDirection = (dx: number, dy: number) => {
   return "Northeast";
 };
 
+// Decide whether next movement is left turn, right turn, or straight
 const getTurnInstruction = (prev: Point, current: Point, next: Point) => {
   const v1x = current.x - prev.x;
   const v1y = current.y - prev.y;
@@ -424,10 +461,12 @@ const getTurnInstruction = (prev: Point, current: Point, next: Point) => {
   return "Continue";
 };
 
+// Wrapper: gets compass direction between two points
 const getDirectionBucket = (a: Point, b: Point) => {
   return getCompassDirection(b.x - a.x, b.y - a.y);
 };
 
+// Add step to directions list, merging repeated identical instructions together
 const pushMergedStep = (
   steps: RouteStep[],
   text: string,
@@ -453,6 +492,7 @@ const pushMergedStep = (
   steps.push({ text, distanceMeters });
 };
 
+// Build readable turn-by-turn directions from route point list
 export const buildRouteSummary = (
   routePoints: Point[],
   fromLabel: string,
@@ -460,12 +500,14 @@ export const buildRouteSummary = (
 ): RouteSummary | null => {
   if (!routePoints || routePoints.length < 2) return null;
 
+  // Final instruction steps shown to user
   const steps: RouteStep[] = [];
   let totalDistancePixels = 0;
 
   const first = routePoints[0];
   const second = routePoints[1];
 
+  // Add first instruction: initial heading direction
   pushMergedStep(
     steps,
     `Head ${getDirectionBucket(first, second)}`,
@@ -487,6 +529,7 @@ export const buildRouteSummary = (
     const directionBefore = getDirectionBucket(prev, current);
 
     if (turnText === "Continue straight" || directionNow === directionBefore) {
+  // Add first instruction: initial heading direction
       pushMergedStep(
         steps,
         "Continue straight",
@@ -495,6 +538,7 @@ export const buildRouteSummary = (
       continue;
     }
 
+  // Add first instruction: initial heading direction
     pushMergedStep(steps, turnText, pixelsToMeters(segmentDistancePixels));
   }
 

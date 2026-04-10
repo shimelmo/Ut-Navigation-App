@@ -1,5 +1,8 @@
+// AIBubble = floating AI assistant button shown in bottom corner of screen
 import AIBubble from "@/components/AIBubble";
+// TopTabs = custom top navigation tabs used instead of default bottom tab bar
 import TopTabs from "@/components/TopTabs";
+// database.json contains all course records the app searches through
 import database from "@/data/database.json";
 import {
   appThemes,
@@ -22,6 +25,8 @@ import {
   View,
 } from "react-native";
 
+
+// TYPE DEFINITIONS: Shapes of course data from database and saved user data
 type DatabaseCourse = {
   professor: string;
   professorFirstName: string;
@@ -57,9 +62,14 @@ type CourseSuggestion = {
   courseNumber: string;
 };
 
+
+// STORAGE KEYS: Names used for saving data in AsyncStorage on the device
 const STORAGE_KEY = "saved_courses";
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
 
+
+// HELPER FUNCTIONS: Clean and normalize text so searching is flexible and forgiving
+// Removes punctuation/titles like Dr. or Professor so user typing still matches database names
 function cleanProfessorName(name: string) {
   return name
     .toLowerCase()
@@ -72,12 +82,14 @@ function cleanProfessorName(name: string) {
     .trim();
 }
 
+// Extract only the last name from a full professor name for easier searching
 function getLastName(name: string) {
   const cleaned = cleanProfessorName(name);
   const parts = cleaned.split(" ").filter(Boolean);
   return parts.length > 0 ? parts[parts.length - 1] : "";
 }
 
+// General text cleaner: lowercase + remove punctuation + normalize spaces
 function cleanText(text: string) {
   return text
     .toLowerCase()
@@ -87,6 +99,7 @@ function cleanText(text: string) {
     .replace(/\s+/g, " ");
 }
 
+// Removes spaces entirely so CSET 1100 and CSET1100 both match
 function normalizeCourseInput(text: string) {
   return cleanText(text).replace(/\s+/g, "");
 }
@@ -95,15 +108,25 @@ function courseDisplay(subject: string, courseNumber: string) {
   return `${subject} ${courseNumber}`;
 }
 
+
+// MAIN SCREEN COMPONENT: Handles searching, saving, deleting, and displaying courses
+// Main screen component: controls all course search, suggestions, saving, deleting, and display logic
 export default function EnterCourseScreen() {
+  // What the user types into professor search box
   const [professor, setProfessor] = useState("");
+  // What the user types into course search box
   const [course, setCourse] = useState("");
+  // List of courses user has already saved
   const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
+  // If multiple sections match search, store them here so user can choose one
   const [matchingSections, setMatchingSections] = useState<DatabaseCourse[]>([]);
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
 
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
+
+  // Load saved courses from local device storage when screen opens
+  // Read saved courses from phone storage when page opens
   const loadSavedCourses = useCallback(async () => {
     try {
       const storedCourses = await AsyncStorage.getItem(STORAGE_KEY);
@@ -117,11 +140,15 @@ export default function EnterCourseScreen() {
     }
   }, []);
 
+
+  // Load user theme/settings such as dark mode
   const loadSettings = useCallback(async () => {
     const userSettings = await loadUserSettings();
     setSettings(userSettings);
   }, []);
 
+
+  // React effect: run on first load (or when dependencies change)
   useEffect(() => {
     loadSavedCourses();
     loadSettings();
@@ -134,6 +161,8 @@ export default function EnterCourseScreen() {
     }, [loadSavedCourses, loadSettings])
   );
 
+
+  // React effect: run on first load (or when dependencies change)
   useEffect(() => {
     const saveSavedCourses = async () => {
       try {
@@ -146,6 +175,9 @@ export default function EnterCourseScreen() {
     saveSavedCourses();
   }, [savedCourses]);
 
+
+  // Match typed professor text against database professor names
+  // Returns true if typed professor text matches this database row
   const professorMatches = (dbCourse: DatabaseCourse, professorInput: string) => {
     const input = cleanProfessorName(professorInput);
 
@@ -155,6 +187,9 @@ export default function EnterCourseScreen() {
     const fullName = cleanProfessorName(dbCourse.professorFullName || "");
     const shortProfessor = cleanProfessorName(dbCourse.professor || "");
 
+
+  // UI RENDER: Draw everything visible on screen
+  // Start rendering everything visible on the screen below
     return (
       input === lastName ||
       input === fullName ||
@@ -165,6 +200,9 @@ export default function EnterCourseScreen() {
     );
   };
 
+
+  // Match typed course text against subject/course number combinations
+  // Returns true if typed course text matches this database row
   const courseMatches = (dbCourse: DatabaseCourse, courseInput: string) => {
     const input = cleanText(courseInput);
     const inputNoSpace = normalizeCourseInput(courseInput);
@@ -178,6 +216,9 @@ export default function EnterCourseScreen() {
       `${dbCourse.subject}${dbCourse.courseNumber}`
     );
 
+
+  // UI RENDER: Draw everything visible on screen
+  // Start rendering everything visible on the screen below
     return (
       input === numberOnly ||
       input === subjectOnly ||
@@ -208,16 +249,25 @@ export default function EnterCourseScreen() {
     return `${convertedHour}:${minute} ${amOrPm}`;
   };
 
+  // Recalculate matching courses only when course input changes (faster than recalculating every render)
   const filteredByTypedCourse = useMemo(() => {
+
+  // UI RENDER: Draw everything visible on screen
     return (database as DatabaseCourse[]).filter((item) => courseMatches(item, course));
   }, [course]);
 
+  // Recalculate matching professors only when professor input changes
   const filteredByTypedProfessor = useMemo(() => {
+
+  // UI RENDER: Draw everything visible on screen
     return (database as DatabaseCourse[]).filter((item) =>
       professorMatches(item, professor)
     );
   }, [professor]);
 
+
+  // Build professor dropdown suggestions based on what the user typed
+  // Build autocomplete dropdown list for professor names
   const uniqueProfessorSuggestions = useMemo(() => {
     const typedProfessor = cleanProfessorName(professor);
     const typedCourse = cleanText(course);
@@ -275,6 +325,9 @@ export default function EnterCourseScreen() {
     });
   }, [professor, course, filteredByTypedCourse]);
 
+
+  // Build course dropdown suggestions based on current input
+  // Build autocomplete dropdown list for course names
   const uniqueCourseSuggestions = useMemo(() => {
     const typedCourse = cleanText(course);
     const typedProfessor = cleanProfessorName(professor);
@@ -338,6 +391,9 @@ export default function EnterCourseScreen() {
     });
   }, [professor, course, filteredByTypedProfessor]);
 
+
+  // Save one selected course into the user saved list
+  // Create a saved course object and store it if not already saved
   const saveChosenCourse = async (foundCourse: DatabaseCourse) => {
     const newCourse: SavedCourse = {
       id: `${foundCourse.subject}-${foundCourse.courseNumber}-${foundCourse.section}-${foundCourse.professorLastName}`,
@@ -379,6 +435,9 @@ export default function EnterCourseScreen() {
     setCourse("");
   };
 
+
+  // Main Add Course button logic: validate input, search database, save or show sections
+  // Runs when Add Course button is pressed
   const addCourse = () => {
     if (professor.trim() === "" || course.trim() === "") {
       Alert.alert(
@@ -409,6 +468,9 @@ export default function EnterCourseScreen() {
     setMatchingSections(foundCourses);
   };
 
+
+  // Remove one saved course
+  // Delete one course card from saved list
   const deleteCourse = async (id: string) => {
     const updatedCourses = savedCourses.filter((item) => item.id !== id);
     setSavedCourses(updatedCourses);
@@ -422,6 +484,9 @@ export default function EnterCourseScreen() {
     }
   };
 
+
+  // Reset everything saved on this device after confirmation
+  // Completely wipe this device’s saved courses after user confirms
   const resetMyLocalData = () => {
     Alert.alert(
       "Reset My Data",
@@ -448,11 +513,13 @@ export default function EnterCourseScreen() {
     );
   };
 
+  // User clicked a professor suggestion in dropdown
   const chooseProfessorFromDropdown = (name: string) => {
     setProfessor(name);
     setMatchingSections([]);
   };
 
+  // User clicked a course suggestion in dropdown
   const chooseCourseFromDropdown = (chosenCourse: CourseSuggestion) => {
     setCourse(chosenCourse.label);
     setMatchingSections([]);
@@ -472,6 +539,9 @@ export default function EnterCourseScreen() {
         normalizeCourseInput(item.label) === normalizeCourseInput(course)
     );
 
+
+  // UI RENDER: Draw everything visible on screen
+  // Start rendering everything visible on the screen below
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
       <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
@@ -708,6 +778,9 @@ export default function EnterCourseScreen() {
                   settings.darkMode
                 );
 
+
+  // UI RENDER: Draw everything visible on screen
+  // Start rendering everything visible on the screen below
                 return (
                   <View
                     key={item.id}
@@ -781,6 +854,9 @@ export default function EnterCourseScreen() {
   );
 }
 
+
+// STYLES: Visual formatting for buttons, cards, text, spacing, etc.
+// Styling section: controls spacing, colors, borders, font sizes, layout
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

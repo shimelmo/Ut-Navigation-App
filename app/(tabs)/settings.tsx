@@ -1,4 +1,6 @@
+// Floating AI assistant button shown in bottom corner of screen
 import AIBubble from "@/components/AIBubble";
+// Custom top navigation tabs used throughout the app
 import TopTabs from "@/components/TopTabs";
 import {
   appThemes,
@@ -8,7 +10,9 @@ import {
   SETTINGS_KEY,
   UserSettings,
 } from "@/utils/appSettings";
+// AsyncStorage stores data locally on the user’s phone/device
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// React hooks for screen state and lifecycle logic
 import React, { useEffect, useState } from "react";
 import {
   Alert,
@@ -21,16 +25,24 @@ import {
   View,
 } from "react-native";
 
+// Storage key for saved courses
 const SAVED_COURSES_KEY = "saved_courses";
+// Storage key for remembered selected professor
 const LAST_SELECTED_PROFESSOR_KEY = "last_selected_professor";
 
+// Main Settings screen component
 export default function SettingsScreen() {
+  // Holds all current app settings (dark mode, course colors, etc.)
   const [settings, setSettings] = useState<UserSettings>(defaultSettings);
+  // Prevents saving too early before settings finish loading
   const [loaded, setLoaded] = useState(false);
 
+  // Choose dark or light theme colors based on current darkMode setting
   const theme = settings.darkMode ? appThemes.dark : appThemes.light;
 
+  // Runs once when screen first opens: load saved settings from storage
   useEffect(() => {
+    // Pull previously saved settings from local storage
     const loadSettings = async () => {
       const saved = await loadUserSettings();
       setSettings(saved);
@@ -40,12 +52,15 @@ export default function SettingsScreen() {
     loadSettings();
   }, []);
 
+  // Runs once when screen first opens: load saved settings from storage
   useEffect(() => {
+    // Only save settings after initial loading is complete
     if (loaded) {
       saveUserSettings(settings);
     }
   }, [settings, loaded]);
 
+  // Updates one setting switch without overwriting the others
   const updateSetting = (key: keyof UserSettings, value: boolean) => {
     setSettings((prev) => ({
       ...prev,
@@ -53,6 +68,7 @@ export default function SettingsScreen() {
     }));
   };
 
+  // Clears all locally stored app data after user confirmation
   const resetAllLocalData = () => {
     Alert.alert(
       "Reset My Local Data",
@@ -64,8 +80,11 @@ export default function SettingsScreen() {
           style: "destructive",
           onPress: async () => {
             try {
+              // Delete saved courses
               await AsyncStorage.removeItem(SAVED_COURSES_KEY);
+              // Delete remembered professor
               await AsyncStorage.removeItem(LAST_SELECTED_PROFESSOR_KEY);
+              // Delete saved settings
               await AsyncStorage.removeItem(SETTINGS_KEY);
               setSettings(defaultSettings);
 
@@ -82,6 +101,7 @@ export default function SettingsScreen() {
     );
   };
 
+  // Reusable mini component: one settings row with title, description, and toggle switch
   const SettingRow = ({
     title,
     description,
@@ -116,10 +136,12 @@ export default function SettingsScreen() {
     </View>
   );
 
+  // Start rendering everything visible on the Settings page
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.screenBg }]}>
       <View style={[styles.background, { backgroundColor: theme.screenBg }]}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* Top navigation tabs */}
           <TopTabs settings={settings} />
 
           <View
@@ -148,6 +170,7 @@ export default function SettingsScreen() {
               },
             ]}
           >
+            {/* Individual setting toggle rows below */}
             <SettingRow
               title="Dark Mode"
               description="Switch the app between light mode and dark mode."
@@ -155,6 +178,7 @@ export default function SettingsScreen() {
               onValueChange={(value) => updateSetting("darkMode", value)}
             />
 
+            {/* Individual setting toggle rows below */}
             <SettingRow
               title="Use Course Colors"
               description="Keep Monday/Wednesday and Tuesday/Thursday courses color-coded."
@@ -202,6 +226,7 @@ export default function SettingsScreen() {
   );
 }
 
+// Style definitions for layout, cards, buttons, spacing, and text
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
